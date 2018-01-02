@@ -5,8 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EyeTalk"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="600" Width="800">
     <Grid>
-        
+        <TabControl x:Name="myTabControl" HorizontalAlignment="Left" Height="549" Margin="10,10,0,0" VerticalAlignment="Top" Width="772">
+            <TabControl.Items>
+                <TabItem Header="Home" Visibility="Visible">
+                    <Grid Background="BlueViolet">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="79*"/>
+                            <ColumnDefinition Width="687*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Begin Speaking!" HorizontalAlignment="Left" Margin="32,95,0,0" VerticalAlignment="Top" Width="557" Click="Begin_Click" Height="94" FontSize="36" Grid.Column="1"/>
+                        <Button Content="Add a Picture/Category" HorizontalAlignment="Left" Margin="32,224,0,0" VerticalAlignment="Top" Width="557" Click="Add_PictureCategory_Click" Height="94" FontSize="36" Grid.Column="1"/>
+                        <Button Content="Options" HorizontalAlignment="Left" Margin="10,353,0,0" VerticalAlignment="Top" Width="361" Click="Options_Click" Height="94" FontSize="36" Grid.ColumnSpan="2"/>
+                        <Button Content="Exit" HorizontalAlignment="Left" Margin="316,353,0,0" VerticalAlignment="Top" Width="361" Click="Exit_Click" Height="94" FontSize="36" Grid.Column="1"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Speaking" Visibility="Visible">
+                    <Grid Background="CornflowerBlue">
+                        <Button Content="Play Sound" HorizontalAlignment="Left" Margin="27,423,0,0" VerticalAlignment="Top" Width="184" FontSize="20" Click="PlaySound_Button_Click" />
+                        <Button Content="Back" HorizontalAlignment="Left" Margin="548,423,0,0" VerticalAlignment="Top" Width="184" FontSize="20" Click="Back_Button_Click" />
+                        <Button Content="Delete Word" HorizontalAlignment="Left" Margin="298,423,0,0" VerticalAlignment="Top" Width="184" FontSize="20" Click="Delete_Button_Click" />
+
+                        <Button x:Name="Next" Content=">" HorizontalAlignment="Left" Margin="716,107,0,0" VerticalAlignment="Top" Width="40" FontSize="20" Click="Next_Button_Click" Height="61" />
+                        <Button x:Name="Previous" Content="&lt;" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top" Width="37" FontSize="20" Click="Previous_Button_Click" Height="61" />
+
+                        <Button x:Name="ButtonImage1" HorizontalAlignment="Left" Margin="100,296,0,0" VerticalAlignment="Top" Width="92" Height="94" Background="Transparent" BorderBrush="Transparent" Click="ButtonImage1_Click">
+                            <Grid HorizontalAlignment="Center">
+                                <Image x:Name="Image1" />
+                            </Grid>
+                        </Button>
+
+                        <Button x:Name="ButtonImage2" HorizontalAlignment="Left" Margin="337,296,0,0" VerticalAlignment="Top" Width="93" Height="94" Background="Transparent" BorderBrush="Transparent" Click="ButtonImage2_Click">
+                            <Grid HorizontalAlignment="Center">
+                                <Image x:Name="Image2"/>
+                            </Grid>
+                        </Button>
+
+                        <Button x:Name="ButtonImage3" HorizontalAlignment="Left" Margin="582,296,0,0" VerticalAlignment="Top" Width="92" Height="94" Background="Transparent" BorderBrush="Transparent" Click="ButtonImage3_Click">
+                            <Grid HorizontalAlignment="Center">
+                                <Image x:Name="Image3" />
+                            </Grid>
+                        </Button>
+
+
+
+                        <TextBlock x:Name="CategoryTitle" HorizontalAlignment="Left" Margin="278,107,0,0" TextWrapping="Wrap" Text="Category Title" VerticalAlignment="Top" Height="74" Width="266" FontSize="36"/>
+                        <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="120,235,0,0" TextWrapping="Wrap" Text="Text1" VerticalAlignment="Top" FontSize="24"/>
+                        <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="358,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24"><Run Text="Text2"/><LineBreak/><Run/></TextBlock>
+                        <TextBlock x:Name="Text3" HorizontalAlignment="Left" Margin="599,235,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24"><Run Text="Text3"/><LineBreak/><Run/></TextBlock>
+                        <TextBox x:Name="SentenceTextBox" HorizontalAlignment="Left" Margin="59,28,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="48" Width="631" FontSize="16"/>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Options" Visibility="Visible">
+                    <Grid Background="DarkSlateBlue">
+                        <Button Content="Back" HorizontalAlignment="Left" Margin="216,400,0,0" VerticalAlignment="Top" Width="318" FontSize="48" Click="Back_Button_Click" />
+                        <Image HorizontalAlignment="Left" Height="152" Margin="281,118,0,0" VerticalAlignment="Top" Width="162"/>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Add" Visibility="Visible">
+                    <Grid Background="DodgerBlue">
+                        <Button Content="Back" HorizontalAlignment="Left" Margin="216,400,0,0" VerticalAlignment="Top" Width="318" FontSize="48" Click="Back_Button_Click" />
+                        <Image HorizontalAlignment="Left" Height="152" Margin="281,118,0,0" VerticalAlignment="Top" Width="162"/>
+                    </Grid>
+                </TabItem>
+
+
+            </TabControl.Items>
+
+        </TabControl>
+
     </Grid>
 </Window>
