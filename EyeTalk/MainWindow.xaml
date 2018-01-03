@@ -78,6 +78,7 @@
                         <Button Content="Back" HorizontalAlignment="Left" Margin="532,367,0,0" VerticalAlignment="Top" Width="174" FontSize="48" Click="Begin_Click" />
                         <TextBox x:Name="currentSentence" HorizontalAlignment="Left" Margin="52,47,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Height="94" Width="654" FontSize="24" FontWeight="Bold"/>
                         <Button Content="Play Sound" HorizontalAlignment="Left" Margin="52,367,0,0" VerticalAlignment="Top" Width="249" FontSize="48" Click="Play_Saved_Sentence_Button_Click" />
+                        <Button Content="Delete" HorizontalAlignment="Left" Margin="250,192,0,0" VerticalAlignment="Top" Width="249" FontSize="48" Click="Delete_Saved_Sentence_Button_Click" />
 
                     </Grid>
                 </TabItem>

@@ -346,5 +346,26 @@ namespace EyeTalk
                 currentSentence.Text = savedSentences.ElementAt(sentencePicked);
             }
         }
+
+        private void Delete_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (savedSentences.Count <= 0)
+            {
+                currentSentence.Text = "No sentences saved";
+            }
+            else 
+            {
+                savedSentences.RemoveAt(sentencePicked);
+                if (savedSentences.Count <= 0)
+                {
+                    currentSentence.Text = "No sentences saved";
+                }
+                else
+                {
+                    currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+                }
+            }
+            initialiser.SaveSentencesToFile(savedSentences);
+        }
     }
 }
