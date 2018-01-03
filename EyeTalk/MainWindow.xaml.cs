@@ -6,55 +6,54 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Speech.Synthesis;
+using System.Collections.Specialized;
+using System.Collections;
 
 namespace EyeTalk
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
     public partial class MainWindow : Window
     {
-        public static int index = 0;
-        public static int sentenceIndex = 0;
-        public StringBuilder sb = new StringBuilder();
+        public static int pageNumber = 0;
+        public static int amountSelected = 0;
+        public static int sentencePicked = 0;
 
         SaveFileSerialiser initialiser = new SaveFileSerialiser();
         List<Picture> categoryData;
         SortedList<String, List<Picture>> categories;
+        List<string> savedSentences = new List<string>();
 
-        SpeechSynthesizer synthesizer = new SpeechSynthesizer();
-       
-             
+        SpeechSynthesizer synth = new SpeechSynthesizer();
+        OrderedDictionary sentence = new OrderedDictionary();
         
         public MainWindow()
         {
             InitializeComponent();
-            synthesizer.Volume = 100;
-            synthesizer.Rate = -2;
+            synth.Volume = 100;
+            synth.Rate = -2;
         }
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
             categories = initialiser.Load();
 
-            var category = categories.ElementAt(index);
+            var category = categories.ElementAt(pageNumber);
+
+            pageNumber = 0;
+            amountSelected = 0;
+            sentencePicked = 0;
+            SentenceTextBox.Text = "";
+            sentence.Clear();
 
             CreateCategory(category);
 
             myTabControl.SelectedIndex = 1;
-        }
-
-        private void Back_Button_Click(object sender, RoutedEventArgs e)
-        {
-            myTabControl.SelectedIndex = 0;
         }
 
         private void Options_Click(object sender, RoutedEventArgs e)
@@ -69,6 +68,11 @@ namespace EyeTalk
 
         }
 
+        private void Back_Button_Click(object sender, RoutedEventArgs e)
+        {
+            myTabControl.SelectedIndex = 0;
+        }
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -77,18 +81,18 @@ namespace EyeTalk
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
             var size = categories.Count;
-            index++;
+            pageNumber++;
 
-            if (index >= size)
+            if (pageNumber >= size)
             {
-                index = 0;
-                var category = categories.ElementAt(index);
+                pageNumber = 0;
+                var category = categories.ElementAt(pageNumber);
                 CreateCategory(category);
 
             }
             else
             {
-                var category = categories.ElementAt(index);
+                var category = categories.ElementAt(pageNumber);
                 CreateCategory(category);
 
             }
@@ -97,16 +101,16 @@ namespace EyeTalk
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
         {
             var size = categories.Count;
-            index--;
-            if ( index < 0){
-                index = size-1;
-                var category = categories.ElementAt(index);
+            pageNumber--;
+            if (pageNumber < 0){
+                pageNumber = size-1;
+                var category = categories.ElementAt(pageNumber);
                 CreateCategory(category);
 
             }
             else
             {
-                var category = categories.ElementAt(index);
+                var category = categories.ElementAt(pageNumber);
                 CreateCategory(category);
 
             }
@@ -114,7 +118,7 @@ namespace EyeTalk
 
         private void CreateCategory(KeyValuePair<String, List<Picture>> category)
         {
-            CategoryTitle.Text = category.Key + " " + sentenceIndex.ToString();
+            CategoryTitle.Text = category.Key;
             categoryData = category.Value;
 
             var filepath1 = categoryData.ElementAt(0).FilePath;
@@ -132,52 +136,213 @@ namespace EyeTalk
             Text1.Text = pictureName1;
             Text2.Text = pictureName2;
             Text3.Text = pictureName3;
+
+            if (categoryData.ElementAt(0).Selected == false)
+            {
+                Unhighlight(ButtonImage1);
+            }
+            else
+            {
+                Highlight(ButtonImage1);
+            }
+
+            if (categoryData.ElementAt(1).Selected == false)
+            {
+                Unhighlight(ButtonImage2);
+
+            }
+            else
+            {
+                Highlight(ButtonImage2);
+            }
+
+            if (categoryData.ElementAt(2).Selected == false)
+            {
+                Unhighlight(ButtonImage3);
+            
+            }
+            else
+            {
+                Highlight(ButtonImage3);
+            }
+
+
         }
 
         private void ButtonImage1_Click(object sender, RoutedEventArgs e)
         {
             var word = Text1.Text;
-            if(sentenceIndex < 3) {
-                sb.Append(word);
-                sb.Append(" ");
-                SentenceTextBox.Text = sb.ToString();
-                sentenceIndex++;
+            int index = 0;
+            var selected = categoryData.ElementAt(index).Selected;
+           
+            if (amountSelected < 3 && selected == false)
+            {
+                AddWordToSentence(word, index);
+                Highlight(ButtonImage1);
             }
-            
+            else if(selected == true)
+            {
+                RemoveWordFromSentence(word, index);
+                Unhighlight(ButtonImage1);
+            }
+
         }
 
         private void ButtonImage2_Click(object sender, RoutedEventArgs e)
         {
             var word = Text2.Text;
-            if (sentenceIndex < 3)
+            int index = 1;
+            var selected = categoryData.ElementAt(index).Selected;
+
+            if (amountSelected < 3 && selected == false)
             {
-                sb.Append(word);
-                sb.Append(" ");
-                SentenceTextBox.Text = sb.ToString();
-                sentenceIndex++;
+                AddWordToSentence(word, index);
+                Highlight(ButtonImage2);
+            }
+            else if (selected == true)
+            {
+                RemoveWordFromSentence(word, index);
+                Unhighlight(ButtonImage2);
             }
         }
 
         private void ButtonImage3_Click(object sender, RoutedEventArgs e)
         {
             var word = Text3.Text;
-            if (sentenceIndex < 3)
+            int index = 2;
+            var selected = categoryData.ElementAt(index).Selected;
+          
+            if (amountSelected < 3 && selected == false)
             {
-                sb.Append(word);
-                sb.Append(" ");
-                SentenceTextBox.Text = sb.ToString();
-                sentenceIndex++;
+                AddWordToSentence(word, index);
+                Highlight(ButtonImage3);
+            }
+            else if (selected == true)
+            {
+                RemoveWordFromSentence(word, index);
+                Unhighlight(ButtonImage3);
+                
             }
         }
 
-        private void PlaySound_Button_Click(object sender, RoutedEventArgs e)
+        private async void PlaySound_Button_Click(object sender, RoutedEventArgs e)
         {
-            synthesizer.Speak(sb.ToString());
+            var text = SentenceTextBox.Text.ToString();
+
+            await Task.Run(() => Speak(text));
         }
 
-        private void Delete_Button_Click(object sender, RoutedEventArgs e)
+        private void AddWordToSentence(string word, int index)
         {
+            sentence.Add(word, word);
+            StringBuilder sb = new StringBuilder();
+            foreach (DictionaryEntry s in sentence)
+            {
+                sb.Append(s.Value + " ");
+            }
+            SentenceTextBox.Text = sb.ToString();
 
+            amountSelected++;
+
+            categoryData.ElementAt(index).Selected = true;
+           
+        }
+
+        private void RemoveWordFromSentence(string word, int index)
+        {
+            sentence.Remove(word);
+            StringBuilder sb = new StringBuilder();
+            foreach (DictionaryEntry s in sentence)
+            {
+                sb.Append(s.Value + " ");
+            }
+            SentenceTextBox.Text = sb.ToString();
+
+            amountSelected--;
+
+            categoryData.ElementAt(index).Selected = false;
+        }
+
+        private void Speak(string text)
+        {
+            synth.Speak(text);
+        }
+
+        private void Highlight(Button ButtonImage)
+        {
+            ButtonImage.BorderBrush = new SolidColorBrush(Colors.Yellow);
+            ButtonImage.BorderThickness = new Thickness(3, 3, 3, 3);
+        }
+
+        private void Unhighlight(Button ButtonImage)
+        {
+            ButtonImage.BorderBrush = new SolidColorBrush(Colors.Black);
+            ButtonImage.BorderThickness = new Thickness(3, 3, 3, 3);
+
+        }
+
+        private void Save_Button_Click(object sender, RoutedEventArgs e)
+        {
+            savedSentences.Add(SentenceTextBox.Text);
+        }
+
+        private void Sentences_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var numberOfSentences = savedSentences.Count;
+            if(numberOfSentences <= 0)
+            {
+                currentSentence.Text = "No sentences saved";
+            }
+            else
+            {
+                currentSentence.Text = savedSentences.First();
+            }
+            myTabControl.SelectedIndex = 4;
+        }
+
+        private async void Play_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var text = currentSentence.Text.ToString();
+
+            await Task.Run(() => Speak(text));
+        }
+
+        private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var numberOfSentences = savedSentences.Count;
+            sentencePicked++;
+            if (numberOfSentences <= 0)
+            {
+                currentSentence.Text = "No sentences saved";
+            }
+            else if(sentencePicked <= numberOfSentences-1)
+            {
+                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+            }
+            else
+            {
+                sentencePicked = 0;
+                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+            }
+        }
+
+        private void Previous_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var numberOfSentences = savedSentences.Count;
+            sentencePicked--;
+            if (numberOfSentences <= 0)
+            {
+                currentSentence.Text = "No sentences saved";
+            }
+            else if (sentencePicked >= 0)
+            {
+                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+            }
+            else
+            {
+                sentencePicked = numberOfSentences-1;
+                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+            }
         }
     }
 }
