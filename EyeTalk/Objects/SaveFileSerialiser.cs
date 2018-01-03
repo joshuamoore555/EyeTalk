@@ -32,13 +32,44 @@ namespace EyeTalk.Objects
             {"Emotions", emotions }
             };
 
+        static List<string> savedSentences = new List<string>();
+
 
         public static string dir = @"C:\Users\User\Desktop\SaveFolder";
-        string serializationPath = Path.Combine(dir, "Categories.bin");
+        string categoryPath = Path.Combine(dir, "Categories.bin");
+        string savedSentencesPath = Path.Combine(dir, "SavedSentences.bin");
+
 
         public SaveFileSerialiser()
         {
-            using (Stream stream = File.Open(serializationPath, FileMode.Create))
+            CreateCategoryFile();
+            //CreateSavedSentencesFile();
+        }
+
+        //load category from a file
+        public SortedList<String, List<Picture>> LoadCategories()
+        {
+            using (Stream stream = File.Open(categoryPath, FileMode.Open))
+            {
+                var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                return (SortedList<String, List<Picture>>)bformatter.Deserialize(stream);
+            }
+        }
+
+        public List<string> LoadSentences()
+        {
+            using (Stream stream = File.Open(savedSentencesPath, FileMode.Open))
+            {
+                var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                return (List<string>)bformatter.Deserialize(stream);
+            }
+        }
+
+        public void CreateCategoryFile()
+        {
+            using (Stream stream = File.Open(categoryPath, FileMode.Create))
             {
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
@@ -46,16 +77,29 @@ namespace EyeTalk.Objects
             }
         }
 
-        //load category from a file
-        public SortedList<String, List<Picture>> Load()
+        public void CreateSavedSentencesFile()
         {
-            using (Stream stream = File.Open(serializationPath, FileMode.Open))
+            using (Stream stream = File.Open(savedSentencesPath, FileMode.Create))
             {
                 var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
-                return (SortedList<String, List<Picture>>)bformatter.Deserialize(stream);
+                bformatter.Serialize(stream, savedSentences);
             }
         }
+
+        public void SaveSentencesToFile(List<string> sentences)
+        {
+            using (Stream stream = File.Open(savedSentencesPath, FileMode.Create))
+            {
+                var bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                bformatter.Serialize(stream, sentences);
+            }
+        }
+
+
+
     }
+
 
 }

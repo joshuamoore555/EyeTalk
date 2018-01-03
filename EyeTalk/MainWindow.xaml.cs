@@ -27,7 +27,7 @@ namespace EyeTalk
         SaveFileSerialiser initialiser = new SaveFileSerialiser();
         List<Picture> categoryData;
         SortedList<String, List<Picture>> categories;
-        List<string> savedSentences = new List<string>();
+        List<string> savedSentences;
 
         SpeechSynthesizer synth = new SpeechSynthesizer();
         OrderedDictionary sentence = new OrderedDictionary();
@@ -41,7 +41,8 @@ namespace EyeTalk
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
-            categories = initialiser.Load();
+            categories = initialiser.LoadCategories();
+            savedSentences = initialiser.LoadSentences();
 
             var category = categories.ElementAt(pageNumber);
 
@@ -284,6 +285,7 @@ namespace EyeTalk
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
             savedSentences.Add(SentenceTextBox.Text);
+            initialiser.SaveSentencesToFile(savedSentences);
         }
 
         private void Sentences_Button_Click(object sender, RoutedEventArgs e)
