@@ -4,6 +4,15 @@
              xmlns:local="clr-namespace:EyeTalk"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <LinearGradientBrush x:Key="GreyBrush" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+            <GradientStop Color="#FFCBC6C6" Offset="0"/>
+            <GradientStop Color="#FFA29A9A" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="LightBrush" EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+            <GradientStop Color="#FFF0F0F0" Offset="0"/>
+            <GradientStop Color="#FFC5C5C5" Offset="1"/>
+        </LinearGradientBrush>
+
     </Application.Resources>
 </Application>

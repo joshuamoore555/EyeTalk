@@ -39,6 +39,10 @@ namespace EyeTalk
             synth.Rate = -2;
         }
 
+        /*
+         Main Menu
+         */
+
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
             categories = initialiser.LoadCategories();
@@ -69,14 +73,18 @@ namespace EyeTalk
 
         }
 
-        private void Back_Button_Click(object sender, RoutedEventArgs e)
-        {
-            myTabControl.SelectedIndex = 0;
-        }
-
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        /*
+        Begin Speaking
+        */
+
+        private void Back_Button_Click(object sender, RoutedEventArgs e)
+        {
+            myTabControl.SelectedIndex = 0;
         }
 
         private void Next_Button_Click(object sender, RoutedEventArgs e)
@@ -288,6 +296,10 @@ namespace EyeTalk
             initialiser.SaveSentencesToFile(savedSentences);
         }
 
+        /*
+        Saved Sentences
+        */
+
         private void Sentences_Button_Click(object sender, RoutedEventArgs e)
         {
             var numberOfSentences = savedSentences.Count;
@@ -366,6 +378,38 @@ namespace EyeTalk
                 }
             }
             initialiser.SaveSentencesToFile(savedSentences);
+        }
+
+        /*
+        Custom picture
+        */
+
+        private void LoadCustomPicture()
+        {
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                DefaultExt = ".png",
+                Filter = "JPG Files (*.jpg)|*.jpeg|PNG Files (*.png)|*.png|JPEG Files (*.jpeg)|*.jpg|GIF Files (*.gif)|*.gif"
+            };
+
+            Nullable<bool> result = dialog.ShowDialog();
+
+            List<BitmapImage> list = new List<BitmapImage>();
+
+            if (result == true)
+            {
+                string filePath = dialog.FileName;
+                string name = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName);
+                CustomFilePath.Text = name;
+                var uri = new Uri(filePath);
+                var bitmap = new BitmapImage(uri);
+                CustomImage.Source = bitmap;
+             }
+        }
+
+        private void Add_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            LoadCustomPicture();
         }
     }
 }
