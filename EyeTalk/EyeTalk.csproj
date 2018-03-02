@@ -97,7 +97,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Images\logo.png" />
+    <Resource Include="Images\pizza.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <SplashScreen Include="SplashImages\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

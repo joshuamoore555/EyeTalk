@@ -9,66 +9,38 @@ namespace EyeTalk.Objects
 {
     class SaveFileSerialiser
     {
-        static Picture pizza = new Picture("Pizza", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\pizza.png");
-        static Picture apple = new Picture("Apple", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\apple.png");
-        static Picture banana = new Picture("Banana", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\banana.png");
+        public static string dir = System.IO.Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
 
-        static Picture happy = new Picture("Happy", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\happy.png");
-        static Picture sad = new Picture("Sad", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\sad.png");
-        static Picture angry = new Picture("Angry", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\angry.png");
-
-        static Picture shower = new Picture("Shower", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\shower.png");
-        static Picture toilet = new Picture("Toilet", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\toilet.png");
-        static Picture washHands = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-
-        static Picture I = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-        static Picture me = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-        static Picture you = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-        static Picture him = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-        static Picture her = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-        static Picture it = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-        static Picture they = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-        static Picture he = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-        static Picture she = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-        static Picture we = new Picture("Wash Hands", false, "C:\\Users\\User\\source\\repos\\CategoryAndPicture\\CategoryAndPicture\\Pictures\\washhands.png");
-
-
-
-        static List<Picture> food = new List<Picture>() { pizza, apple, banana, pizza, pizza, pizza, pizza, pizza, pizza, pizza, pizza };
-        static List<Picture> emotions = new List<Picture>() { happy, sad, angry, happy, happy, happy, happy, happy, happy, happy, happy, happy };
-        static List<Picture> bathroom = new List<Picture>() { shower, toilet, washHands, shower, shower, shower, shower, shower};
-        static List<Picture> verbs = new List<Picture>() { shower, toilet, washHands, shower, shower, shower, shower, shower };
-        static List<Picture> pronouns = new List<Picture>() { shower, toilet, washHands, shower, shower, shower, shower, shower };
-
+        static Picture pizza = new Picture("Pizza", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "Pizza.png"));
+    
+        static List<Picture> food = new List<Picture>() { pizza, pizza, pizza, pizza, pizza, pizza, pizza, pizza, pizza, pizza, pizza };
 
         static List<Picture> custom = new List<Picture>() { };
 
 
         static SortedList<String, List<Picture>> categories = new SortedList<string, List<Picture>>(){
             {"Foods", food },
-            {"Bathroom", bathroom },
-            {"Emotions", emotions },
-            {"Verbs", verbs},
-            {"Pronouns", pronouns },
-            {"Custom", custom }
             };
 
         static List<string> savedSentences = new List<string>();
 
+        public static string saveDir = "Saves/";
+        public static string picturesDir = "Pictures/";
+        string categoryPath = "";
+        string savedSentencesPath = "";
+        string customPicturesPath = "";
 
-
-
-        public static string dir = @"C:\Users\User\Desktop\SaveFolder";
-        string categoryPath = Path.Combine(dir, "Categories.bin");
-        string savedSentencesPath = Path.Combine(dir, "SavedSentences.bin");
-        string customPicturesPath = Path.Combine(dir, "CustomPictures.bin");
 
 
 
         public SaveFileSerialiser()
         {
-           // CreateCategoryFile();
-            //CreateSavedSentencesFile();
+            categoryPath = Path.Combine(dir, saveDir, "Categories.bin");
+            savedSentencesPath = Path.Combine(dir,saveDir, "SavedSentences.bin");
+            customPicturesPath = Path.Combine(dir, saveDir,"CustomPictures.bin");
+
+            CreateCategoryFile();
+            CreateSavedSentencesFile();
             CreateCustomPictureFile();
         }
 
