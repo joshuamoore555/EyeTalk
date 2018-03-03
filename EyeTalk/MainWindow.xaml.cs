@@ -20,14 +20,16 @@ namespace EyeTalk
     /// 
     public partial class MainWindow : Window
     {
+        public static int categoryNumber = 0;
         public static int pageNumber = 0;
+        
         public static int amountSelected = 0;
         public static int sentencePicked = 0;
         
         List<Picture> categoryData;
         List<string> savedSentences;
-        SortedList<String, List<Picture>> categories;
-        List<Picture> customPictures;
+        SortedList<String, List<List<Picture>>> categories;
+        List<List<Picture>> customCategory;
 
         List<Image> images;
         List<Button> buttons;
@@ -44,7 +46,7 @@ namespace EyeTalk
             synth.Rate = 0;
             categories = initialiser.LoadCategories();
             savedSentences = initialiser.LoadSentences();
-            customPictures = initialiser.LoadCustomPictures();
+            customCategory = initialiser.LoadCustomCategory();
         }
 
         /*
@@ -53,27 +55,32 @@ namespace EyeTalk
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
-            categories = initialiser.LoadCategories();
             savedSentences = initialiser.LoadSentences();
-            customPictures = initialiser.LoadCustomPictures();
+            customCategory = initialiser.LoadCustomCategory();
 
+            images = new List<Image> {Image1, Image2, Image3, Image4};
+            buttons = new List<Button> {Image1_Button, Image2_Button, Image3_Button, Image4_Button};
+            textBlocks = new List<TextBlock> {Text1, Text2, Text3, Text4};
+
+            categories = initialiser.LoadCategories();
             categories.Remove("Custom");
-            categories.Add("Custom", customPictures);
-            
+            categories.Add("Custom", customCategory);
 
-            images = new List<Image> {Image1, Image2, Image3, Image4 , Image5, Image6, Image7, Image8, Image9, Image10, Image11, Image12, Image13, Image14, Image15 };
-            buttons = new List<Button> {Image1_Button, Image2_Button, Image3_Button, Image4_Button ,Image5_Button , Image6_Button , Image7_Button , Image8_Button,Image9_Button , Image10_Button,Image11_Button,Image12_Button,Image13_Button,Image14_Button,Image15_Button };
-            textBlocks = new List<TextBlock> {Text1, Text2, Text3, Text4, Text5, Text6, Text7, Text8, Text9, Text10, Text11, Text12, Text13, Text14, Text15};
-       
-            var category = categories.ElementAt(pageNumber);
+            var categoryPages = categories.ElementAt(categoryNumber);
+            string categoryName = categories.ElementAt(categoryNumber).Key;
+            var page = categoryPages.Value.ElementAt(pageNumber);
 
+
+
+            categoryNumber = 0;
             pageNumber = 0;
             amountSelected = 0;
             sentencePicked = 0;
             SentenceTextBox.Text = "";
             sentence.Clear();
 
-            CreateCategory(category);
+            CreatePage(page);
+            UpdatePageNumber(categoryName);
 
             myTabControl.SelectedIndex = 1;
         }
@@ -106,19 +113,26 @@ namespace EyeTalk
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
             var size = categories.Count;
-            pageNumber++;
+            categoryNumber++;
+            pageNumber = 0;
 
-            if (pageNumber >= size)
+            if (categoryNumber >= size)
             {
-                pageNumber = 0;
-                var category = categories.ElementAt(pageNumber);
-                CreateCategory(category);
+                categoryNumber = 0;
+                var categoryPages = categories.ElementAt(categoryNumber);
+                string categoryName = categories.ElementAt(categoryNumber).Key;
+                var page = categoryPages.Value.ElementAt(pageNumber);
+                CreatePage(page);
+                UpdatePageNumber(categoryName);
 
             }
             else
             {
-                var category = categories.ElementAt(pageNumber);
-                CreateCategory(category);
+                var categoryPages = categories.ElementAt(categoryNumber);
+                string categoryName = categories.ElementAt(categoryNumber).Key;
+                var page = categoryPages.Value.ElementAt(pageNumber);
+                CreatePage(page);
+                UpdatePageNumber(categoryName);
 
             }
         }
@@ -126,17 +140,27 @@ namespace EyeTalk
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
         {
             var size = categories.Count;
-            pageNumber--;
-            if (pageNumber < 0){
-                pageNumber = size-1;
-                var category = categories.ElementAt(pageNumber);
-                CreateCategory(category);
+            categoryNumber--;
+            pageNumber = 0;
+
+            if (categoryNumber < 0){
+                categoryNumber = size-1;
+
+                var categoryPages = categories.ElementAt(categoryNumber);
+                string categoryName = categories.ElementAt(categoryNumber).Key;
+                var page = categoryPages.Value.ElementAt(pageNumber);
+                CreatePage(page);
+                UpdatePageNumber(categoryName);
+
 
             }
             else
             {
-                var category = categories.ElementAt(pageNumber);
-                CreateCategory(category);
+                var categoryPages = categories.ElementAt(categoryNumber);
+                string categoryName = categories.ElementAt(categoryNumber).Key;
+                var page = categoryPages.Value.ElementAt(pageNumber);
+                CreatePage(page);
+                UpdatePageNumber(categoryName);
 
             }
         }
@@ -170,100 +194,19 @@ namespace EyeTalk
         {
             int index = 2;
             SelectImage(index);
-           
         }
 
         private void Image4_Button_Click(object sender, RoutedEventArgs e)
         {
             int index = 3;
             SelectImage(index);
-
         }
 
-        private void Image5_Button_Click(object sender, RoutedEventArgs e)
+        private void CreatePage(List<Picture> page)
         {
-            int index = 4;
-            SelectImage(index);
+            categoryData = page;
+            var numberOfPictures = page.Count;
 
-        }
-
-        private void Image6_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 5;
-            SelectImage(index);
-
-        }
-
-        private void Image7_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 6;
-            SelectImage(index);
-
-        }
-
-        private void Image8_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 7;
-            SelectImage(index);
-
-        }
-
-        private void Image9_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 8;
-            SelectImage(index);
-
-        }
-
-        private void Image10_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 9;
-            SelectImage(index);
-
-        }
-
-        private void Image11_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 10;
-            SelectImage(index);
-
-        }
-
-        private void Image12_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 11;
-            SelectImage(index);
-
-        }
-
-        private void Image13_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 12;
-            SelectImage(index);
-
-        }
-
-        private void Image14_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 13;
-            SelectImage(index);
-
-        }
-
-        private void Image15_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 14;
-            SelectImage(index);
-
-
-        }
-
-        private void CreateCategory(KeyValuePair<String, List<Picture>> category)
-        {
-            CategoryTitle.Text = category.Key;
-            categoryData = category.Value;
-            var numberOfPictures = category.Value.Count;
-            var emptyPictures = numberOfPictures - 15;
             if (numberOfPictures > 0)
             {
                 for (int i = 0; i < numberOfPictures; i++)
@@ -271,7 +214,7 @@ namespace EyeTalk
                     UpdateImage(i);
                 }
 
-                for (int i = numberOfPictures; i < 15; i++)
+                for (int i = numberOfPictures; i < 4; i++)
                 {
                     HideImage(i);
                 }
@@ -328,6 +271,7 @@ namespace EyeTalk
             }
         }
 
+       
         private void AddWordToSentence(string word, int i)
         {
             sentence.Add(word, word);
@@ -377,10 +321,41 @@ namespace EyeTalk
 
         }
 
+        private void UpdatePageNumber(string categoryName)
+        {
+            var categoryPages = categories.ElementAt(categoryNumber);
+            var numberOfPages = categoryPages.Value.Count;
+            Page.Content = categoryName + " \nPage " + (pageNumber+1) + "/" + numberOfPages;
+        }
+
+        private void Page_Click(object sender, RoutedEventArgs e)
+        {
+            var categoryPages = categories.ElementAt(categoryNumber);
+            string categoryName = categories.ElementAt(categoryNumber).Key;
+            var numberOfPages = categoryPages.Value.Count;
+            pageNumber++;
+            
+            
+            if(pageNumber >= numberOfPages)
+            {
+                pageNumber = 0;
+                UpdatePageNumber(categoryName);
+                var page = categoryPages.Value.ElementAt(pageNumber);
+                CreatePage(page);
+            }
+            else
+            {
+                UpdatePageNumber(categoryName);
+                var page = categoryPages.Value.ElementAt(pageNumber);
+                CreatePage(page);
+            }
+           
+        }
 
         /*
         Saved Sentences
         */
+
 
         private void Sentences_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -461,11 +436,13 @@ namespace EyeTalk
             }
             initialiser.SaveSentencesToFile(savedSentences);
         }
+    
 
         /*
         Custom picture
         */
 
+        
         private void LoadCustomPicture()
         {
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
@@ -478,7 +455,7 @@ namespace EyeTalk
 
             List<BitmapImage> list = new List<BitmapImage>();
 
-            if (result == true && customPictures.Count <= 15)
+            if (result == true && customCategory.Count <= 15)
             {
                 CustomFilePath.Text = dialog.FileName;
                 CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName);
@@ -491,21 +468,41 @@ namespace EyeTalk
         private void SaveCustomPicture()
         {
             Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text);
-            if (customPictures.Count < 15)
+            var numberOfPages = customCategory.Count-1;
+            var currentPage = customCategory.ElementAt(numberOfPages);
+            
+
+            if(currentPage.Count < 4)
             {
-                customPictures.Add(customPicture);
-                Status.Text = "Added picture";
-                initialiser.SaveCustomPictureToFile(customPictures);
-            }
-            else if (customPictures.Contains(customPicture))
-            {
-                Status.Text = "This image has already been added.";
+                Boolean pictureAlreadyAdded = false;
+                foreach (var picture in currentPage)
+                {
+                    if (picture.Name == customPicture.Name)
+                    {
+                        Status.Text = "This image has already been added.";
+                        pictureAlreadyAdded = true;
+                    }
+                }
+
+                if (pictureAlreadyAdded == false)
+                {
+                    currentPage.Add(customPicture);
+                    Status.Text = "Added picture. Number of pictures is now: " + currentPage.Count;
+                    initialiser.SaveCustomCategory(customCategory);
+                }
+                
             }
             else
-            {
-                Status.Text = "Cannot add more than 15 pictures";
+            { //if greater than 4 images in category, make a new one
+                List<Picture> newCustomCategory = new List<Picture>() {  };
+                customCategory.Add(newCustomCategory);
+                Status.Text = "Created new category. Number of categories is now: " + customCategory.Count;
+
+
+
             }
         }
+
 
         private void Add_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -516,6 +513,12 @@ namespace EyeTalk
         {
             SaveCustomPicture();
         }
+
+
+        /*
+        Options
+        */
+
 
         private async void Fast_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -542,10 +545,10 @@ namespace EyeTalk
 
         private async void Male_Button_Click(object sender, RoutedEventArgs e)
         {
-            IReadOnlyCollection<InstalledVoice> InstalledVoices = synth.GetInstalledVoices();
-            InstalledVoice InstalledVoice = InstalledVoices.ElementAt(1);
-            synth.SelectVoice(InstalledVoice.VoiceInfo.Name);
-            GenderStatus.Text = "Male";
+            //IReadOnlyCollection<InstalledVoice> InstalledVoices = synth.GetInstalledVoices();
+            //InstalledVoice InstalledVoice = InstalledVoices.ElementAt(1);
+            //synth.SelectVoice("MSMike");
+            GenderStatus.Text = synth.GetInstalledVoices().ElementAt(1).VoiceInfo.Name;
             await Task.Run(() => Speak("This is an example of my voice."));
     
 
@@ -554,12 +557,12 @@ namespace EyeTalk
         private async void Female_Button_Click(object sender, RoutedEventArgs e)
         {
             synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-            GenderStatus.Text = "Female";
+            GenderStatus.Text = synth.GetInstalledVoices().ElementAt(0).VoiceInfo.Name;
             await Task.Run(() => Speak("This is an example of my voice."));
          
 
         }
 
-       
+ 
     }
 }
