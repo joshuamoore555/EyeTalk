@@ -10,7 +10,7 @@
         <TabControl x:Name="myTabControl" HorizontalAlignment="Left" Margin="0,-38,0,-28" Width="1920" Background="White">
             <TabControl.Items>
 
-                <TabItem Header="Home" Visibility="Hidden">
+                <TabItem Header="Home" Visibility="Visible">
                     <TabItem.Background>
                         <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
                             <GradientStop Color="#FFF0F0F0" Offset="0"/>
@@ -19,14 +19,15 @@
                     </TabItem.Background>
                     <Grid Margin="0,-6,-66,5" Background="White" RenderTransformOrigin="0.5,0.5" Width="1980" Height="1080">
 
-                        <Button Content="Begin Speaking!" HorizontalAlignment="Left" VerticalAlignment="Top" Width="960" Click="Begin_Click" Height="360" FontSize="36" Background="#FFD33939" Margin="15,10,0,0"/>
-                        <Button Content="Add a Picture" HorizontalAlignment="Left" Margin="970,10,0,0" VerticalAlignment="Top" Width="960" Click="Add_PictureCategory_Click" Height="360" FontSize="36" Background="#FF3A83CD"/>
-                        <Button Content="Options" HorizontalAlignment="Left" Margin="10,710,0,10" VerticalAlignment="Stretch" Width="960" Click="Options_Click" Height="360" FontSize="36" Background="#FF38C345"/>
-                        <Button Content="Exit" HorizontalAlignment="Left" Margin="970,710,0,0" VerticalAlignment="Top" Width="960" Click="Exit_Click" Height="360" FontSize="36" Background="#FF5F3FA2"/>
+                        <Button x:Name="BeginSpeaking" Content="Begin Speaking!" HorizontalAlignment="Left" VerticalAlignment="Top" Width="960" Click="Begin_Click" Height="360" FontSize="36" Background="#FFD33939" Margin="15,10,0,0"/>
+                        <Button x:Name="AddPicture" Content="Add a Picture" HorizontalAlignment="Left" Margin="970,10,0,0" VerticalAlignment="Top" Width="960" Click="Add_PictureCategory_Click" Height="360" FontSize="36" Background="#FF3A83CD"/>
+                        <Button x:Name="Options" Content="Options" HorizontalAlignment="Left" Margin="10,710,0,10" VerticalAlignment="Stretch" Width="960" Click="Options_Click" Height="360" FontSize="36" Background="#FF38C345"/>
+                        <Button x:Name="Exit" Content="Exit" HorizontalAlignment="Left" Margin="970,710,0,0" VerticalAlignment="Top" Width="960" Click="Exit_Click" Height="360" FontSize="36" Background="#FF5F3FA2"/>
+                        <Label x:Name="ShowPosition" Content="Label" HorizontalAlignment="Left" Margin="773,512,0,0" VerticalAlignment="Top" Height="137" Width="695" FontSize="48"/>
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="Speaking" Visibility="Visible">
+                <TabItem Header="Speaking" Visibility="Hidden">
                     <Grid Margin="0,14,0,20" Width="1919" Height="1080" Background="#FFDCF9DE">
 
                         <Button Content="Play Sound" HorizontalAlignment="Left" Margin="1439,-10,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="PlaySound_Button_Click" Height="360" Background="#FFDE077C" />
@@ -34,7 +35,7 @@
                         <Button x:Name="Next" Content=">" HorizontalAlignment="Left" Margin="1439,350,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="Next_Button_Click" Height="360" Background="#FFC33535" />
                         <Button x:Name="Previous" Content="&lt;" HorizontalAlignment="Left" Margin="-5,350,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="Previous_Button_Click" Height="360" Background="#FF53BD34" />
                         <TextBox x:Name="SentenceTextBox" HorizontalAlignment="Left" Margin="474,254,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Height="96" Width="960" FontSize="24" FontWeight="Bold"/>
-                        <Button Content="Save Sentence" HorizontalAlignment="Left" Margin="-5,-10,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="Save_Button_Click" Height="360" Background="#FF20E0CF" />
+                        <Button x:Name="SaveSentence" Content="Save Sentence" HorizontalAlignment="Left" Margin="-5,-10,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="Save_Button_Click" Height="360" Background="#FF20E0CF" />
                         <Button Content="Home" HorizontalAlignment="Left" Margin="-5,710,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="Back_Button_Click" Height="360" Background="#FFD82B2B" />
 
                         <Button x:Name="Image1_Button" HorizontalAlignment="Left" Margin="474,350,0,0" VerticalAlignment="Top" Width="480" Height="360" Background="Transparent" BorderBrush="Black" Click="Image1_Button_Click">
