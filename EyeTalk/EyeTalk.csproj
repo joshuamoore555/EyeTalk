@@ -77,9 +77,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utils\Coordinate.cs" />
-    <Compile Include="Utils\Picture.cs" />
-    <Compile Include="Utils\SaveFileSerialiser.cs" />
+    <Compile Include="Objects\Picture.cs" />
+    <Compile Include="Objects\SaveFileSerialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

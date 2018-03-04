@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EyeTalk.Utils
+
+namespace EyeTalk.Objects
 {
     class SaveFileSerialiser
     {

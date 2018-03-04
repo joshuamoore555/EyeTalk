@@ -13,7 +13,7 @@ using System.Collections.Specialized;
 using System.Collections;
 using Tobii.EyeX.Framework;
 using EyeXFramework;
-using EyeTalk.Utils;
+using EyeTalk.Objects;
 
 namespace EyeTalk
 {
