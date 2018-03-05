@@ -108,9 +108,24 @@
   <ItemGroup>
     <SplashScreen Include="SplashImages\logo.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="Images\sunflower.jpg" />
+    <Resource Include="Images\angry.png" />
+    <Resource Include="Images\apple.png" />
+    <Resource Include="Images\awkward.png" />
+    <Resource Include="Images\banana.png" />
+    <Resource Include="Images\ecstatic.png" />
+    <Resource Include="Images\Funny.png" />
+    <Resource Include="Images\happy.png" />
+    <Resource Include="Images\hilarious.png" />
+    <Resource Include="Images\hotdog.png" />
+    <Resource Include="Images\love.png" />
+    <Resource Include="Images\pizza.png" />
+    <Resource Include="Images\sad.png" />
+    <Resource Include="Images\shower.png" />
+    <Resource Include="Images\smug.png" />
+    <Resource Include="Images\toilet.png" />
+    <Resource Include="Images\washhands.png" />
+    <Resource Include="Images\wow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Tobii.EyeX.Client.1.8.504\build\Tobii.EyeX.Client.targets" Condition="Exists('..\packages\Tobii.EyeX.Client.1.8.504\build\Tobii.EyeX.Client.targets')" />
