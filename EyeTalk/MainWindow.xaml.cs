@@ -29,6 +29,8 @@ namespace EyeTalk
         public static int amountSelected = 0;
         public static int sentencePicked = 0;
         private int eyeFixationDuration = 0;
+        private int eyeFixationValue = 2;
+
 
         private double x;
         private double y;
@@ -36,10 +38,10 @@ namespace EyeTalk
         private string currentPosition;
         
         
-        List<Picture> categoryData;
-        List<string> savedSentences;
         SortedList<String, List<List<Picture>>> categories;
         List<List<Picture>> customCategory;
+        List<Picture> categoryData;
+        List<String> savedSentences;
 
         List<Image> images;
         List<Button> buttons;
@@ -48,9 +50,6 @@ namespace EyeTalk
         SaveFileSerialiser initialiser = new SaveFileSerialiser();
         SpeechSynthesizer synth = new SpeechSynthesizer();
         OrderedDictionary sentence = new OrderedDictionary();
-
-
-
 
         public MainWindow()
         {
@@ -157,6 +156,9 @@ namespace EyeTalk
         */
 
 
+        /*
+        Clicks
+        */
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
             var size = categories.Count;
@@ -249,6 +251,35 @@ namespace EyeTalk
             SelectImage(index);
         }
 
+        private void Page_Click(object sender, RoutedEventArgs e)
+        {
+            var categoryPages = categories.ElementAt(categoryNumber);
+            string categoryName = categories.ElementAt(categoryNumber).Key;
+            var numberOfPages = categoryPages.Value.Count;
+            pageNumber++;
+
+
+            if (pageNumber >= numberOfPages)
+            {
+                pageNumber = 0;
+                UpdatePageNumber(categoryName);
+                var page = categoryPages.Value.ElementAt(pageNumber);
+                CreatePage(page);
+            }
+            else
+            {
+                UpdatePageNumber(categoryName);
+                var page = categoryPages.Value.ElementAt(pageNumber);
+                CreatePage(page);
+            }
+
+        }
+
+
+        /*
+        Image Stuff
+        */
+
         private void CreatePage(List<Picture> page)
         {
             categoryData = page;
@@ -273,6 +304,13 @@ namespace EyeTalk
                     HideImage(i);
                 }
             }
+        }
+
+        private void UpdatePageNumber(string categoryName)
+        {
+            var categoryPages = categories.ElementAt(categoryNumber);
+            var numberOfPages = categoryPages.Value.Count;
+            Page.Content = categoryName + " \nPage " + (pageNumber + 1) + "/" + numberOfPages;
         }
 
         private void SelectImage(int i)
@@ -318,6 +356,23 @@ namespace EyeTalk
             }
         }
 
+        private void Highlight(Button ButtonImage)
+        {
+            ButtonImage.BorderBrush = new SolidColorBrush(Colors.Yellow);
+            ButtonImage.BorderThickness = new Thickness(3, 3, 3, 3);
+        }
+
+        private void Unhighlight(Button ButtonImage)
+        {
+            ButtonImage.BorderBrush = new SolidColorBrush(Colors.Black);
+            ButtonImage.BorderThickness = new Thickness(1, 1, 1, 1);
+
+        }
+
+        /*
+        Sentence Stuff
+        */
+
         private void AddWordToSentence(string word, int i)
         {
             sentence.Add(word, word);
@@ -354,56 +409,11 @@ namespace EyeTalk
             synth.Speak(text);
         }
 
-        private void Highlight(Button ButtonImage)
-        {
-            ButtonImage.BorderBrush = new SolidColorBrush(Colors.Yellow);
-            ButtonImage.BorderThickness = new Thickness(3, 3, 3, 3);
-        }
 
-        private void Unhighlight(Button ButtonImage)
-        {
-            ButtonImage.BorderBrush = new SolidColorBrush(Colors.Black);
-            ButtonImage.BorderThickness = new Thickness(1, 1, 1, 1);
-
-        }
-
-        private void UpdatePageNumber(string categoryName)
-        {
-            var categoryPages = categories.ElementAt(categoryNumber);
-            var numberOfPages = categoryPages.Value.Count;
-            Page.Content = categoryName + " \nPage " + (pageNumber+1) + "/" + numberOfPages;
-        }
-
-        private void Page_Click(object sender, RoutedEventArgs e)
-        {
-            var categoryPages = categories.ElementAt(categoryNumber);
-            string categoryName = categories.ElementAt(categoryNumber).Key;
-            var numberOfPages = categoryPages.Value.Count;
-            pageNumber++;
-            
-            
-            if(pageNumber >= numberOfPages)
-            {
-                pageNumber = 0;
-                UpdatePageNumber(categoryName);
-                var page = categoryPages.Value.ElementAt(pageNumber);
-                CreatePage(page);
-            }
-            else
-            {
-                UpdatePageNumber(categoryName);
-                var page = categoryPages.Value.ElementAt(pageNumber);
-                CreatePage(page);
-            }
-           
-        }
 
         /*
         Saved Sentences
         */
-
-
-
 
         private async void Play_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -475,8 +485,7 @@ namespace EyeTalk
         /*
         Custom picture
         */
-
-        
+    
         private void LoadCustomPicture()
         {
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
@@ -495,7 +504,7 @@ namespace EyeTalk
                 CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName);
                 var uri = new Uri(dialog.FileName);
                 var bitmap = new BitmapImage(uri);
-                CustomImage.Source = bitmap;
+                CustomPicture.Source = bitmap;
              }
         }
 
@@ -537,7 +546,6 @@ namespace EyeTalk
             }
         }
 
-
         private void Add_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
         {
             LoadCustomPicture();
@@ -549,10 +557,10 @@ namespace EyeTalk
         }
 
 
+
         /*
         Options
         */
-
 
         private async void Fast_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -598,6 +606,11 @@ namespace EyeTalk
         }
 
 
+
+        /*
+        Eye Tracking
+        */
+
         public void StartEyeTracking()
         {
             var eyeXHost = new EyeXHost();
@@ -631,26 +644,26 @@ namespace EyeTalk
                 {
                     Interlocked.Increment(ref eyeFixationDuration);
 
-                    if (eyeFixationDuration > 4 && myTabControl.SelectedIndex == 0)
+                    if (eyeFixationDuration > eyeFixationValue && myTabControl.SelectedIndex == 0)
                     {
                         CheckHomePage(currentPosition);
                     }
-                    else if (eyeFixationDuration > 4 && myTabControl.SelectedIndex == 1)
+                    else if (eyeFixationDuration > eyeFixationValue && myTabControl.SelectedIndex == 1)
                     {
-                        SaveSentence.Content = currentPosition;
+                        CheckSpeakingPage(currentPosition);
 
                     }
-                    else if (eyeFixationDuration > 4 && myTabControl.SelectedIndex == 2)
+                    else if (eyeFixationDuration > eyeFixationValue && myTabControl.SelectedIndex == 2)
                     {
-
+                        CheckOptionsPage(currentPosition);
                     }
-                    else if (eyeFixationDuration > 4 && myTabControl.SelectedIndex == 3)
+                    else if (eyeFixationDuration > eyeFixationValue && myTabControl.SelectedIndex == 3)
                     {
-
+                        CheckAddPicturePage(currentPosition);
                     }
-                    else if (eyeFixationDuration > 4 && myTabControl.SelectedIndex == 4)
+                    else if (eyeFixationDuration > eyeFixationValue && myTabControl.SelectedIndex == 4)
                     {
-
+                        CheckSavedSentencePage(currentPosition);
                     }
                 }
                 else
@@ -761,6 +774,213 @@ namespace EyeTalk
             else if (position == "Bottom Right")
             {
                 Exit.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+        }
+
+        private void CheckSpeakingPage(string position)
+        {
+            if (position == "Top Left")
+            {
+                SaveSentence.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            }
+            else if (position == "Top Middle Left")
+            {
+                Page.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Top Middle Right")
+            {
+                Page.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Top Right")
+            {
+                PlaySound.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Middle Left")
+            {
+                Previous.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            }
+            else if (position == "Middle Middle Left")
+            {
+                Image1_Button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            }
+            else if (position == "Middle Middle Right")
+            {
+                Image2_Button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            }
+            else if (position == "Middle Right")
+            {
+                Next.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            }
+            else if (position == "Bottom Left")
+            {
+                Home.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Bottom Middle Left")
+            {
+                Image3_Button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Bottom Middle Right")
+            {
+                Image4_Button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Bottom Right")
+            {
+                SentenceList.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+        }
+
+        private void CheckOptionsPage(string position)
+        {
+            if (position == "Top Left")
+            {
+
+            }
+            else if (position == "Top Middle Left")
+            {
+                Fast.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Top Middle Right")
+            {
+                Normal.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Top Right")
+            {
+                Slow.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Middle Left")
+            {
+
+            }
+            else if (position == "Middle Middle Left")
+            {
+                Male.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            }
+            else if (position == "Middle Middle Right")
+            {
+
+            }
+            else if (position == "Middle Right")
+            {
+                Female.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            }
+            else if (position == "Bottom Left")
+            {
+                Back.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Bottom Middle Left")
+            {
+            }
+            else if (position == "Bottom Middle Right")
+            {
+            }
+            else if (position == "Bottom Right")
+            {
+            }
+        }
+
+        private void CheckAddPicturePage(string position)
+        {
+            if (position == "Top Left")
+            {
+
+            }
+            else if (position == "Top Middle Left")
+            {
+            }
+            else if (position == "Top Middle Right")
+            {
+            }
+            else if (position == "Top Right")
+            {
+            }
+            else if (position == "Middle Left")
+            {
+
+            }
+            else if (position == "Middle Middle Left")
+            {
+
+            }
+            else if (position == "Middle Middle Right")
+            {
+
+            }
+            else if (position == "Middle Right")
+            {
+
+            }
+            else if (position == "Bottom Left")
+            {
+                BackHome.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Bottom Middle Left")
+            {
+            }
+            else if (position == "Bottom Middle Right")
+            {
+                SelectPicture.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Bottom Right")
+            {
+                Save_Custom_Button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+        }
+
+        private void CheckSavedSentencePage(string position)
+        {
+            if (position == "Top Left")
+            {
+
+            }
+            else if (position == "Top Middle Left")
+            {
+            }
+            else if (position == "Top Middle Right")
+            {
+            }
+            else if (position == "Top Right")
+            {
+            }
+            else if (position == "Middle Left")
+            {
+                PreviousSentence.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            }
+            else if (position == "Middle Middle Left")
+            {
+
+            }
+            else if (position == "Middle Middle Right")
+            {
+
+            }
+            else if (position == "Middle Right")
+            {
+                NextSentence.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+
+            }
+            else if (position == "Bottom Left")
+            {
+                BackToSpeaking.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Bottom Middle Left")
+            {
+                SpeakSentence.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Bottom Middle Right")
+            {
+                SpeakSentence.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            else if (position == "Bottom Right")
+            {
+                DeleteSentence.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
         }
 

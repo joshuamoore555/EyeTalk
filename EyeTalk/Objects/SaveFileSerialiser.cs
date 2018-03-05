@@ -5,26 +5,40 @@ using System.IO;
 
 namespace EyeTalk.Objects
 {
-    class SaveFileSerialiser
+    public class SaveFileSerialiser
     {
         public static string dir = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
 
         static Picture pizza = new Picture("Pizza", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "pizza.png"));
+        static Picture hotdog = new Picture("Hotdog", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "hotdog.png"));
+        static Picture apple = new Picture("Apple", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "apple.png"));
+        static Picture banana = new Picture("Banana", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "banana.png"));
+
         static Picture sad = new Picture("Sad", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "sad.png"));
+        static Picture happy = new Picture("Happy", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "happy.png"));
+        static Picture ecstatic = new Picture("Ecstatic", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "ecstatic.png"));
+        static Picture awkward = new Picture("Awkward", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "awkward.png"));
+        static Picture angry = new Picture("Angry", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "angry.png"));
+        static Picture funny = new Picture("Funny", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "funny.png"));
+        static Picture hilarious = new Picture("Hilarious", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "hilarious.png"));
+        static Picture love = new Picture("Love", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "love.png"));
+        static Picture smug = new Picture("Smug", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "smug.png"));
+        static Picture wow = new Picture("Wow", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "wow.png"));
 
 
-        static List<Picture> food1 = new List<Picture>() { pizza, pizza, pizza, pizza };
-        static List<Picture> food2 = new List<Picture>() { pizza, pizza, pizza, sad };
 
-        static List<Picture> emotions1 = new List<Picture>() { sad, sad, sad, sad };
-        static List<Picture> emotions2 = new List<Picture>() { pizza, sad, sad, sad };
-        static List<Picture> emotions3 = new List<Picture>() { sad, pizza, sad, sad };
+
+        static List<Picture> food1 = new List<Picture>() { pizza, hotdog, apple, banana };
+        static List<Picture> food2 = new List<Picture>() {  };
+
+        static List<Picture> emotions1 = new List<Picture>() { happy, sad, angry, love };
+        static List<Picture> emotions2 = new List<Picture>() { ecstatic, awkward, funny, hilarious };
 
         static List<Picture> custom1 = new List<Picture>() { };
 
 
-        static List<List<Picture>> foodPages = new List<List<Picture>>() {food1, food2 };
-        static List<List<Picture>> emotionPages = new List<List<Picture>>() { emotions1, emotions2, emotions3 };
+        static List<List<Picture>> foodPages = new List<List<Picture>>() {food1 };
+        static List<List<Picture>> emotionPages = new List<List<Picture>>() { emotions1, emotions2,  };
         static List<List<Picture>> customPages = new List<List<Picture>>() { custom1 };
 
 
@@ -54,12 +68,20 @@ namespace EyeTalk.Objects
             savedSentencesPath = Path.Combine(dir,saveDir, "SavedSentences.bin");
             customPicturesPath = Path.Combine(dir, saveDir,"CustomPictures.bin");
 
-            //CreateCategoryFile();
+            CreateInitialFolders();
+            CreateCategoryFile();
             CreateSavedSentencesFile();
             CreateCustomPictureFile();
         }
 
         //load category from a file
+
+        public void CreateInitialFolders()
+        {
+            Directory.CreateDirectory(saveDir);
+            Directory.CreateDirectory(picturesDir);
+
+        }
 
         public void CreateCategoryFile()
         {

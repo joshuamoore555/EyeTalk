@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace EyeTalk.Objects
 {
     [Serializable]
-    class Picture
+    public class Picture
     {
         public string Name { get; set; }
         public bool Selected { get; set; }
