@@ -9,26 +9,29 @@ namespace EyeTalk.Objects
     {
         public static string dir = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
 
-        static Picture pizza = new Picture("Pizza", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "pizza.png"));
-        static Picture hotdog = new Picture("Hotdog", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "hotdog.png"));
-        static Picture apple = new Picture("Apple", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "apple.png"));
-        static Picture banana = new Picture("Banana", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "banana.png"));
+        static Picture pizza = new Picture("Pizza", false, "pack://application:,,,/Images/pizza.png");
+        static Picture hotdog = new Picture("Hotdog", false, "pack://application:,,,/Images/hotdog.png");
+        static Picture apple = new Picture("Apple", false, "pack://application:,,,/Images/apple.png");
+        static Picture banana = new Picture("Banana", false, "pack://application:,,,/Images/banana.png");
 
-        static Picture sad = new Picture("Sad", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "sad.png"));
-        static Picture happy = new Picture("Happy", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "happy.png"));
-        static Picture ecstatic = new Picture("Ecstatic", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "ecstatic.png"));
-        static Picture awkward = new Picture("Awkward", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "awkward.png"));
-        static Picture angry = new Picture("Angry", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "angry.png"));
-        static Picture funny = new Picture("Funny", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "funny.png"));
-        static Picture hilarious = new Picture("Hilarious", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "hilarious.png"));
-        static Picture love = new Picture("Love", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "love.png"));
-        static Picture smug = new Picture("Smug", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "smug.png"));
-        static Picture wow = new Picture("Wow", false, Path.Combine(Environment.CurrentDirectory, "Pictures", "wow.png"));
+        static Picture sad = new Picture("Sad", false, "pack://application:,,,/Images/sad.png");
+        static Picture happy = new Picture("Happy", false, "pack://application:,,,/Images/happy.png");
+        static Picture ecstatic = new Picture("Ecstatic", false, "pack://application:,,,/Images/ecstatic.png");
+        static Picture awkward = new Picture("Awkward", false, "pack://application:,,,/Images/awkward.png");
+        static Picture angry = new Picture("Angry", false, "pack://application:,,,/Images/angry.png");
+        static Picture funny = new Picture("Funny", false, "pack://application:,,,/Images/funny.png");
+        static Picture hilarious = new Picture("Hilarious", false, "pack://application:,,,/Images/hilarious.png");
+        static Picture love = new Picture("Love", false, "pack://application:,,,/Images/love.png");
+        static Picture smug = new Picture("Smug", false, "pack://application:,,,/Images/smug.png");
+        static Picture wow = new Picture("Wow", false, "pack://application:,,,/Images/wow.png");
+
+        static Picture sunflower = new Picture("Sunflower", false, "pack://application:,,,/Images/sunflower.jpg");
 
 
 
 
-        static List<Picture> food1 = new List<Picture>() { pizza, hotdog, apple, banana };
+
+        static List<Picture> food1 = new List<Picture>() { sunflower, sunflower, sunflower, sunflower };
         static List<Picture> food2 = new List<Picture>() {  };
 
         static List<Picture> emotions1 = new List<Picture>() { happy, sad, angry, love };
@@ -46,7 +49,7 @@ namespace EyeTalk.Objects
         static SortedList<String, List<List<Picture>>> categories = new SortedList<string, List<List<Picture>>>(){
             {"Custom", customPages },
             {"Foods", foodPages },
-            {"Emotions", emotionPages },
+            //{"Emotions", emotionPages },
             };
 
 

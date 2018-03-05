@@ -23,7 +23,6 @@
                         <Button x:Name="AddPicture" Content="Add a Picture" HorizontalAlignment="Left" Margin="970,10,0,0" VerticalAlignment="Top" Width="960" Click="Add_PictureCategory_Click" Height="360" FontSize="36" Background="#FF3A83CD"/>
                         <Button x:Name="Options" Content="Options" HorizontalAlignment="Left" Margin="10,710,0,10" VerticalAlignment="Stretch" Width="960" Click="Options_Click" Height="360" FontSize="36" Background="#FF38C345"/>
                         <Button x:Name="Exit" Content="Exit" HorizontalAlignment="Left" Margin="970,710,0,0" VerticalAlignment="Top" Width="960" Click="Exit_Click" Height="360" FontSize="36" Background="#FF5F3FA2"/>
-                        <Label x:Name="ShowPosition" Content="Label" HorizontalAlignment="Left" Margin="773,512,0,0" VerticalAlignment="Top" Height="137" Width="695" FontSize="48"/>
                     </Grid>
                 </TabItem>
 
@@ -83,15 +82,15 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="Add" Visibility="Hidden">
+                <TabItem Header="Add" Visibility="Visible">
                     <Grid Background="White">
                         <Button x:Name="BackHome" Content="Back" HorizontalAlignment="Left" Margin="0,740,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Back_Button_Click" Height="360" Background="#FFEA3636" />
                         <Image x:Name="CustomPicture" HorizontalAlignment="Left" Height="720" Margin="-4,20,0,0" VerticalAlignment="Top" Width="960" OpacityMask="#FFBDBBBB"/>
                         <Button x:Name="SelectPicture" Content="Select Picture" HorizontalAlignment="Left" Margin="961,740,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Add_Custom_Picture_Button_Click" Height="360" Background="#FF4354FF" />
                         <Button x:Name="Save_Custom_Button" Content="Save to Category" HorizontalAlignment="Left" Margin="1441,740,-7,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Save_Custom_Picture_Button_Click" Height="360" Background="#FF5AF34B" />
-                        <TextBlock x:Name="CustomFilePath" HorizontalAlignment="Left" Margin="1189,336,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="648"><Run Text=""/><LineBreak/><Run/></TextBlock>
-                        <TextBlock x:Name="CustomName" HorizontalAlignment="Left" Margin="1189,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="648"><Run Text=""/><LineBreak/><Run/></TextBlock>
-                        <TextBlock x:Name="Status" HorizontalAlignment="Left" Margin="1189,489,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="648"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <TextBlock x:Name="CustomFilePath" HorizontalAlignment="Left" Margin="1078,357,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="720"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <TextBlock x:Name="Status" HorizontalAlignment="Left" Margin="1078,531,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="720"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <TextBox x:Name ="CustomName" FontSize="24" HorizontalAlignment="Left" Height="68" Margin="1078,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="720" />
                     </Grid>
                 </TabItem>
 

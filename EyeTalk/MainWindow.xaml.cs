@@ -607,6 +607,7 @@ namespace EyeTalk
 
 
 
+
         /*
         Eye Tracking
         */
@@ -633,12 +634,17 @@ namespace EyeTalk
             y = Y;
         }
 
+
+
+        /*
+        XY Checks
+        */
+
         public void Check(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke((Action)(() =>
             {
                 currentPosition = CheckY() + " " + CheckX();
-                ShowPosition.Content = currentPosition;
 
                 if (currentPosition == previousPosition)
                 {
@@ -858,6 +864,7 @@ namespace EyeTalk
             }
             else if (position == "Middle Middle Left")
             {
+               
                 Male.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
 
             }
