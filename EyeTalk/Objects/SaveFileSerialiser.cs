@@ -25,10 +25,6 @@ namespace EyeTalk.Objects
         static Picture smug = new Picture("Smug", false, "pack://application:,,,/Images/smug.png");
         static Picture wow = new Picture("Wow", false, "pack://application:,,,/Images/wow.png");
 
-
-
-
-
         static List<Picture> food1 = new List<Picture>() { pizza, hotdog, apple, banana };
         static List<Picture> food2 = new List<Picture>() {  };
 
@@ -37,20 +33,15 @@ namespace EyeTalk.Objects
 
         static List<Picture> custom1 = new List<Picture>() { };
 
-
         static List<List<Picture>> foodPages = new List<List<Picture>>() {food1 };
         static List<List<Picture>> emotionPages = new List<List<Picture>>() { emotions1, emotions2,  };
         static List<List<Picture>> customPages = new List<List<Picture>>() { custom1 };
-
-
 
         static SortedList<String, List<List<Picture>>> categories = new SortedList<string, List<List<Picture>>>(){
             {"Custom", customPages },
             {"Foods", foodPages },
             {"Emotions", emotionPages },
             };
-
-
 
         static List<string> savedSentences = new List<string>();
 
@@ -59,8 +50,6 @@ namespace EyeTalk.Objects
         string categoryPath = "";
         string savedSentencesPath = "";
         string customPicturesPath = "";
-
-
 
 
         public SaveFileSerialiser()
@@ -80,8 +69,6 @@ namespace EyeTalk.Objects
         public void CreateInitialFolders()
         {
             Directory.CreateDirectory(saveDir);
-            Directory.CreateDirectory(picturesDir);
-
         }
 
         public void CreateCategoryFile()
