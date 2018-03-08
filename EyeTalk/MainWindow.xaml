@@ -36,7 +36,7 @@
                         <TextBox x:Name="SentenceTextBox" HorizontalAlignment="Left" Margin="474,254,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Height="96" Width="960" FontSize="24" FontWeight="Bold"/>
                         <Button x:Name="SaveSentence" Content="Save Sentence" HorizontalAlignment="Left" Margin="-5,-10,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="Save_Button_Click" Height="360" Background="RoyalBlue" />
                         <Button x:Name="Home" Content="Home" HorizontalAlignment="Left" Margin="-5,710,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="Back_Button_Click" Height="360" Background="Purple" />
-                        <TextBox x:Name="SentenceUpdate" HorizontalAlignment="Left" Margin="0,249,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="96" Width="475" FontSize="24" FontWeight="Bold" Background="Transparent"/>
+                        <TextBlock x:Name="SentenceUpdate" HorizontalAlignment="Left" Margin="40,254,0,0" VerticalAlignment="Top" Height="76" Width="407" FontSize="24" FontWeight="Bold" Background="Transparent"/>
 
                         <Button x:Name="Image1_Button" HorizontalAlignment="Left" Margin="474,350,0,0" VerticalAlignment="Top" Width="480" Height="360" Background="Transparent" BorderBrush="Black" Click="Image1_Button_Click">
                             <Grid HorizontalAlignment="Center">
@@ -69,16 +69,17 @@
 
                 <TabItem Header="Options" Visibility="Visible">
                     <Grid>
-                        <Button x:Name="Back" Content="Back" HorizontalAlignment="Left" Margin="-6,725,0,0" VerticalAlignment="Top" Width="480" FontSize="48"  Background="Purple" Height="360" Click="Back_Button_Click" />
-                        <Button x:Name="Right_Speed" Content=">" HorizontalAlignment="Left" Margin="474,10,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Yellow" Click="Right_Speed_Click" />
-                        <Button x:Name="Left_Speed" Content="&lt;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Yellow" Margin="-6,10,0,0" Click="Left_Speed_Click" />
-                        <Button x:Name="ExtraEyeData" Content="Extra Eye Data" HorizontalAlignment="Left" Margin="949,365,0,0" VerticalAlignment="Top" Width="950" FontSize="48" Height="360" Background="RoyalBlue" Click="ExtraEyeData_Click" />
-                        <Button x:Name="Left_Delay" Content="&lt;" HorizontalAlignment="Left" Margin="0,365,0,0" VerticalAlignment="Top" Width="480" FontSize="48"  Height="360" Background="Red" Click="Left_Delay_Click" />
-                        <Button x:Name="Right_Delay" Content=">" HorizontalAlignment="Left" Margin="469,365,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Red" Click="Right_Delay_Click" />
-                        <Button x:Name="VoiceType" Content="Voice Type" HorizontalAlignment="Left" Margin="949,10,0,0" VerticalAlignment="Top" Width="950" FontSize="48" Height="360" Background="ForestGreen" Click="VoiceType_Click" />
+                        <Button x:Name="Back"  BorderBrush ="Transparent" Content="Back" HorizontalAlignment="Left" Margin="0,730,0,0" VerticalAlignment="Top" Width="480" FontSize="48"  Background="Purple" Height="360" Click="Back_Button_Click" />
+                        <Button x:Name="Right_Speed" BorderBrush ="Transparent" Content=">" HorizontalAlignment="Left" Margin="469,10,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Yellow" Click="Right_Speed_Click" />
+                        <Button x:Name="Left_Speed" BorderBrush ="Transparent" Content="&lt;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Yellow" Margin="0,10,0,0" Click="Left_Speed_Click" />
+                        <Button x:Name="ExtraEyeData" BorderBrush ="Transparent" Content="" HorizontalAlignment="Left" Margin="954,370,0,0" VerticalAlignment="Top" Width="950" FontSize="48" Height="360" Background="RoyalBlue" Click="ExtraEyeData_Click" />
+                        <Button x:Name="Left_Delay" BorderBrush ="Transparent" Content="&lt;" HorizontalAlignment="Left" Margin="0,370,0,0" VerticalAlignment="Top" Width="480" FontSize="48"  Height="360" Background="Red" Click="Left_Delay_Click" />
+                        <Button x:Name="Right_Delay" BorderBrush ="Transparent" Content=">" HorizontalAlignment="Left" Margin="469,370,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Red" Click="Right_Delay_Click" />
+                        <Button x:Name="VoiceType"  BorderBrush ="Transparent" Content="" HorizontalAlignment="Left" Margin="954,10,0,0" VerticalAlignment="Top" Width="950" FontSize="48" Height="360" Background="ForestGreen" Click="VoiceType_Click" />
 
-                        <TextBlock x:Name="EyeSelectionSpeedStatus" HorizontalAlignment="Left" Margin="266,400,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="410"><Run Text=""/><LineBreak/><Run/></TextBlock>
-                        <TextBlock x:Name="SpeedStatus" HorizontalAlignment="Left" Margin="266,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="410" Height="74"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <TextBlock x:Name="EyeSelectionSpeedStatus" HorizontalAlignment="Left" Margin="422,431,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="197"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <TextBlock x:Name="SpeedStatus" HorizontalAlignment="Left" Margin="422,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="228" Height="60"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <Button x:Name="TestVoice"  BorderBrush ="Transparent" Content="Test Voice&#xD;&#xA;" HorizontalAlignment="Left" Margin="954,735,0,0" VerticalAlignment="Top" Width="480" FontSize="48"  Background="#FF3EFFF6" Height="360" Click="TestVoice_Click" />
 
 
                     </Grid>

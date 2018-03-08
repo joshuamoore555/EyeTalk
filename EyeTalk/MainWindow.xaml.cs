@@ -230,13 +230,17 @@ namespace EyeTalk
                 SentenceUpdate.Text = "Please create a sentence before saving";
 
             }
+            else if (savedSentences.Count > 0 && savedSentences.Contains(SentenceTextBox.Text))
+            {
+                SentenceUpdate.Text = "Sentence has already been saved";
+            }
             else
             {
                 savedSentences.Add(SentenceTextBox.Text);
                 initialiser.SaveSentencesToFile(savedSentences);
                 SentenceUpdate.Text = "Sentence Saved";
             }
-          
+                
         }
 
         private async void PlaySound_Button_Click(object sender, RoutedEventArgs e)
@@ -488,6 +492,8 @@ namespace EyeTalk
             else 
             {
                 savedSentences.RemoveAt(sentencePicked);
+                sentencePicked = 0;
+                
                 if (savedSentences.Count <= 0)
                 {
                     currentSentence.Text = "No sentences saved";
@@ -529,7 +535,7 @@ namespace EyeTalk
 
         private void SaveCustomPicture()
         {
-            if(String.IsNullOrEmpty(CustomFilePath.Text) && String.IsNullOrEmpty(CustomName.Text))
+            if (String.IsNullOrEmpty(CustomFilePath.Text) && String.IsNullOrEmpty(CustomName.Text))
             {
                 Status.Text = "Please select a picture and name before saving";
 
@@ -540,23 +546,24 @@ namespace EyeTalk
                 var numberOfPages = customCategory.Count - 1;
                 var currentPage = customCategory.ElementAt(numberOfPages);
 
+                Boolean pictureAlreadyAdded = false;
+
+                foreach (var page in customCategory)
+                {
+                    foreach (var picture in page)
+                    {
+                        if (picture.Name == customPicture.Name)
+                        {
+                            Status.Text = "This image has already been added.";
+                            pictureAlreadyAdded = true;
+                        }
+                    }
+                }
+
+
 
                 if (currentPage.Count < 4)
                 {
-                    Boolean pictureAlreadyAdded = false;
-                    foreach(var page in customCategory)
-                    {
-                        foreach (var picture in page)
-                        {
-                            if (picture.Name == customPicture.Name)
-                            {
-                                Status.Text = "This image has already been added.";
-                                pictureAlreadyAdded = true;
-                            }
-                        }
-                    }
-                    
-
                     if (pictureAlreadyAdded == false)
                     {
                         currentPage.Add(customPicture);
@@ -566,17 +573,17 @@ namespace EyeTalk
 
                 }
                 else
-                { //if greater than 4 images in category, make a new one
-                    List<Picture> newCustomCategory = new List<Picture>() { };
-                    newCustomCategory.Add(customPicture);
-                    customCategory.Add(newCustomCategory);
-                    Status.Text = "Created new category. Number of categories is now: " + customCategory.Count;
-                    initialiser.SaveCustomCategory(customCategory);
-
+                {
+                    if (pictureAlreadyAdded == false)
+                    {
+                        List<Picture> newCustomCategory = new List<Picture>() { };
+                        newCustomCategory.Add(customPicture);
+                        customCategory.Add(newCustomCategory);
+                        Status.Text = "Created new category. Number of categories is now: " + customCategory.Count + "\nNumber of pictures is now: " + currentPage.Count;
+                        initialiser.SaveCustomCategory(customCategory);
+                    }
                 }
             }
-
-
         }
 
         private void Add_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
@@ -664,23 +671,33 @@ namespace EyeTalk
 
         }
 
-
-        private async void TestVoice()
+        private async void TestVoice_Click(object sender, RoutedEventArgs e)
         {
             await Task.Run(() => Speak("Test Voice"));
         }
+        /*
+        Setters for Options
+        */
+
 
         private void SetVoiceType()
         {
             if (voiceTypeSelection == 0)
             {
-                VoiceType.Content = "Voice Type = Female";
+                VoiceType.Content = "Female";
                 synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             }
             else if (voiceTypeSelection == 1)
             {
-                VoiceType.Content = "Voice Type = Male";
-                synth.SelectVoiceByHints(VoiceGender.Male, VoiceAge.Adult);
+                List<InstalledVoice> voices = new List<InstalledVoice>();
+
+                foreach (InstalledVoice voice in synth.GetInstalledVoices())
+                {
+
+                    voices.Add(voice);
+                }
+                VoiceType.Content = "Male";
+                synth.SelectVoice(voices.ElementAt(1).VoiceInfo.Name);
             }
         }
 
@@ -720,6 +737,8 @@ namespace EyeTalk
 
             }
         }
+
+
 
 
         /*
@@ -1218,6 +1237,7 @@ namespace EyeTalk
             VoiceType.Background = Brushes.ForestGreen;
             Back.Background = Brushes.Purple;
         }
+
 
     }
 }
