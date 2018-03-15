@@ -1144,6 +1144,8 @@ namespace EyeTalk
             }
             else if (position == "Bottom Middle Right")
             {
+                HoverOverButton(TestVoice);
+
             }
             else if (position == "Bottom Right")
             {

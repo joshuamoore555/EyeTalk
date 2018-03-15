@@ -79,7 +79,7 @@
 
                         <TextBlock x:Name="EyeSelectionSpeedStatus" HorizontalAlignment="Left" Margin="422,431,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="197"><Run Text=""/><LineBreak/><Run/></TextBlock>
                         <TextBlock x:Name="SpeedStatus" HorizontalAlignment="Left" Margin="422,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="228" Height="60"><Run Text=""/><LineBreak/><Run/></TextBlock>
-                        <Button x:Name="TestVoice"  BorderBrush ="Transparent" Content="Test Voice&#xD;&#xA;" HorizontalAlignment="Left" Margin="954,735,0,0" VerticalAlignment="Top" Width="480" FontSize="48"  Background="#FF3EFFF6" Height="360" Click="TestVoice_Click" />
+                        <Button x:Name="TestVoice"  BorderBrush ="Transparent" Content="Test Voice" HorizontalAlignment="Left" Margin="954,735,0,0" VerticalAlignment="Top" Width="480" FontSize="48"  Background="#FF3EFFF6" Height="360" Click="TestVoice_Click" />
 
 
                     </Grid>
