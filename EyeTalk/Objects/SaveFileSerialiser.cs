@@ -9,11 +9,11 @@ namespace EyeTalk.Objects
     {
         public static string dir = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
 
+        //pictures
         static Picture pizza = new Picture("Pizza", false, "pack://application:,,,/Images/pizza.png");
         static Picture hotdog = new Picture("Hotdog", false, "pack://application:,,,/Images/hotdog.png");
         static Picture apple = new Picture("Apple", false, "pack://application:,,,/Images/apple.png");
         static Picture banana = new Picture("Banana", false, "pack://application:,,,/Images/banana.png");
-
         static Picture sad = new Picture("Sad", false, "pack://application:,,,/Images/sad.png");
         static Picture happy = new Picture("Happy", false, "pack://application:,,,/Images/happy.png");
         static Picture ecstatic = new Picture("Ecstatic", false, "pack://application:,,,/Images/ecstatic.png");
@@ -24,23 +24,38 @@ namespace EyeTalk.Objects
         static Picture love = new Picture("Love", false, "pack://application:,,,/Images/love.png");
         static Picture smug = new Picture("Smug", false, "pack://application:,,,/Images/smug.png");
         static Picture wow = new Picture("Wow", false, "pack://application:,,,/Images/wow.png");
+        static Picture washhands = new Picture("Wash Hands", false, "pack://application:,,,/Images/washhands.png");
+        static Picture toilet = new Picture("Toilet", false, "pack://application:,,,/Images/toilet.png");
+        static Picture shower = new Picture("Shower", false, "pack://application:,,,/Images/shower.png");
+        static Picture iwant = new Picture("I want", false, "pack://application:,,,/Images/want.png");
+        static Picture idontknow = new Picture("I don't know", false, "pack://application:,,,/Images/idontknow.png");
 
+        //page
         static List<Picture> food1 = new List<Picture>() { pizza, hotdog, apple, banana };
         static List<Picture> food2 = new List<Picture>() {  };
-
         static List<Picture> emotions1 = new List<Picture>() { happy, sad, angry, love };
         static List<Picture> emotions2 = new List<Picture>() { ecstatic, awkward, funny, hilarious };
-
+        static List<Picture> emotions3 = new List<Picture>() { wow, smug };
+        static List<Picture> bathroom1 = new List<Picture>() { washhands, toilet, shower };
+        static List<Picture> verb1 = new List<Picture>() { iwant };
+        static List<Picture> reply1 = new List<Picture>() { iwant };
         static List<Picture> custom1 = new List<Picture>() { };
 
+        //pages
         static List<List<Picture>> foodPages = new List<List<Picture>>() {food1 };
-        static List<List<Picture>> emotionPages = new List<List<Picture>>() { emotions1, emotions2,  };
+        static List<List<Picture>> emotionPages = new List<List<Picture>>() { emotions1, emotions2, emotions3 };
+        static List<List<Picture>> bathroomPages = new List<List<Picture>>() { bathroom1 };
+        static List<List<Picture>> verbPages = new List<List<Picture>>() { verb1 };
+        static List<List<Picture>> replyPages = new List<List<Picture>>() { verb1 };
         static List<List<Picture>> customPages = new List<List<Picture>>() { custom1 };
 
         static SortedList<String, List<List<Picture>>> categories = new SortedList<string, List<List<Picture>>>(){
             {"Custom", customPages },
             {"Foods", foodPages },
             {"Emotions", emotionPages },
+            {"Bathroom", bathroomPages },
+            {"Verbs", verbPages },
+            {"Replies", replyPages },
             };
 
         static List<string> savedSentences = new List<string>();

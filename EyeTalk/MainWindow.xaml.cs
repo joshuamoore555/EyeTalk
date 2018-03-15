@@ -33,13 +33,11 @@ namespace EyeTalk
         private int voiceSpeedSelection = 0;
         private int voiceTypeSelection = 0;
 
-
         private double x;
         private double y;
         private string previousPosition;
         private string currentPosition;
-        
-        
+            
         SortedList<String, List<List<Picture>>> categories;
         List<List<Picture>> customCategory;
         List<Picture> categoryData;
@@ -48,8 +46,6 @@ namespace EyeTalk
         List<String> voiceSpeeds = new List<String>{ "Slow", "Normal", "Fast"};
         List<String> voiceTypes = new List<String> { "Male", "Female" };
         Boolean additionalEyeInformation = false;
-
-
 
         List<Image> images;
         List<Button> buttons;
@@ -76,8 +72,7 @@ namespace EyeTalk
             categories = initialiser.LoadCategories();
             savedSentences = initialiser.LoadSentences();
             customCategory = initialiser.LoadCustomCategory();
-            
-
+           
         }
 
         /*
@@ -100,8 +95,6 @@ namespace EyeTalk
             var categoryPages = categories.ElementAt(categoryNumber);
             string categoryName = categories.ElementAt(categoryNumber).Key;
             var page = categoryPages.Value.ElementAt(pageNumber);
-
-
 
             categoryNumber = 0;
             pageNumber = 0;
