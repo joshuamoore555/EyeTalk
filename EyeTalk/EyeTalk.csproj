@@ -77,6 +77,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Objects\Options.cs" />
     <Compile Include="Objects\Picture.cs" />
     <Compile Include="Objects\SaveFileSerialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -132,6 +133,45 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\idontknow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\right_arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\left_arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\speaking.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\options.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\shutdown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\sound.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\back.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Tobii.EyeX.Client.1.8.504\build\Tobii.EyeX.Client.targets" Condition="Exists('..\packages\Tobii.EyeX.Client.1.8.504\build\Tobii.EyeX.Client.targets')" />

@@ -25,31 +25,29 @@ namespace EyeTalk
     {
         public static int categoryNumber = 0;
         public static int pageNumber = 0;
-        
         public static int amountSelected = 0;
         public static int sentencePicked = 0;
-        private int eyeFixationDuration = 0;
-        private int eyeFixationValue = 3;
-        private int voiceSpeedSelection = 0;
-        private int voiceTypeSelection = 0;
+
+        Options options;
+        List<String> voiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
+        List<String> voiceTypes = new List<String> { "Male", "Female" };
 
         private double x;
         private double y;
         private string previousPosition;
         private string currentPosition;
+        private volatile bool eyeTracking = true;
             
         SortedList<String, List<List<Picture>>> categories;
         List<List<Picture>> customCategory;
-        List<Picture> categoryData;
         List<String> savedSentences;
-
-        List<String> voiceSpeeds = new List<String>{ "Slow", "Normal", "Fast"};
-        List<String> voiceTypes = new List<String> { "Male", "Female" };
-        Boolean additionalEyeInformation = false;
+        List<Picture> categoryData;
+        SortedDictionary<String, Picture> mostUsed;
 
         List<Image> images;
         List<Button> buttons;
         List<TextBlock> textBlocks;
+
 
         SaveFileSerialiser initialiser = new SaveFileSerialiser();
         SpeechSynthesizer synth = new SpeechSynthesizer();
@@ -62,18 +60,22 @@ namespace EyeTalk
             StartEyeTracking();
 
             System.Timers.Timer t = new System.Timers.Timer();
-            t.Interval = 500;
+            t.Interval = 125;
             t.Elapsed += Check;
             t.AutoReset = true;
             t.Enabled = true;
-
+    
             synth.Volume = 100;
             synth.Rate = 0;
-            categories = initialiser.LoadCategories();
-            savedSentences = initialiser.LoadSentences();
-            customCategory = initialiser.LoadCustomCategory();
-           
+
+            LoadVariables();
+            SetSpeedOfVoice();
+            SetVoiceType();
+            SetSelectionDelay();
+            SetExtraEyeData();
+
         }
+
 
         /*
          Main Menu
@@ -81,21 +83,14 @@ namespace EyeTalk
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
-            savedSentences = initialiser.LoadSentences();
-            customCategory = initialiser.LoadCustomCategory();
+            LoadVariables();
+            StartSentencePage();
+            myTabControl.SelectedIndex = 1;
 
-            images = new List<Image> {Image1, Image2, Image3, Image4};
-            buttons = new List<Button> {Image1_Button, Image2_Button, Image3_Button, Image4_Button};
-            textBlocks = new List<TextBlock> {Text1, Text2, Text3, Text4};
+        }
 
-            categories = initialiser.LoadCategories();
-            categories.Remove("Custom");
-            categories.Add("Custom", customCategory);
-
-            var categoryPages = categories.ElementAt(categoryNumber);
-            string categoryName = categories.ElementAt(categoryNumber).Key;
-            var page = categoryPages.Value.ElementAt(pageNumber);
-
+        private void StartSentencePage()
+        {
             categoryNumber = 0;
             pageNumber = 0;
             amountSelected = 0;
@@ -103,26 +98,63 @@ namespace EyeTalk
             SentenceTextBox.Text = "";
             sentence.Clear();
 
+            categories.Remove("Custom");
+            categories.Add("Custom", customCategory);
+
+            mostUsed = initialiser.LoadMostUsed();
+
+            List<List<Picture>> mostUsedCategory = new List<List<Picture>>();
+            List<Picture> mostUsedPage1 = new List<Picture>();
+            List<Picture> mostUsedPage2 = new List<Picture>();
+
+            var topFour = mostUsed.OrderBy(entry => entry.Value.Count)
+                     .Take(4)
+                     .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            var nextFour = mostUsed.OrderBy(entry => entry.Value.Count)
+                            .Take(4)
+                            .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            //var topFour = mostUsed.OrderBy(i => i.Count).Take(4);
+            //var nextFour = mostUsed.OrderBy(i => i.Count).Skip(4).Take(4);
+
+            for (int i = 0; i < topFour.Count(); i++)
+            {
+                mostUsedPage1.Add(topFour.ElementAt(i).Value);
+            }
+
+            for (int i = 0; i < nextFour.Count(); i++)
+            {
+                mostUsedPage2.Add(nextFour.ElementAt(i).Value);
+            }
+
+            mostUsedCategory.Add(mostUsedPage1);
+            mostUsedCategory.Add(mostUsedPage2);
+
+            categories.Remove("Most Used");
+            categories.Add("Most Used", mostUsedCategory);
+
+
+            images = new List<Image> { Image1, Image2, Image3, Image4 };
+            buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
+            textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
+
+            var categoryPages = categories.ElementAt(categoryNumber);
+            string categoryName = categories.ElementAt(categoryNumber).Key;
+            var page = categoryPages.Value.ElementAt(pageNumber);
+
             CreatePage(page);
             UpdatePageNumber(categoryName);
-
-            myTabControl.SelectedIndex = 1;
-            eyeFixationDuration = 0;
-
         }
 
         private void Options_Click(object sender, RoutedEventArgs e)
         {
             myTabControl.SelectedIndex = 2;
-            eyeFixationDuration = 0;
-
         }
 
         private void Add_PictureCategory_Click(object sender, RoutedEventArgs e)
         {
             myTabControl.SelectedIndex = 3;
-            eyeFixationDuration = 0;
-
         }
 
         private void Sentences_Button_Click(object sender, RoutedEventArgs e)
@@ -137,19 +169,30 @@ namespace EyeTalk
                 currentSentence.Text = savedSentences.First();
             }
             myTabControl.SelectedIndex = 4;
-            eyeFixationDuration = 0;
+            
         }
 
         private void Back_Button_Click(object sender, RoutedEventArgs e)
         {
+            initialiser.SaveMostUsed(mostUsed);
+            initialiser.SaveOptions(options);
             myTabControl.SelectedIndex = 0;
-            eyeFixationDuration = 0;
-
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
+            eyeTracking = false;
+            ThreadStart ts = delegate ()
+            {
+                Dispatcher.BeginInvoke((Action)delegate ()
+                {
+                    Application.Current.Shutdown();
+                });
+            };
+            Thread t = new Thread(ts);
+            t.Start();
             Application.Current.Shutdown();
+
         }
 
 
@@ -333,6 +376,16 @@ namespace EyeTalk
         {
             var word = textBlocks.ElementAt(i).Text;
             var selected = categoryData.ElementAt(i).Selected;
+            categoryData.ElementAt(i).Count++;
+            if (mostUsed.ContainsKey(word))
+            {
+                mostUsed.Remove(word);
+                mostUsed.Add(word, categoryData.ElementAt(i));
+            }
+            else
+            {
+                mostUsed.Add(word, categoryData.ElementAt(i));
+            }
 
             if (amountSelected < 3 && selected == false)
             {
@@ -375,7 +428,7 @@ namespace EyeTalk
         private void Highlight(Button ButtonImage)
         {
             ButtonImage.BorderBrush = new SolidColorBrush(Colors.Yellow);
-            ButtonImage.BorderThickness = new Thickness(6, 6, 6, 6);
+            ButtonImage.BorderThickness = new Thickness(8, 8, 8, 8);
         }
 
         private void Unhighlight(Button ButtonImage)
@@ -509,7 +562,7 @@ namespace EyeTalk
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
             {
                 DefaultExt = ".png",
-                Filter = "JPG Files (*.jpg)|*.jpg|PNG Files (*.png)|*.png|JPEG Files (*.jpeg)|*.jpeg|GIF Files (*.gif)|*.gif"
+                Filter = "PNG Files (*.png)|JPG Files (*.jpg)|*.jpg|*.png|JPEG Files (*.jpeg)|*.jpeg|GIF Files (*.gif)|*.gif"
             };
 
             Nullable<bool> result = dialog.ShowDialog();
@@ -535,7 +588,7 @@ namespace EyeTalk
             }
             else
             {
-                Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text);
+                Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
                 var numberOfPages = customCategory.Count - 1;
                 var currentPage = customCategory.ElementAt(numberOfPages);
 
@@ -552,8 +605,6 @@ namespace EyeTalk
                         }
                     }
                 }
-
-
 
                 if (currentPage.Count < 4)
                 {
@@ -572,7 +623,7 @@ namespace EyeTalk
                         List<Picture> newCustomCategory = new List<Picture>() { };
                         newCustomCategory.Add(customPicture);
                         customCategory.Add(newCustomCategory);
-                        Status.Text = "Created new category. Number of categories is now: " + customCategory.Count + "\nNumber of pictures is now: " + currentPage.Count;
+                        Status.Text = "Number of pictures is now: " + currentPage.Count + "\nCreated new category. Number of categories is now: " + customCategory.Count;
                         initialiser.SaveCustomCategory(customCategory);
                     }
                 }
@@ -597,11 +648,11 @@ namespace EyeTalk
 
         private void VoiceType_Click(object sender, RoutedEventArgs e)
         {
-            voiceTypeSelection++;
+            options.VoiceTypeSelection++;
 
-            if (voiceTypeSelection > 1)
+            if (options.VoiceTypeSelection > 1)
             {
-                voiceTypeSelection = 0;
+                options.VoiceTypeSelection = 0;
             }
 
             SetVoiceType();
@@ -609,42 +660,44 @@ namespace EyeTalk
 
         private void ExtraEyeData_Click(object sender, RoutedEventArgs e)
         {
-            if (additionalEyeInformation)
+            if (options.AdditionalEyeInformation)
             {
-                additionalEyeInformation = false;
-                 SetExtraEyeData();
-            }
-            else if (!additionalEyeInformation)
-            {
-                additionalEyeInformation = true;
+                options.AdditionalEyeInformation = false;
                 SetExtraEyeData();
+            }
+            else if (!options.AdditionalEyeInformation)
+            {
+                options.AdditionalEyeInformation = true;
+                SetExtraEyeData();
+                
             }
         }
 
         private void Right_Delay_Click(object sender, RoutedEventArgs e)
         {
-            if (eyeFixationValue < 31)
+            if (options.EyeFixationValue < 21)
             {
-                eyeFixationValue++;
+                options.EyeFixationValue++;
             }
            SetSelectionDelay();
         }
 
         private void Left_Delay_Click(object sender, RoutedEventArgs e)
         {
-            if(eyeFixationValue > 1)
+            if(options.EyeFixationValue > 1)
             {
-                eyeFixationValue--;
+                options.EyeFixationValue--;
                 SetSelectionDelay();
             }
         }
 
         private void Right_Speed_Click(object sender, RoutedEventArgs e)
         {
-            voiceSpeedSelection++;
-            if(voiceSpeedSelection > 2)
+
+            options.VoiceSpeedSelection++;
+            if(options.VoiceSpeedSelection > 2)
             {
-                voiceSpeedSelection = 0;
+                options.VoiceSpeedSelection = 0;
             }
 
              SetSpeedOfVoice();
@@ -653,14 +706,14 @@ namespace EyeTalk
 
         private void Left_Speed_Click(object sender, RoutedEventArgs e)
         {
-            voiceSpeedSelection--;
-            if (voiceSpeedSelection <= 0)
+            options.VoiceSpeedSelection--;
+            if (options.VoiceSpeedSelection < 0)
             {
-                voiceSpeedSelection = 2;
+                options.VoiceSpeedSelection = 2;
             }
-            SpeedStatus.Text = voiceSpeeds.ElementAt(voiceSpeedSelection);
+            SpeedStatus.Text = voiceSpeeds.ElementAt(options.VoiceSpeedSelection);
 
-             SetSpeedOfVoice();
+            SetSpeedOfVoice();
 
         }
 
@@ -675,12 +728,13 @@ namespace EyeTalk
 
         private void SetVoiceType()
         {
-            if (voiceTypeSelection == 0)
+            
+            if (options.VoiceTypeSelection == 0)
             {
                 VoiceType.Content = "Female";
                 synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             }
-            else if (voiceTypeSelection == 1)
+            else if (options.VoiceTypeSelection == 1)
             {
                 List<InstalledVoice> voices = new List<InstalledVoice>();
 
@@ -696,17 +750,18 @@ namespace EyeTalk
 
         private void SetSelectionDelay()
         {
-            var seconds = eyeFixationValue / 2;
+            
+            var seconds = options.EyeFixationValue / 4;
             EyeSelectionSpeedStatus.Text = seconds + " Seconds";
         }
 
         private void SetExtraEyeData()
         {
-            if (additionalEyeInformation)
+            if (options.AdditionalEyeInformation)
             {
                 ExtraEyeData.Content = "Additional Eye Data = On";
             }
-            else if (!additionalEyeInformation)
+            else if (!options.AdditionalEyeInformation)
             {
                 ExtraEyeData.Content = "Additional Eye Data = Off";
             }
@@ -714,7 +769,8 @@ namespace EyeTalk
 
         private void SetSpeedOfVoice()
         {
-            SpeedStatus.Text = voiceSpeeds.ElementAt(voiceSpeedSelection);
+            
+            SpeedStatus.Text = voiceSpeeds.ElementAt(options.VoiceSpeedSelection);
             if (SpeedStatus.Text == "Fast")
             {
                 synth.Rate = 3;
@@ -746,11 +802,12 @@ namespace EyeTalk
 
             Task.Run(async () =>
             {
-                while (true)
+                while (eyeTracking)
                 {
                     stream.Next += (s, t) => SetXY(t.X, t.Y);
-                    await Task.Delay(500);
+                    await Task.Delay(125);
                 }
+                
             });
         }
 
@@ -768,7 +825,7 @@ namespace EyeTalk
 
         public void Check(object sender, EventArgs e)
         {
-            this.Dispatcher.Invoke((Action)(() =>
+            Dispatcher.Invoke((Action)(() =>
             {
                 currentPosition = CheckY() + " " + CheckX();
 
@@ -779,33 +836,33 @@ namespace EyeTalk
 
                 if (currentPosition == previousPosition)
                 {
-                    Interlocked.Increment(ref eyeFixationDuration);
+                    options.EyeFixationDuration++;
 
                     if (myTabControl.SelectedIndex == 0)
                     {
-                        CheckHomePage(currentPosition, eyeFixationValue);
+                        CheckHomePage(currentPosition);
                     }
                     else if (myTabControl.SelectedIndex == 1)
                     {
-                        CheckSpeakingPage(currentPosition, eyeFixationValue);
+                        CheckSpeakingPage(currentPosition);
 
                     }
                     else if (myTabControl.SelectedIndex == 2)
                     {
-                        CheckOptionsPage(currentPosition, eyeFixationValue);
+                        CheckOptionsPage(currentPosition);
                     }
                     else if (myTabControl.SelectedIndex == 3)
                     {
-                        CheckAddPicturePage(currentPosition, eyeFixationValue);
+                        CheckAddPicturePage(currentPosition);
                     }
                     else if (myTabControl.SelectedIndex == 4)
                     {
-                        CheckSavedSentencePage(currentPosition, eyeFixationValue);
+                        CheckSavedSentencePage(currentPosition);
                     }
                 }
                 else
                 {
-                    eyeFixationDuration = 0;
+                    options.EyeFixationDuration = 0;
                 }
 
                 previousPosition = currentPosition;
@@ -861,7 +918,7 @@ namespace EyeTalk
             }
         }
 
-        private void CheckHomePage(string position, int eyeFixationValue)
+        private void CheckHomePage(string position)
         {
             ResetHomePage();
 
@@ -922,7 +979,7 @@ namespace EyeTalk
             }
         }
 
-        private void CheckSpeakingPage(string position, int eyeFixationValue)
+        private void CheckSpeakingPage(string position)
         {
             ResetSentencePage();
 
@@ -976,7 +1033,7 @@ namespace EyeTalk
             }
         }
 
-        private void CheckAddPicturePage(string position, int eyeFixationValue)
+        private void CheckAddPicturePage(string position)
         {
             ResetAddPicturePage();
 
@@ -991,7 +1048,6 @@ namespace EyeTalk
             {
                 CustomName.Background = Brushes.LightBlue;
                 CustomName.Focus();
-                //CustomName.Select(0, CustomName.Text.Length);
                 ResetPosition();
 
 
@@ -1000,9 +1056,6 @@ namespace EyeTalk
             {
                 CustomName.Focus();
                 CustomName.Background = Brushes.LightBlue;
-
-
-                //CustomName.Select(0, CustomName.Text.Length);
                 ResetPosition();
             }
             else if (position == "Middle Left")
@@ -1042,7 +1095,7 @@ namespace EyeTalk
             }
         }
 
-        private void CheckSavedSentencePage(string position, int eyeFixationValue)
+        private void CheckSavedSentencePage(string position)
         {
             ResetSaveSentencePage();
 
@@ -1095,7 +1148,7 @@ namespace EyeTalk
             }
         }
 
-        private void CheckOptionsPage(string position, int eyeFixationValue)
+        private void CheckOptionsPage(string position)
         {
             ResetOptionsPage();
 
@@ -1122,7 +1175,6 @@ namespace EyeTalk
             else if (position == "Middle Middle Left")
             {
                 HoverOverButton(Right_Delay);
-
 
             }
             else if (position == "Middle Middle Right")
@@ -1153,7 +1205,6 @@ namespace EyeTalk
         }
 
 
-
         /*
         Button Selection 
         */
@@ -1162,7 +1213,7 @@ namespace EyeTalk
         {
             button.Background = Brushes.LightBlue;
 
-            if (eyeFixationDuration > eyeFixationValue)
+            if (options.EyeFixationDuration > options.EyeFixationValue)
             {
                 ResetPosition();
                 button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
@@ -1185,6 +1236,8 @@ namespace EyeTalk
 
         private void ResetSentencePage()
         {
+  
+            
             SaveSentence.Background = Brushes.RoyalBlue;
             Page.Background = Brushes.LightGray;
             SentenceList.Background = Brushes.ForestGreen;
@@ -1219,10 +1272,6 @@ namespace EyeTalk
 
         private void ResetOptionsPage()
         {
-            SetSpeedOfVoice();
-            SetVoiceType();
-            SetSelectionDelay();
-            SetExtraEyeData();
 
             Left_Speed.Background = Brushes.Yellow;
             Right_Speed.Background = Brushes.Yellow;
@@ -1233,6 +1282,13 @@ namespace EyeTalk
             Back.Background = Brushes.Purple;
         }
 
+        private void LoadVariables()
+        {
+            categories = initialiser.LoadCategories();
+            savedSentences = initialiser.LoadSentences();
+            customCategory = initialiser.LoadCustomCategory();
+            options = initialiser.LoadOptions();
+        }
 
     }
 }

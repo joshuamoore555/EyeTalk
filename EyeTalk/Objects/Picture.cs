@@ -12,13 +12,15 @@ namespace EyeTalk.Objects
         public string Name { get; set; }
         public bool Selected { get; set; }
         public string FilePath { get; set; }
-    
+        public ulong Count { get; set; }
 
-        public Picture(string Name, bool Selected, String Filepath)
+
+        public Picture(string Name, bool Selected, String FilePath, ulong Count)
         {
             this.Name = Name;
             this.Selected = Selected;
-            this.FilePath = Filepath;
+            this.FilePath = FilePath;
+            this.Count = Count;
         }
     }
 }
