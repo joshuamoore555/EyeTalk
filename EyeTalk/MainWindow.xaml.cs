@@ -27,11 +27,6 @@ namespace EyeTalk
         public static int pageNumber = 0;
         public static int amountSelected = 0;
         public static int sentencePicked = 0;
-
-        Options options;
-        List<String> voiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
-        List<String> voiceTypes = new List<String> { "Male", "Female" };
-
         private double x;
         private double y;
         private string previousPosition;
@@ -43,27 +38,28 @@ namespace EyeTalk
         List<String> savedSentences;
         List<Picture> categoryData;
         SortedDictionary<String, Picture> mostUsed;
+        Options options;
+        List<String> voiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
+        List<String> voiceTypes = new List<String> { "Male", "Female" };
 
         List<Image> images;
         List<Button> buttons;
         List<TextBlock> textBlocks;
 
-
         SaveFileSerialiser initialiser = new SaveFileSerialiser();
         SpeechSynthesizer synth = new SpeechSynthesizer();
         OrderedDictionary sentence = new OrderedDictionary();
+        System.Timers.Timer timer = new System.Timers.Timer();
 
         public MainWindow()
         {
             InitializeComponent();
 
             StartEyeTracking();
-
-            System.Timers.Timer t = new System.Timers.Timer();
-            t.Interval = 125;
-            t.Elapsed += Check;
-            t.AutoReset = true;
-            t.Enabled = true;
+            timer.Interval = 125;
+            timer.Elapsed += Check;
+            timer.AutoReset = true;
+            timer.Enabled = true;
 
             synth.Volume = 100;
             synth.Rate = 0;
@@ -138,18 +134,8 @@ namespace EyeTalk
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             eyeTracking = false;
-
-            ThreadStart ts = delegate ()
-            {
-                Dispatcher.BeginInvoke((Action)delegate ()
-                {
-                    Application.Current.Shutdown();
-                });
-            };
-            Thread t = new Thread(ts);
-            t.Start();
-            Application.Current.Shutdown();
-
+            timer.Stop();
+            Application.Current.Dispatcher.BeginInvokeShutdown(System.Windows.Threading.DispatcherPriority.Send);
         }
 
 
@@ -247,25 +233,25 @@ namespace EyeTalk
         private void Image1_Button_Click(object sender, RoutedEventArgs e)
         {
             int index = 0;
-            Select(index);
+            SelectPicture(index);
         }
 
         private void Image2_Button_Click(object sender, RoutedEventArgs e)
         {
             int index = 1;
-            Select(index);
+            SelectPicture(index);
         }
 
         private void Image3_Button_Click(object sender, RoutedEventArgs e)
         {
             int index = 2;
-            Select(index);
+            SelectPicture(index);
         }
 
         private void Image4_Button_Click(object sender, RoutedEventArgs e)
         {
             int index = 3;
-            Select(index);
+            SelectPicture(index);
         }
 
         private void Page_Click(object sender, RoutedEventArgs e)
@@ -329,20 +315,11 @@ namespace EyeTalk
             Page.Content = categoryName + " \nPage " + (pageNumber + 1) + "/" + numberOfPages;
         }
 
-        private void Select(int i)
+        private void SelectPicture(int i)
         {
             var word = textBlocks.ElementAt(i).Text;
             var selected = categoryData.ElementAt(i).Selected;
-            categoryData.ElementAt(i).Count++;
-            if (mostUsed.ContainsKey(word))
-            {
-                mostUsed.Remove(word);
-                mostUsed.Add(word, categoryData.ElementAt(i));
-            }
-            else
-            {
-                mostUsed.Add(word, categoryData.ElementAt(i));
-            }
+            UpdateMostUsedPicture(i, word);
 
             if (amountSelected < 3 && selected == false)
             {
@@ -354,6 +331,20 @@ namespace EyeTalk
                 RemoveWordFromSentence(word, i);
                 UnhighlightPicture(buttons.ElementAt(i));
 
+            }
+        }
+
+        private void UpdateMostUsedPicture(int i, string word)
+        {
+            categoryData.ElementAt(i).Count++;
+            if (mostUsed.ContainsKey(word))
+            {
+                mostUsed.Remove(word);
+                mostUsed.Add(word, categoryData.ElementAt(i));
+            }
+            else
+            {
+                mostUsed.Add(word, categoryData.ElementAt(i));
             }
         }
 
@@ -372,10 +363,15 @@ namespace EyeTalk
             images.ElementAt(i).Source = new BitmapImage(new Uri(filepath));
             textBlocks.ElementAt(i).Text = pictureName;
 
-            if (categoryData.ElementAt(i).Selected == false)
+            if (sentence.Contains(categoryData.ElementAt(i).Name))
+            {
+                HighlightPicture(buttons.ElementAt(i));
+            }
+            else if (categoryData.ElementAt(i).Selected == false)
             {
                 UnhighlightPicture(buttons.ElementAt(i));
             }
+            
             else
             {
                 HighlightPicture(buttons.ElementAt(i));
@@ -401,7 +397,7 @@ namespace EyeTalk
 
         private void AddWordToSentence(string word, int i)
         {
-            if (!sentence.Contains(word))
+            if (!sentence.Contains(categoryData.ElementAt(i).Name))
             {
                 sentence.Add(word, word);
                 StringBuilder sb = new StringBuilder();
@@ -522,7 +518,7 @@ namespace EyeTalk
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
             {
                 DefaultExt = ".png",
-                Filter = "PNG Files (*.png)|JPG Files (*.jpg)|*.jpg|*.png|JPEG Files (*.jpeg)|*.jpeg|GIF Files (*.gif)|*.gif"
+                Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|GIF Files (*.gif)|*.gif"
             };
 
             Nullable<bool> result = dialog.ShowDialog();
@@ -1045,7 +1041,7 @@ namespace EyeTalk
             else if (position == "Bottom Middle Right")
             {
                 position = "";
-                HoverOverButton(SelectPicture);
+                HoverOverButton(Select_Picture);
 
             }
             else if (position == "Bottom Right")
@@ -1213,7 +1209,7 @@ namespace EyeTalk
         private void ResetAddPicturePage()
         {
             CustomName.Background = Brushes.White;
-            SelectPicture.Background = Brushes.Red;
+            Select_Picture.Background = Brushes.Red;
             BackHome.Background = Brushes.Purple;
             Save_Custom_Button.Background = Brushes.Yellow;
         }

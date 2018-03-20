@@ -113,7 +113,7 @@
                             <Image Source="Images\home.png"></Image>
                         </Button>
                         <Image x:Name="CustomPicture" HorizontalAlignment="Left" Height="720" Margin="-4,20,0,0" VerticalAlignment="Top" Width="960" OpacityMask="#FFBDBBBB"/>
-                        <Button x:Name="SelectPicture" HorizontalAlignment="Left" Margin="961,740,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Add_Custom_Picture_Button_Click" Height="360" Background="Red"  >
+                        <Button x:Name="Select_Picture" HorizontalAlignment="Left" Margin="961,740,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Add_Custom_Picture_Button_Click" Height="360" Background="Red"  >
                             <Image Source="Images\plus.png"></Image>
                         </Button>
                         <Button x:Name="Save_Custom_Button"  HorizontalAlignment="Left" Margin="1441,740,-7,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Save_Custom_Picture_Button_Click" Height="360" Background="Yellow" >
