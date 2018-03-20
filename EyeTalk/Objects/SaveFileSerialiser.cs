@@ -212,7 +212,7 @@ namespace EyeTalk.Objects
             }
         }
 
-        public void SaveMostUsed(SortedDictionary<String, Picture> options)
+        public void SaveMostUsed(SortedDictionary<String, Picture> mostUsed)
         {
             using (Stream stream = File.Open(mostUsedPath, FileMode.Create))
             {
