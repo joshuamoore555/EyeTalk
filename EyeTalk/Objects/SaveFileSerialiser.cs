@@ -89,9 +89,9 @@ namespace EyeTalk.Objects
             mostUsedPath = Path.Combine(dir, saveDir, "MostUsed.bin");
 
 
-            CreateInitialFolders();
-            CreateCategoryFile();
-            CreateSavedSentencesFile();
+            //CreateInitialFolders();
+            //CreateCategoryFile();
+            //CreateSavedSentencesFile();
             //CreateCustomPictureFile();
             //CreateOptions();
             //CreateMostUsed();
