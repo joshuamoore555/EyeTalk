@@ -68,7 +68,6 @@ namespace EyeTalk
             SetSpeedOfVoice();
             SetVoiceType();
             SetSelectionDelay();
-            SetExtraEyeData();
 
         }
 
@@ -126,7 +125,10 @@ namespace EyeTalk
 
         private void Back_Button_Click(object sender, RoutedEventArgs e)
         {
-            initialiser.SaveMostUsed(mostUsed);
+            if (mostUsed != null)
+            {
+                initialiser.SaveMostUsed(mostUsed);
+            }
             initialiser.SaveOptions(options);
             myTabControl.SelectedIndex = 0;
         }
@@ -319,6 +321,10 @@ namespace EyeTalk
         {
             var word = textBlocks.ElementAt(i).Text;
             var selected = categoryData.ElementAt(i).Selected;
+            if(mostUsed == null)
+            {
+                mostUsed = new SortedDictionary<String, Picture>();
+            }
             UpdateMostUsedPicture(i, word);
 
             if (amountSelected < 3 && selected == false)
@@ -614,19 +620,20 @@ namespace EyeTalk
             SetVoiceType();
         }
 
-        private void ExtraEyeData_Click(object sender, RoutedEventArgs e)
+        private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            if (options.AdditionalEyeInformation)
+            if(mostUsed != null)
             {
-                options.AdditionalEyeInformation = false;
-                SetExtraEyeData();
+                initialiser.CreateMostUsed();
+                mostUsed.Clear();
+                Reset.Content = "Most Used Pictures category has been reset";
+                categories.Remove("Most Used");
             }
-            else if (!options.AdditionalEyeInformation)
+            else
             {
-                options.AdditionalEyeInformation = true;
-                SetExtraEyeData();
+                Reset.Content = "Most Used Pictures category is already empty";
+            }
 
-            }
         }
 
         private void Right_Delay_Click(object sender, RoutedEventArgs e)
@@ -635,6 +642,7 @@ namespace EyeTalk
             {
                 options.EyeFixationValue++;
             }
+
             SetSelectionDelay();
         }
 
@@ -711,17 +719,6 @@ namespace EyeTalk
             EyeSelectionSpeedStatus.Text = seconds + " Seconds";
         }
 
-        private void SetExtraEyeData()
-        {
-            if (options.AdditionalEyeInformation)
-            {
-                ExtraEyeData.Content = "Additional Eye Data = On";
-            }
-            else if (!options.AdditionalEyeInformation)
-            {
-                ExtraEyeData.Content = "Additional Eye Data = Off";
-            }
-        }
 
         private void SetSpeedOfVoice()
         {
@@ -1135,12 +1132,12 @@ namespace EyeTalk
             }
             else if (position == "Middle Middle Right")
             {
-                HoverOverButton(ExtraEyeData);
+                HoverOverButton(Reset);
 
             }
             else if (position == "Middle Right")
             {
-                HoverOverButton(ExtraEyeData);
+                HoverOverButton(Reset);
 
             }
             else if (position == "Bottom Left")
@@ -1230,7 +1227,7 @@ namespace EyeTalk
             Right_Speed.Background = Brushes.Yellow;
             Left_Delay.Background = Brushes.Red;
             Right_Delay.Background = Brushes.Red;
-            ExtraEyeData.Background = Brushes.RoyalBlue;
+            Reset.Background = Brushes.RoyalBlue;
             VoiceType.Background = Brushes.ForestGreen;
             Back.Background = Brushes.Purple;
         }
@@ -1251,33 +1248,41 @@ namespace EyeTalk
 
         private void UpdateMostUsedCategory()
         {
-            mostUsed = initialiser.LoadMostUsed();
-
-            List<List<Picture>> mostUsedCategory = new List<List<Picture>>();
-            List<Picture> mostUsedPage1 = new List<Picture>();
-            List<Picture> mostUsedPage2 = new List<Picture>();
-
-            var topFour = mostUsed.OrderBy(entry => entry.Value.Count).Take(4).ToDictionary(pair => pair.Key, pair => pair.Value);
-
-            var nextFour = mostUsed.OrderBy(entry => entry.Value.Count).Skip(4).Take(4).ToDictionary(pair => pair.Key, pair => pair.Value);
-
-            for (int i = 0; i < topFour.Count(); i++)
-            {
-                mostUsedPage1.Add(topFour.ElementAt(i).Value);
-                mostUsedPage1.ElementAt(i).Selected = false;
-            }
-
-            for (int i = 0; i < nextFour.Count(); i++)
-            {
-                mostUsedPage2.Add(nextFour.ElementAt(i).Value);
-                mostUsedPage2.ElementAt(i).Selected = false;
-            }
-
-            mostUsedCategory.Add(mostUsedPage1);
-            mostUsedCategory.Add(mostUsedPage2);
-
             categories.Remove("Most Used");
-            categories.Add("Most Used", mostUsedCategory);
+
+            if (mostUsed != null)
+            {
+                mostUsed = initialiser.LoadMostUsed();
+
+                List<List<Picture>> mostUsedCategory = new List<List<Picture>>();
+                List<Picture> mostUsedPage1 = new List<Picture>();
+                List<Picture> mostUsedPage2 = new List<Picture>();
+
+                var topFour = mostUsed.OrderBy(entry => entry.Value.Count).Take(4).ToDictionary(pair => pair.Key, pair => pair.Value);
+
+                var nextFour = mostUsed.OrderBy(entry => entry.Value.Count).Skip(4).Take(4).ToDictionary(pair => pair.Key, pair => pair.Value);
+
+                for (int i = 0; i < topFour.Count(); i++)
+                {
+                    topFour.ElementAt(i).Value.Name = "" + topFour.ElementAt(i).Value.Count;
+                    mostUsedPage1.Add(topFour.ElementAt(i).Value);
+                    mostUsedPage1.ElementAt(i).Selected = false;
+                }
+
+                for (int i = 0; i < nextFour.Count(); i++)
+                {
+                    nextFour.ElementAt(i).Value.Name = "" + nextFour.ElementAt(i).Value.Count;
+                    mostUsedPage2.Add(nextFour.ElementAt(i).Value);
+                    mostUsedPage2.ElementAt(i).Selected = false;
+                }
+
+                mostUsedCategory.Add(mostUsedPage1);
+                mostUsedCategory.Add(mostUsedPage2);
+                categories.Add("Most Used", mostUsedCategory);
+
+            }
+
+
         }
 
         private void ResetSentence()

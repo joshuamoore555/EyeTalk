@@ -89,20 +89,40 @@ namespace EyeTalk.Objects
             mostUsedPath = Path.Combine(dir, saveDir, "MostUsed.bin");
 
 
-            //CreateInitialFolders();
-            //CreateCategoryFile();
-            //CreateSavedSentencesFile();
-            //CreateCustomPictureFile();
-            //CreateOptions();
-            //CreateMostUsed();
+            CreateInitialFoldersAndFiles();
 
         }
 
         //load category from a file
 
-        public void CreateInitialFolders()
+        public void CreateInitialFoldersAndFiles()
         {
             Directory.CreateDirectory(saveDir);
+
+            if (!File.Exists(categoryPath))
+            {
+                CreateCategoryFile();
+            }
+
+            if (!File.Exists(savedSentencesPath))
+            {
+                CreateSavedSentencesFile();
+            }
+
+            if (!File.Exists(customPicturesPath))
+            {
+                CreateCustomPictureFile();
+            }
+
+            if (!File.Exists(optionsPath))
+            {
+                CreateOptions();
+            }
+
+            if (!File.Exists(mostUsedPath))
+            {
+                CreateMostUsed();
+            }
         }
 
         public void CreateCategoryFile()
