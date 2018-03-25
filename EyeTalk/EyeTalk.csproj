@@ -71,6 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MainWindowLogic.cs" />
     <Compile Include="Utilities\EyeTracker.cs" />
     <Compile Include="Objects\XYCoordinate.cs" />
     <Compile Include="Tests\HomeTests.cs" />

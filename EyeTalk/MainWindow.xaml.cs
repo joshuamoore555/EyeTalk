@@ -23,11 +23,7 @@ namespace EyeTalk
     /// 
     public partial class MainWindow : Window
     {
-        public static int categoryIndex;
-        public static int pageIndex;
-        public static int sentenceIndex;
-        public static int amountOfWordsInSentence;
-
+     
         private string previousPosition;
         private string currentPosition;
 
@@ -50,18 +46,17 @@ namespace EyeTalk
         OrderedDictionary sentence;
         EyeTracker eyeTracker;
         System.Timers.Timer timer;
+        MainWindowLogic mainWindowLogic;
 
         public MainWindow()
         {
             InitializeComponent();
+            mainWindowLogic = new MainWindowLogic();
 
             eyeTracker = new EyeTracker();
             saveInitialiser = new SaveFileSerialiser();
             sentence = new OrderedDictionary();
-            categoryIndex = 0;
-            pageIndex = 0;
-            sentenceIndex = 0;
-            amountOfWordsInSentence = 0;
+            
             voiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
             voiceTypes = new List<String> { "Male", "Female" };
 
@@ -83,9 +78,9 @@ namespace EyeTalk
             buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
             textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
 
-            var categoryPages = categories.ElementAt(categoryIndex);
-            string categoryName = categories.ElementAt(categoryIndex).Key;
-            var page = categoryPages.Value.ElementAt(pageIndex);
+            var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
+            string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+            var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
 
             CreatePage(page);
             UpdatePageNumber(categoryName);
@@ -140,24 +135,24 @@ namespace EyeTalk
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
             var size = categories.Count;
-            categoryIndex++;
-            pageIndex = 0;
+            mainWindowLogic.CategoryIndex++;
+            mainWindowLogic.PageIndex = 0;
 
-            if (categoryIndex >= size)
+            if (mainWindowLogic.CategoryIndex >= size)
             {
-                categoryIndex = 0;
-                var categoryPages = categories.ElementAt(categoryIndex);
-                string categoryName = categories.ElementAt(categoryIndex).Key;
-                var page = categoryPages.Value.ElementAt(pageIndex);
+                mainWindowLogic.CategoryIndex = 0;
+                var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
+                string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
                 UpdatePageNumber(categoryName);
 
             }
             else
             {
-                var categoryPages = categories.ElementAt(categoryIndex);
-                string categoryName = categories.ElementAt(categoryIndex).Key;
-                var page = categoryPages.Value.ElementAt(pageIndex);
+                var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
+                string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
                 UpdatePageNumber(categoryName);
 
@@ -167,16 +162,16 @@ namespace EyeTalk
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
         {
             var size = categories.Count;
-            categoryIndex--;
-            pageIndex = 0;
+            mainWindowLogic.CategoryIndex--;
+            mainWindowLogic.PageIndex = 0;
 
-            if (categoryIndex < 0)
+            if (mainWindowLogic.CategoryIndex < 0)
             {
-                categoryIndex = size - 1;
+                mainWindowLogic.CategoryIndex = size - 1;
 
-                var categoryPages = categories.ElementAt(categoryIndex);
-                string categoryName = categories.ElementAt(categoryIndex).Key;
-                var page = categoryPages.Value.ElementAt(pageIndex);
+                var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
+                string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
                 UpdatePageNumber(categoryName);
 
@@ -184,9 +179,9 @@ namespace EyeTalk
             }
             else
             {
-                var categoryPages = categories.ElementAt(categoryIndex);
-                string categoryName = categories.ElementAt(categoryIndex).Key;
-                var page = categoryPages.Value.ElementAt(pageIndex);
+                var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
+                string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
                 UpdatePageNumber(categoryName);
 
@@ -254,38 +249,38 @@ namespace EyeTalk
         private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
             var numberOfSentences = savedSentences.Count;
-            sentenceIndex++;
+            mainWindowLogic.SentenceIndex++;
             if (numberOfSentences <= 0)
             {
                 currentSentence.Text = "No sentences saved";
             }
-            else if (sentenceIndex <= numberOfSentences - 1)
+            else if (mainWindowLogic.SentenceIndex <= numberOfSentences - 1)
             {
-                currentSentence.Text = savedSentences.ElementAt(sentenceIndex);
+                currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
             }
             else
             {
-                sentenceIndex = 0;
-                currentSentence.Text = savedSentences.ElementAt(sentenceIndex);
+                mainWindowLogic.SentenceIndex = 0;
+                currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
             }
         }
 
         private void Previous_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
             var numberOfSentences = savedSentences.Count;
-            sentenceIndex--;
+            mainWindowLogic.SentenceIndex--;
             if (numberOfSentences <= 0)
             {
                 currentSentence.Text = "No sentences saved";
             }
-            else if (sentenceIndex >= 0)
+            else if (mainWindowLogic.SentenceIndex >= 0)
             {
-                currentSentence.Text = savedSentences.ElementAt(sentenceIndex);
+                currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
             }
             else
             {
-                sentenceIndex = numberOfSentences - 1;
-                currentSentence.Text = savedSentences.ElementAt(sentenceIndex);
+                mainWindowLogic.SentenceIndex = numberOfSentences - 1;
+                currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
             }
         }
 
@@ -297,8 +292,8 @@ namespace EyeTalk
             }
             else
             {
-                savedSentences.RemoveAt(sentenceIndex);
-                sentenceIndex = 0;
+                savedSentences.RemoveAt(mainWindowLogic.SentenceIndex);
+                mainWindowLogic.SentenceIndex = 0;
 
                 if (savedSentences.Count <= 0)
                 {
@@ -306,7 +301,7 @@ namespace EyeTalk
                 }
                 else
                 {
-                    currentSentence.Text = savedSentences.ElementAt(sentenceIndex);
+                    currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
                 }
             }
             saveInitialiser.SaveSentencesToFile(savedSentences);
@@ -371,10 +366,7 @@ namespace EyeTalk
 
         private void Right_Speed_Click(object sender, RoutedEventArgs e)
         {
-
-
             SetSpeedOfVoice();
-
         }
 
         private void Left_Speed_Click(object sender, RoutedEventArgs e)
@@ -468,22 +460,22 @@ namespace EyeTalk
 
         private void Page_Click(object sender, RoutedEventArgs e)
         {
-            var categoryPages = categories.ElementAt(categoryIndex);
-            string categoryName = categories.ElementAt(categoryIndex).Key;
+            var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
+            string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
             var numberOfPages = categoryPages.Value.Count;
-            pageIndex++;
+            mainWindowLogic.PageIndex++;
 
-            if (pageIndex >= numberOfPages)
+            if (mainWindowLogic.PageIndex >= numberOfPages)
             {
-                pageIndex = 0;
+                mainWindowLogic.PageIndex = 0;
                 UpdatePageNumber(categoryName);
-                var page = categoryPages.Value.ElementAt(pageIndex);
+                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
             }
             else
             {
                 UpdatePageNumber(categoryName);
-                var page = categoryPages.Value.ElementAt(pageIndex);
+                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
             }
 
@@ -517,9 +509,9 @@ namespace EyeTalk
 
         private void UpdatePageNumber(string categoryName)
         {
-            var categoryPages = categories.ElementAt(categoryIndex);
+            var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
             var numberOfPages = categoryPages.Value.Count;
-            Page.Content = categoryName + " \nPage " + (pageIndex + 1) + "/" + numberOfPages;
+            Page.Content = categoryName + " \nPage " + (mainWindowLogic.PageIndex + 1) + "/" + numberOfPages;
         }
 
         private void SelectPicture(int i)
@@ -532,7 +524,7 @@ namespace EyeTalk
             }
             UpdateMostUsedPicture(i, word);
 
-            if (amountOfWordsInSentence < 3 && selected == false)
+            if (mainWindowLogic.AmountOfWordsInSentence < 3 && selected == false)
             {
                 AddWordToSentence(word, i);
                 HighlightPicture(buttons.ElementAt(i));
@@ -614,7 +606,7 @@ namespace EyeTalk
                 }
                 SentenceTextBox.Text = sb.ToString();
 
-                amountOfWordsInSentence++;
+                mainWindowLogic.AmountOfWordsInSentence++;
 
                 categoryData.ElementAt(i).Selected = true;
             }
@@ -631,7 +623,7 @@ namespace EyeTalk
             }
             SentenceTextBox.Text = sb.ToString();
 
-            amountOfWordsInSentence--;
+            mainWindowLogic.AmountOfWordsInSentence--;
 
             categoryData.ElementAt(i).Selected = false;
         }
@@ -1231,10 +1223,10 @@ namespace EyeTalk
 
         private void ResetSentence()
         {
-            categoryIndex = 0;
-            pageIndex = 0;
-            amountOfWordsInSentence = 0;
-            sentenceIndex = 0;
+            mainWindowLogic.CategoryIndex = 0;
+            mainWindowLogic.PageIndex = 0;
+            mainWindowLogic.AmountOfWordsInSentence = 0;
+            mainWindowLogic.SentenceIndex = 0;
             SentenceTextBox.Text = "";
             sentence.Clear();
             SentenceUpdate.Text = "";
