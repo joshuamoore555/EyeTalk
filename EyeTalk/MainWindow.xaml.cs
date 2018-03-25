@@ -14,6 +14,8 @@ using System.Collections;
 using Tobii.EyeX.Framework;
 using EyeXFramework;
 using EyeTalk.Objects;
+using EyeTalk.Logic;
+using EyeTalk.Utilities;
 
 namespace EyeTalk
 {
@@ -32,40 +34,36 @@ namespace EyeTalk
         List<String> savedSentences;
         List<Picture> categoryData;
         SortedDictionary<String, Picture> mostUsed;
-        Options options;
-
-        List<String> voiceSpeeds;
-        List<String> voiceTypes;
-
         List<Image> images;
         List<Button> buttons;
         List<TextBlock> textBlocks;
 
         SaveFileSerialiser saveInitialiser;
-        SpeechSynthesizer synthesizer;
         OrderedDictionary sentence;
         EyeTracker eyeTracker;
         System.Timers.Timer timer;
         MainWindowLogic mainWindowLogic;
+        OptionsLogic optionsLogic;
+        SpeechGenerator speech;
 
         public MainWindow()
         {
             InitializeComponent();
             mainWindowLogic = new MainWindowLogic();
+            optionsLogic = new OptionsLogic();
+            speech = new SpeechGenerator();
 
             eyeTracker = new EyeTracker();
             saveInitialiser = new SaveFileSerialiser();
             sentence = new OrderedDictionary();
             
-            voiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
-            voiceTypes = new List<String> { "Male", "Female" };
-
-
+           
             BeginTimer();
             LoadSaveFiles();
-            StartSpeechSynthesizer();
             UpdateOptions();
         }
+
+
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
@@ -121,7 +119,7 @@ namespace EyeTalk
                 saveInitialiser.SaveMostUsed(mostUsed);
             }
 
-            saveInitialiser.SaveOptions(options);
+            saveInitialiser.SaveOptions(optionsLogic.Options);
             myTabControl.SelectedIndex = 0;
         }
 
@@ -212,7 +210,7 @@ namespace EyeTalk
         {
             var text = SentenceTextBox.Text.ToString();
 
-            await Task.Run(() => Speak(text));
+            await Task.Run(() => speech.Speak(text));
         }
 
         private void Image1_Button_Click(object sender, RoutedEventArgs e)
@@ -243,7 +241,7 @@ namespace EyeTalk
         {
             var text = currentSentence.Text.ToString();
 
-            await Task.Run(() => Speak(text));
+            await Task.Run(() => speech.Speak(text));
         }
 
         private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
@@ -317,16 +315,89 @@ namespace EyeTalk
             SaveCustomPicture();
         }
 
+
         private void VoiceType_Click(object sender, RoutedEventArgs e)
         {
-            options.VoiceTypeSelection++;
+            optionsLogic.ChangeVoiceType();
 
-            if (options.VoiceTypeSelection > 1)
+            if (optionsLogic.Options.VoiceTypeSelection == 0)
             {
-                options.VoiceTypeSelection = 0;
+                VoiceType.Content = "Female";
+                speech.SelectFemaleVoice();
+                
             }
+            else if (optionsLogic.Options.VoiceTypeSelection == 1)
+            {
+                VoiceType.Content = "Male";
+                speech.SelectMaleVoice();
 
-            SetVoiceType();
+            }
+        }
+
+        private void Right_Delay_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.IncreaseSelectionDelay();
+            var seconds = optionsLogic.Options.EyeFixationValue / 4;
+            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
+        }
+
+        private void Left_Delay_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.DecreaseSelectionDelay();
+            var seconds = optionsLogic.Options.EyeFixationValue / 4;
+            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
+        }
+
+        private void Right_Speed_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.IncreaseVoiceSpeed();
+
+            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
+
+            if (SpeedStatus.Text == "Fast")
+            {
+                speech.SelectFastVoice();
+            }
+            else if (SpeedStatus.Text == "Normal")
+            {
+                speech.SelectNormalVoice();
+            }
+            else if (SpeedStatus.Text == "Slow")
+            {
+                speech.SelectSlowVoice();
+            }
+        }
+
+        private void Left_Speed_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.DecreaseVoiceSpeed();
+
+            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
+            if (SpeedStatus.Text == "Fast")
+            {
+                speech.SelectFastVoice();
+            }
+            else if (SpeedStatus.Text == "Normal")
+            {
+                speech.SelectNormalVoice();
+            }
+            else if (SpeedStatus.Text == "Slow")
+            {
+                speech.SelectSlowVoice();
+            }
+        }
+
+        private async void TestVoice_Click(object sender, RoutedEventArgs e)
+        {
+            await Task.Run(() => speech.Speak("Test Voice"));
+        }
+
+        private void UpdateOptions()
+        {
+            VoiceType.Content = optionsLogic.Options.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
+            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
+            var seconds = optionsLogic.Options.EyeFixationValue / 4;
+            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
@@ -345,118 +416,7 @@ namespace EyeTalk
 
         }
 
-        private void Right_Delay_Click(object sender, RoutedEventArgs e)
-        {
-            if (options.EyeFixationValue < 21)
-            {
-                options.EyeFixationValue++;
-            }
 
-            SetSelectionDelay();
-        }
-
-        private void Left_Delay_Click(object sender, RoutedEventArgs e)
-        {
-            if (options.EyeFixationValue > 1)
-            {
-                options.EyeFixationValue--;
-                SetSelectionDelay();
-            }
-        }
-
-        private void Right_Speed_Click(object sender, RoutedEventArgs e)
-        {
-            SetSpeedOfVoice();
-        }
-
-        private void Left_Speed_Click(object sender, RoutedEventArgs e)
-        {
-            options.VoiceSpeedSelection--;
-            if (options.VoiceSpeedSelection < 0)
-            {
-                options.VoiceSpeedSelection = 2;
-            }
-            SpeedStatus.Text = voiceSpeeds.ElementAt(options.VoiceSpeedSelection);
-
-            SetSpeedOfVoice();
-
-        }
-
-        private async void TestVoice_Click(object sender, RoutedEventArgs e)
-        {
-            await Task.Run(() => Speak("Test Voice"));
-        }
-
-
-        private void UpdateOptions()
-        {
-            SetSpeedOfVoice();
-            SetVoiceType();
-            SetSelectionDelay();
-        }
-
-        private void SetVoiceType()
-        {
-
-            if (options.VoiceTypeSelection == 0)
-            {
-                VoiceType.Content = "Female";
-                synthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-            }
-            else if (options.VoiceTypeSelection == 1)
-            {
-                List<InstalledVoice> voices = new List<InstalledVoice>();
-
-                foreach (InstalledVoice voice in synthesizer.GetInstalledVoices())
-                {
-
-                    voices.Add(voice);
-                }
-                VoiceType.Content = "Male";
-                synthesizer.SelectVoice(voices.ElementAt(1).VoiceInfo.Name);
-            }
-        }
-
-        private void SetSelectionDelay()
-        {
-
-            var seconds = options.EyeFixationValue / 4;
-            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
-        }
-
-        private void SetSpeedOfVoice()
-        {
-            options.VoiceSpeedSelection++;
-
-            if (options.VoiceSpeedSelection > 2)
-            {
-                options.VoiceSpeedSelection = 0;
-            }
-
-            SpeedStatus.Text = voiceSpeeds.ElementAt(options.VoiceSpeedSelection);
-            if (SpeedStatus.Text == "Fast")
-            {
-                synthesizer.Rate = 3;
-
-            }
-            else if (SpeedStatus.Text == "Normal")
-            {
-                synthesizer.Rate = 0;
-            }
-            else if (SpeedStatus.Text == "Slow")
-            {
-                synthesizer.Rate = -3;
-
-            }
-        }
-
-        public void StartSpeechSynthesizer()
-        {
-            synthesizer = new SpeechSynthesizer();
-            synthesizer.Volume = 100;
-            synthesizer.Rate = 0;
-
-        }
 
         private void Page_Click(object sender, RoutedEventArgs e)
         {
@@ -628,10 +588,7 @@ namespace EyeTalk
             categoryData.ElementAt(i).Selected = false;
         }
 
-        private void Speak(string text)
-        {
-            synthesizer.Speak(text);
-        }
+
 
         private void LoadCustomPicture()
         {
@@ -719,18 +676,18 @@ namespace EyeTalk
 
         public void Check(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.Invoke((Action)(() =>
             {
                 currentPosition = CheckY() + " " + CheckX();
 
-                if ( eyeTracker.coordinates.X == 0 && eyeTracker.coordinates.X == 0)
+                if (eyeTracker.coordinates.X == 0 && eyeTracker.coordinates.X == 0)
                 {
                     currentPosition = "";
                 }
 
                 if (currentPosition == previousPosition)
                 {
-                    options.EyeFixationDuration++;
+                    optionsLogic.Options.EyeFixationDuration++;
 
                     if (myTabControl.SelectedIndex == 0)
                     {
@@ -756,12 +713,12 @@ namespace EyeTalk
                 }
                 else
                 {
-                    options.EyeFixationDuration = 0;
+                    optionsLogic.Options.EyeFixationDuration = 0;
                 }
 
                 previousPosition = currentPosition;
 
-            });
+            }));
 
         }
 
@@ -1102,7 +1059,7 @@ namespace EyeTalk
         {
             button.Background = Brushes.LightBlue;
 
-            if (options.EyeFixationDuration > options.EyeFixationValue)
+            if (optionsLogic.Options.EyeFixationDuration > optionsLogic.Options.EyeFixationValue)
             {
                 ResetPosition();
                 button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
@@ -1173,7 +1130,7 @@ namespace EyeTalk
             categories = saveInitialiser.LoadCategories();
             savedSentences = saveInitialiser.LoadSentences();
             customCategory = saveInitialiser.LoadCustomCategory();
-            options = saveInitialiser.LoadOptions();
+            optionsLogic.Options = saveInitialiser.LoadOptions();
         }
 
         private void UpdateCustomCategory()
