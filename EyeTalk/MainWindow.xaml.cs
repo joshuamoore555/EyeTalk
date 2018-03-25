@@ -27,11 +27,8 @@ namespace EyeTalk
         public static int pageNumber = 0;
         public static int amountSelected = 0;
         public static int sentencePicked = 0;
-        private double x;
-        private double y;
         private string previousPosition;
         private string currentPosition;
-        private volatile bool eyeTracking = true;
 
         SortedList<String, List<List<Picture>>> categories;
         List<List<Picture>> customCategory;
@@ -39,6 +36,7 @@ namespace EyeTalk
         List<Picture> categoryData;
         SortedDictionary<String, Picture> mostUsed;
         Options options;
+
         List<String> voiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
         List<String> voiceTypes = new List<String> { "Male", "Female" };
 
@@ -46,39 +44,31 @@ namespace EyeTalk
         List<Button> buttons;
         List<TextBlock> textBlocks;
 
-        SaveFileSerialiser initialiser = new SaveFileSerialiser();
-        SpeechSynthesizer synth = new SpeechSynthesizer();
-        OrderedDictionary sentence = new OrderedDictionary();
-        System.Timers.Timer timer = new System.Timers.Timer();
+        SaveFileSerialiser initialiser;
+        SpeechSynthesizer synth;
+        OrderedDictionary sentence;
+        EyeTracker eyeTracker;
+        System.Timers.Timer timer;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            StartEyeTracking();
-            timer.Interval = 125;
-            timer.Elapsed += Check;
-            timer.AutoReset = true;
-            timer.Enabled = true;
+            eyeTracker = new EyeTracker();
+            initialiser = new SaveFileSerialiser();
+            sentence = new OrderedDictionary();
+            categoryNumber = 0;
+            pageNumber = 0;
 
-            synth.Volume = 100;
-            synth.Rate = 0;
-
-            LoadVariables();
-            SetSpeedOfVoice();
-            SetVoiceType();
-            SetSelectionDelay();
-
+            BeginTimer();
+            LoadSaveFiles();
+            StartSpeechSynthesizer();
+            UpdateOptions();
         }
-
-
-        /*
-         Main Menu
-         */
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
-            LoadVariables();
+            LoadSaveFiles();
             ResetSentence();
             UpdateCustomCategory();
             UpdateMostUsedCategory();
@@ -129,26 +119,18 @@ namespace EyeTalk
             {
                 initialiser.SaveMostUsed(mostUsed);
             }
+
             initialiser.SaveOptions(options);
             myTabControl.SelectedIndex = 0;
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            eyeTracking = false;
+            eyeTracker.eyeTracking = false;
             timer.Stop();
             Application.Current.Dispatcher.BeginInvokeShutdown(System.Windows.Threading.DispatcherPriority.Send);
         }
 
-
-        /*
-        Begin Speaking
-        */
-
-
-        /*
-        Clicks
-        */
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
             var size = categories.Count;
@@ -256,6 +238,228 @@ namespace EyeTalk
             SelectPicture(index);
         }
 
+        private async void Play_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var text = currentSentence.Text.ToString();
+
+            await Task.Run(() => Speak(text));
+        }
+
+        private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var numberOfSentences = savedSentences.Count;
+            sentencePicked++;
+            if (numberOfSentences <= 0)
+            {
+                currentSentence.Text = "No sentences saved";
+            }
+            else if (sentencePicked <= numberOfSentences - 1)
+            {
+                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+            }
+            else
+            {
+                sentencePicked = 0;
+                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+            }
+        }
+
+        private void Previous_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var numberOfSentences = savedSentences.Count;
+            sentencePicked--;
+            if (numberOfSentences <= 0)
+            {
+                currentSentence.Text = "No sentences saved";
+            }
+            else if (sentencePicked >= 0)
+            {
+                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+            }
+            else
+            {
+                sentencePicked = numberOfSentences - 1;
+                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+            }
+        }
+
+        private void Delete_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (savedSentences.Count <= 0)
+            {
+                currentSentence.Text = "No sentences saved";
+            }
+            else
+            {
+                savedSentences.RemoveAt(sentencePicked);
+                sentencePicked = 0;
+
+                if (savedSentences.Count <= 0)
+                {
+                    currentSentence.Text = "No sentences saved";
+                }
+                else
+                {
+                    currentSentence.Text = savedSentences.ElementAt(sentencePicked);
+                }
+            }
+            initialiser.SaveSentencesToFile(savedSentences);
+        }
+
+        private void Add_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            LoadCustomPicture();
+        }
+
+        private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            SaveCustomPicture();
+        }
+
+        private void VoiceType_Click(object sender, RoutedEventArgs e)
+        {
+            options.VoiceTypeSelection++;
+
+            if (options.VoiceTypeSelection > 1)
+            {
+                options.VoiceTypeSelection = 0;
+            }
+
+            SetVoiceType();
+        }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            if (mostUsed != null)
+            {
+                initialiser.CreateMostUsed();
+                mostUsed.Clear();
+                Reset.Content = "Most Used Pictures category has been reset";
+                categories.Remove("Most Used");
+            }
+            else
+            {
+                Reset.Content = "Most Used Pictures category is already empty";
+            }
+
+        }
+
+        private void Right_Delay_Click(object sender, RoutedEventArgs e)
+        {
+            if (options.EyeFixationValue < 21)
+            {
+                options.EyeFixationValue++;
+            }
+
+            SetSelectionDelay();
+        }
+
+        private void Left_Delay_Click(object sender, RoutedEventArgs e)
+        {
+            if (options.EyeFixationValue > 1)
+            {
+                options.EyeFixationValue--;
+                SetSelectionDelay();
+            }
+        }
+
+        private void Right_Speed_Click(object sender, RoutedEventArgs e)
+        {
+
+
+            SetSpeedOfVoice();
+
+        }
+
+        private void Left_Speed_Click(object sender, RoutedEventArgs e)
+        {
+            options.VoiceSpeedSelection--;
+            if (options.VoiceSpeedSelection < 0)
+            {
+                options.VoiceSpeedSelection = 2;
+            }
+            SpeedStatus.Text = voiceSpeeds.ElementAt(options.VoiceSpeedSelection);
+
+            SetSpeedOfVoice();
+
+        }
+
+        private async void TestVoice_Click(object sender, RoutedEventArgs e)
+        {
+            await Task.Run(() => Speak("Test Voice"));
+        }
+
+
+        private void UpdateOptions()
+        {
+            SetSpeedOfVoice();
+            SetVoiceType();
+            SetSelectionDelay();
+        }
+
+        private void SetVoiceType()
+        {
+
+            if (options.VoiceTypeSelection == 0)
+            {
+                VoiceType.Content = "Female";
+                synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+            }
+            else if (options.VoiceTypeSelection == 1)
+            {
+                List<InstalledVoice> voices = new List<InstalledVoice>();
+
+                foreach (InstalledVoice voice in synth.GetInstalledVoices())
+                {
+
+                    voices.Add(voice);
+                }
+                VoiceType.Content = "Male";
+                synth.SelectVoice(voices.ElementAt(1).VoiceInfo.Name);
+            }
+        }
+
+        private void SetSelectionDelay()
+        {
+
+            var seconds = options.EyeFixationValue / 4;
+            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
+        }
+
+        private void SetSpeedOfVoice()
+        {
+            options.VoiceSpeedSelection++;
+
+            if (options.VoiceSpeedSelection > 2)
+            {
+                options.VoiceSpeedSelection = 0;
+            }
+
+            SpeedStatus.Text = voiceSpeeds.ElementAt(options.VoiceSpeedSelection);
+            if (SpeedStatus.Text == "Fast")
+            {
+                synth.Rate = 3;
+
+            }
+            else if (SpeedStatus.Text == "Normal")
+            {
+                synth.Rate = 0;
+            }
+            else if (SpeedStatus.Text == "Slow")
+            {
+                synth.Rate = -3;
+
+            }
+        }
+
+        public void StartSpeechSynthesizer()
+        {
+            synth = new SpeechSynthesizer();
+            synth.Volume = 100;
+            synth.Rate = 0;
+
+        }
+
         private void Page_Click(object sender, RoutedEventArgs e)
         {
             var categoryPages = categories.ElementAt(categoryNumber);
@@ -278,11 +482,6 @@ namespace EyeTalk
             }
 
         }
-
-
-        /*
-        Image Stuff
-        */
 
         private void CreatePage(List<Picture> page)
         {
@@ -397,10 +596,6 @@ namespace EyeTalk
 
         }
 
-        /*
-        Sentence Stuff
-        */
-
         private void AddWordToSentence(string word, int i)
         {
             if (!sentence.Contains(categoryData.ElementAt(i).Name))
@@ -439,85 +634,6 @@ namespace EyeTalk
         {
             synth.Speak(text);
         }
-
-
-
-        /*
-        Saved Sentences
-        */
-
-        private async void Play_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var text = currentSentence.Text.ToString();
-
-            await Task.Run(() => Speak(text));
-        }
-
-        private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var numberOfSentences = savedSentences.Count;
-            sentencePicked++;
-            if (numberOfSentences <= 0)
-            {
-                currentSentence.Text = "No sentences saved";
-            }
-            else if (sentencePicked <= numberOfSentences - 1)
-            {
-                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
-            }
-            else
-            {
-                sentencePicked = 0;
-                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
-            }
-        }
-
-        private void Previous_Sentence_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var numberOfSentences = savedSentences.Count;
-            sentencePicked--;
-            if (numberOfSentences <= 0)
-            {
-                currentSentence.Text = "No sentences saved";
-            }
-            else if (sentencePicked >= 0)
-            {
-                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
-            }
-            else
-            {
-                sentencePicked = numberOfSentences - 1;
-                currentSentence.Text = savedSentences.ElementAt(sentencePicked);
-            }
-        }
-
-        private void Delete_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (savedSentences.Count <= 0)
-            {
-                currentSentence.Text = "No sentences saved";
-            }
-            else
-            {
-                savedSentences.RemoveAt(sentencePicked);
-                sentencePicked = 0;
-
-                if (savedSentences.Count <= 0)
-                {
-                    currentSentence.Text = "No sentences saved";
-                }
-                else
-                {
-                    currentSentence.Text = savedSentences.ElementAt(sentencePicked);
-                }
-            }
-            initialiser.SaveSentencesToFile(savedSentences);
-        }
-
-
-        /*
-        Custom picture
-        */
 
         private void LoadCustomPicture()
         {
@@ -592,189 +708,16 @@ namespace EyeTalk
             }
         }
 
-        private void Add_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+
+
+        public void BeginTimer()
         {
-            LoadCustomPicture();
+            timer = new System.Timers.Timer();
+            timer.Interval = 125;
+            timer.Elapsed += Check;
+            timer.AutoReset = true;
+            timer.Enabled = true;
         }
-
-        private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
-        {
-            SaveCustomPicture();
-        }
-
-
-
-        /*
-        Options
-        */
-
-        private void VoiceType_Click(object sender, RoutedEventArgs e)
-        {
-            options.VoiceTypeSelection++;
-
-            if (options.VoiceTypeSelection > 1)
-            {
-                options.VoiceTypeSelection = 0;
-            }
-
-            SetVoiceType();
-        }
-
-        private void Reset_Click(object sender, RoutedEventArgs e)
-        {
-            if(mostUsed != null)
-            {
-                initialiser.CreateMostUsed();
-                mostUsed.Clear();
-                Reset.Content = "Most Used Pictures category has been reset";
-                categories.Remove("Most Used");
-            }
-            else
-            {
-                Reset.Content = "Most Used Pictures category is already empty";
-            }
-
-        }
-
-        private void Right_Delay_Click(object sender, RoutedEventArgs e)
-        {
-            if (options.EyeFixationValue < 21)
-            {
-                options.EyeFixationValue++;
-            }
-
-            SetSelectionDelay();
-        }
-
-        private void Left_Delay_Click(object sender, RoutedEventArgs e)
-        {
-            if (options.EyeFixationValue > 1)
-            {
-                options.EyeFixationValue--;
-                SetSelectionDelay();
-            }
-        }
-
-        private void Right_Speed_Click(object sender, RoutedEventArgs e)
-        {
-
-            options.VoiceSpeedSelection++;
-            if (options.VoiceSpeedSelection > 2)
-            {
-                options.VoiceSpeedSelection = 0;
-            }
-
-            SetSpeedOfVoice();
-
-        }
-
-        private void Left_Speed_Click(object sender, RoutedEventArgs e)
-        {
-            options.VoiceSpeedSelection--;
-            if (options.VoiceSpeedSelection < 0)
-            {
-                options.VoiceSpeedSelection = 2;
-            }
-            SpeedStatus.Text = voiceSpeeds.ElementAt(options.VoiceSpeedSelection);
-
-            SetSpeedOfVoice();
-
-        }
-
-        private async void TestVoice_Click(object sender, RoutedEventArgs e)
-        {
-            await Task.Run(() => Speak("Test Voice"));
-        }
-        /*
-        Setters for Options
-        */
-
-
-        private void SetVoiceType()
-        {
-
-            if (options.VoiceTypeSelection == 0)
-            {
-                VoiceType.Content = "Female";
-                synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-            }
-            else if (options.VoiceTypeSelection == 1)
-            {
-                List<InstalledVoice> voices = new List<InstalledVoice>();
-
-                foreach (InstalledVoice voice in synth.GetInstalledVoices())
-                {
-
-                    voices.Add(voice);
-                }
-                VoiceType.Content = "Male";
-                synth.SelectVoice(voices.ElementAt(1).VoiceInfo.Name);
-            }
-        }
-
-        private void SetSelectionDelay()
-        {
-
-            var seconds = options.EyeFixationValue / 4;
-            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
-        }
-
-
-        private void SetSpeedOfVoice()
-        {
-
-            SpeedStatus.Text = voiceSpeeds.ElementAt(options.VoiceSpeedSelection);
-            if (SpeedStatus.Text == "Fast")
-            {
-                synth.Rate = 3;
-
-            }
-            else if (SpeedStatus.Text == "Normal")
-            {
-                synth.Rate = 0;
-            }
-            else if (SpeedStatus.Text == "Slow")
-            {
-                synth.Rate = -3;
-
-            }
-        }
-
-
-
-
-        /*
-        Eye Tracking
-        */
-
-        public void StartEyeTracking()
-        {
-            var eyeXHost = new EyeXHost();
-            eyeXHost.Start();
-            var stream = eyeXHost.CreateGazePointDataStream(GazePointDataMode.LightlyFiltered);
-
-            Task.Run(async () =>
-            {
-                while (eyeTracking)
-                {
-                    stream.Next += (s, t) => SetXY(t.X, t.Y);
-                    await Task.Delay(125);
-                }
-
-            });
-        }
-
-        private void SetXY(double X, double Y)
-        {
-            x = X;
-            y = Y;
-        }
-
-
-
-        /*
-        XY Checks
-        */
 
         public void Check(object sender, EventArgs e)
         {
@@ -782,7 +725,7 @@ namespace EyeTalk
             {
                 currentPosition = CheckY() + " " + CheckX();
 
-                if (x == 0 && y == 0)
+                if ( eyeTracker.coordinates.X == 0 && eyeTracker.coordinates.X == 0)
                 {
                     currentPosition = "";
                 }
@@ -826,48 +769,48 @@ namespace EyeTalk
 
         private string CheckX()
         {
-            if (x < 480)
+            if (eyeTracker.coordinates.X < 480)
             {
                 return "Left";
             }
-            else if (x > 480 && x < 960)
+            else if (eyeTracker.coordinates.X > 480 && eyeTracker.coordinates.X < 960)
             {
                 return "Middle Left";
 
             }
-            else if (x > 960 && x < 1440)
+            else if (eyeTracker.coordinates.X > 960 && eyeTracker.coordinates.X < 1440)
             {
                 return "Middle Right";
 
             }
-            else if (x > 1440 && x < 1920)
+            else if (eyeTracker.coordinates.X > 1440 && eyeTracker.coordinates.X < 1920)
             {
                 return "Right";
 
             }
             else
             {
-                return x.ToString();
+                return eyeTracker.coordinates.X.ToString();
             }
         }
 
         private string CheckY()
         {
-            if (y < 360)
+            if (eyeTracker.coordinates.Y < 360)
             {
                 return "Top";
             }
-            else if (y > 360 && y < 720)
+            else if (eyeTracker.coordinates.Y > 360 && eyeTracker.coordinates.Y < 720)
             {
                 return "Middle";
             }
-            else if (y > 720 && y < 1080)
+            else if (eyeTracker.coordinates.Y > 720 && eyeTracker.coordinates.Y < 1080)
             {
                 return "Bottom";
             }
             else
             {
-                return y.ToString();
+                return eyeTracker.coordinates.Y.ToString();
             }
         }
 
@@ -1157,11 +1100,6 @@ namespace EyeTalk
             }
         }
 
-
-        /*
-        Button Selection 
-        */
-
         private void HoverOverButton(Button button)
         {
             button.Background = Brushes.LightBlue;
@@ -1232,7 +1170,7 @@ namespace EyeTalk
             Back.Background = Brushes.Purple;
         }
 
-        private void LoadVariables()
+        private void LoadSaveFiles()
         {
             categories = initialiser.LoadCategories();
             savedSentences = initialiser.LoadSentences();
