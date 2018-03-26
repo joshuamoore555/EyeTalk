@@ -14,12 +14,16 @@ namespace EyeTalk
         public int PageIndex { get; set; }
         public int SentenceIndex { get; set; }
         public int AmountOfWordsInSentence { get; set; }
-        public List<Picture> Category { get; set; }
         public OrderedDictionary Sentence { get; set; }
         public SortedList<String, List<List<Picture>>> categories;
         public List<List<Picture>> customCategory;
         public SortedDictionary<String, Picture> mostUsed;
         SaveFileSerialiser save;
+
+        public string categoryName { get; set; }
+        public List<Picture> CategoryPage { get; set; }
+
+
 
         public MainWindowLogic()
         {
@@ -29,7 +33,6 @@ namespace EyeTalk
             categories = save.LoadCategories();
             customCategory = save.LoadCustomCategory();
             mostUsed = save.LoadMostUsed();
-        
 
             CategoryIndex = 0;
             PageIndex = 0;
@@ -89,8 +92,78 @@ namespace EyeTalk
             AmountOfWordsInSentence = 0;
             SentenceIndex = 0;
             Sentence.Clear();
-           
         }
 
+        public void CheckIfBackToLastCategory()
+        {
+            CategoryIndex--;
+            PageIndex = 0;
+
+            if (CategoryIndex < 0)
+            {
+                CategoryIndex = categories.Count - 1;
+            }
+            
+        }
+
+        public void UpdateCategoryAndGoToFirstPage()
+        {
+            var categoryPages = categories.ElementAt(CategoryIndex);
+            CategoryPage = categoryPages.Value.ElementAt(0);
+            categoryName = categories.ElementAt(CategoryIndex).Key;
+        }
+
+        public void GoToNextPage()
+        {
+            var categoryPages = categories.ElementAt(CategoryIndex);
+            var numberOfPages = categoryPages.Value.Count;
+            PageIndex++;
+
+            if(PageIndex >= numberOfPages)
+            {
+                PageIndex = 0;
+                CategoryPage = categoryPages.Value.ElementAt(PageIndex);
+
+            }
+            else
+            {
+                CategoryPage = categoryPages.Value.ElementAt(PageIndex);
+            }
+
+            CategoryPage = categoryPages.Value.ElementAt(PageIndex);
+        }
+
+        public string UpdatePageNumber()
+        {
+            var categoryPages = categories.ElementAt(CategoryIndex);
+            var numberOfPages = categoryPages.Value.Count;
+            return categoryName + " \nPage " + (PageIndex + 1) + "/" + numberOfPages;
+        
+    }
+
+        public void CheckIfBackToFirstCategory()
+        {
+            CategoryIndex++;
+            PageIndex = 0;
+            if (CategoryIndex >= categories.Count)
+            {
+                CategoryIndex = 0;
+               
+            }   
+        }
+
+        public void Begin()
+        {
+            ResetSentence();
+            UpdateCustomCategory();
+            UpdateMostUsedCategory();
+
+            var categoryPages = categories.ElementAt(CategoryIndex);
+            categoryName = categories.ElementAt(CategoryIndex).Key;
+            CategoryPage  = categoryPages.Value.ElementAt(PageIndex);
+            
+        }
+
+    
     }
 }

@@ -59,37 +59,71 @@ namespace EyeTalk
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
             LoadSaveFiles();
-            mainWindowLogic.ResetSentence();
             SentenceTextBox.Text = "";
             SentenceUpdate.Text = "";
-            mainWindowLogic.UpdateCustomCategory();
-            mainWindowLogic.UpdateMostUsedCategory();
-
+     
             images = new List<Image> { Image1, Image2, Image3, Image4 };
             buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
             textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
 
-            var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
-            string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
-            var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
+            mainWindowLogic.Begin();
+            CreatePage();
+            UpdatePageNumber();
 
-            CreatePage(page);
-            UpdatePageNumber(categoryName);
             myTabControl.SelectedIndex = 1;
 
-
         }
 
-        private void Options_Click(object sender, RoutedEventArgs e)
+        private void CreatePage()
         {
-            myTabControl.SelectedIndex = 2;
+            var numberOfPictures = mainWindowLogic.CategoryPage.Count;
+
+            if (numberOfPictures > 0)
+            {
+                for (int i = 0; i < numberOfPictures; i++)
+                {
+                    UpdatePicture(i);
+                }
+
+                for (int i = numberOfPictures; i < 4; i++)
+                {
+                    HidePicture(i);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < images.Count; i++)
+                {
+                    HidePicture(i);
+                }
+            }
         }
 
-        private void Add_PictureCategory_Click(object sender, RoutedEventArgs e)
+        private void CreatePicture(int i)
         {
-            myTabControl.SelectedIndex = 3;
+            textBlocks.ElementAt(i).Text = mainWindowLogic.CategoryPage.ElementAt(i).Name;
+            buttons.ElementAt(i).Visibility = Visibility.Visible;
+            images.ElementAt(i).Source = new BitmapImage(new Uri(mainWindowLogic.CategoryPage.ElementAt(i).FilePath));
         }
 
+        private void UpdatePicture(int i)
+        {
+            CreatePicture(i);
+
+            if (mainWindowLogic.Sentence.Contains(mainWindowLogic.CategoryPage.ElementAt(i).Name))
+            {
+                HighlightPicture(buttons, i);
+            }
+            else if (mainWindowLogic.CategoryPage.ElementAt(i).Selected == false)
+            {
+                UnhighlightPicture(buttons, i);
+            }
+
+            else
+            {
+                HighlightPicture(buttons, i);
+            }
+        }
         private void Sentences_Button_Click(object sender, RoutedEventArgs e)
         {
             var numberOfSentences = savedSentencesLogic.savedSentences.Count;
@@ -125,59 +159,24 @@ namespace EyeTalk
 
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
-            var size = mainWindowLogic.categories.Count;
-            mainWindowLogic.CategoryIndex++;
-            mainWindowLogic.PageIndex = 0;
+            mainWindowLogic.CheckIfBackToFirstCategory();
+            mainWindowLogic.UpdateCategoryAndGoToFirstPage();
+            CreatePage();
+            UpdatePageNumber();
 
-            if (mainWindowLogic.CategoryIndex >= size)
-            {
-                mainWindowLogic.CategoryIndex = 0;
-                var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
-                string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
-                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
-                CreatePage(page);
-                UpdatePageNumber(categoryName);
-
-            }
-            else
-            {
-                var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
-                string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
-                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
-                CreatePage(page);
-                UpdatePageNumber(categoryName);
-
-            }
+           
         }
 
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
         {
-            var size = mainWindowLogic.categories.Count;
-            mainWindowLogic.CategoryIndex--;
-            mainWindowLogic.PageIndex = 0;
-
-            if (mainWindowLogic.CategoryIndex < 0)
-            {
-                mainWindowLogic.CategoryIndex = size - 1;
-
-                var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
-                string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
-                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
-                CreatePage(page);
-                UpdatePageNumber(categoryName);
-
-
-            }
-            else
-            {
-                var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
-                string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
-                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
-                CreatePage(page);
-                UpdatePageNumber(categoryName);
-
-            }
+            mainWindowLogic.CheckIfBackToLastCategory();
+            mainWindowLogic.UpdateCategoryAndGoToFirstPage();
+            CreatePage();
+            UpdatePageNumber(); 
         }
+
+
+
 
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -298,141 +297,9 @@ namespace EyeTalk
             saveInitialiser.SaveSentencesToFile(savedSentencesLogic.savedSentences);
         }
 
-        private void Load_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var picturePath = addPictureLogic.LoadCustomPicture();
-            CustomFilePath.Text = picturePath;
-            CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(picturePath);
-            var uri = new Uri(picturePath);
-            var bitmap = new BitmapImage(uri);
-            CustomPicture.Source = bitmap;
-        }
-
-        private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (String.IsNullOrEmpty(CustomFilePath.Text) && String.IsNullOrEmpty(CustomName.Text))
-            {
-                Status.Text = "Please select a picture and name before saving";
-
-            }
-            else
-            {
-                Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
-                var currentPage = mainWindowLogic.customCategory.ElementAt(mainWindowLogic.customCategory.Count - 1);
-                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, mainWindowLogic.customCategory);
-
-                if (pictureAlreadyAdded)
-                {
-                    Status.Text = "This image has already been added.";
-                }
-                else
-                {
-                    var spaceInCustomCategory = addPictureLogic.CheckNumberOfCustomImagesInPage(currentPage);
-
-                    if (spaceInCustomCategory == true)
-                    {
-                        addPictureLogic.AddCustomPicture(customPicture, currentPage);
-                        Status.Text = "Added picture. " + "Number of pictures in category: " + currentPage.Count; 
-                    }
-
-                    else if(spaceInCustomCategory == false)
-                    {
-                        mainWindowLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
-                        Status.Text = "Created new category. \nNumber of categories is now: " + mainWindowLogic.customCategory.Count;
-
-                    }
-
-                    saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
-                }
-            }
-        }
 
 
 
-
-        private void VoiceType_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.ChangeVoiceType();
-
-            if (optionsLogic.Options.VoiceTypeSelection == 0)
-            {
-                VoiceType.Content = "Female";
-                speech.SelectFemaleVoice();
-                
-            }
-            else if (optionsLogic.Options.VoiceTypeSelection == 1)
-            {
-                VoiceType.Content = "Male";
-                speech.SelectMaleVoice();
-
-            }
-        }
-
-        private void Right_Delay_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.IncreaseSelectionDelay();
-            var seconds = optionsLogic.Options.EyeFixationValue / 4;
-            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
-        }
-
-        private void Left_Delay_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.DecreaseSelectionDelay();
-            var seconds = optionsLogic.Options.EyeFixationValue / 4;
-            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
-        }
-
-        private void Right_Speed_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.IncreaseVoiceSpeed();
-
-            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
-
-            if (SpeedStatus.Text == "Fast")
-            {
-                speech.SelectFastVoice();
-            }
-            else if (SpeedStatus.Text == "Normal")
-            {
-                speech.SelectNormalVoice();
-            }
-            else if (SpeedStatus.Text == "Slow")
-            {
-                speech.SelectSlowVoice();
-            }
-        }
-
-        private void Left_Speed_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.DecreaseVoiceSpeed();
-
-            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
-            if (SpeedStatus.Text == "Fast")
-            {
-                speech.SelectFastVoice();
-            }
-            else if (SpeedStatus.Text == "Normal")
-            {
-                speech.SelectNormalVoice();
-            }
-            else if (SpeedStatus.Text == "Slow")
-            {
-                speech.SelectSlowVoice();
-            }
-        }
-
-        private async void TestVoice_Click(object sender, RoutedEventArgs e)
-        {
-            await Task.Run(() => speech.Speak("Test Voice"));
-        }
-
-        private void UpdateOptions()
-        {
-            VoiceType.Content = optionsLogic.Options.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
-            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
-            var seconds = optionsLogic.Options.EyeFixationValue / 4;
-            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
-        }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
@@ -454,64 +321,41 @@ namespace EyeTalk
 
         private void Page_Click(object sender, RoutedEventArgs e)
         {
-            var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
-            string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
-            var numberOfPages = categoryPages.Value.Count;
-            mainWindowLogic.PageIndex++;
+            mainWindowLogic.GoToNextPage();
+            UpdatePageNumber();
+            CreatePage();
+        }
 
-            if (mainWindowLogic.PageIndex >= numberOfPages)
-            {
-                mainWindowLogic.PageIndex = 0;
-                UpdatePageNumber(categoryName);
-                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
-                CreatePage(page);
-            }
-            else
-            {
-                UpdatePageNumber(categoryName);
-                var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
-                CreatePage(page);
-            }
+
+
+
+
+
+
+
+
+        private void HighlightPicture(List<Button> buttons, int i)
+        {
+            buttons.ElementAt(i).BorderBrush = new SolidColorBrush(Colors.Yellow);
+            buttons.ElementAt(i).BorderThickness = new Thickness(8, 8, 8, 8);
+        }
+
+        private void UnhighlightPicture(List<Button> buttons, int i)
+        {
+            buttons.ElementAt(i).BorderBrush = new SolidColorBrush(Colors.Black);
+            buttons.ElementAt(i).BorderThickness = new Thickness(1, 1, 1, 1);
 
         }
 
-        private void CreatePage(List<Picture> page)
+        private void UpdatePageNumber()
         {
-            mainWindowLogic.Category = page;
-            var numberOfPictures = page.Count;
-
-            if (numberOfPictures > 0)
-            {
-                for (int i = 0; i < numberOfPictures; i++)
-                {
-                    UpdatePicture(i);
-                }
-
-                for (int i = numberOfPictures; i < 4; i++)
-                {
-                    HidePicture(i);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < images.Count; i++)
-                {
-                    HidePicture(i);
-                }
-            }
-        }
-
-        private void UpdatePageNumber(string categoryName)
-        {
-            var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
-            var numberOfPages = categoryPages.Value.Count;
-            Page.Content = categoryName + " \nPage " + (mainWindowLogic.PageIndex + 1) + "/" + numberOfPages;
+            Page.Content = mainWindowLogic.UpdatePageNumber();
         }
 
         private void SelectPicture(int i)
         {
             var word = textBlocks.ElementAt(i).Text;
-            var selected = mainWindowLogic.Category.ElementAt(i).Selected;
+            var selected = mainWindowLogic.CategoryPage.ElementAt(i).Selected;
             if(mainWindowLogic.mostUsed == null)
             {
                 mainWindowLogic.mostUsed = new SortedDictionary<String, Picture>();
@@ -521,27 +365,27 @@ namespace EyeTalk
             if (mainWindowLogic.AmountOfWordsInSentence < 3 && selected == false)
             {
                 AddWordToSentence(word, i);
-                HighlightPicture(buttons.ElementAt(i));
+                HighlightPicture(buttons, i);
             }
             else if (selected == true)
             {
                 RemoveWordFromSentence(word, i);
-                UnhighlightPicture(buttons.ElementAt(i));
+                UnhighlightPicture(buttons, i);
 
             }
         }
 
         private void UpdateMostUsedPicture(int i, string word)
         {
-            mainWindowLogic.Category.ElementAt(i).Count++;
+            mainWindowLogic.CategoryPage.ElementAt(i).Count++;
             if (mainWindowLogic.mostUsed.ContainsKey(word))
             {
                 mainWindowLogic.mostUsed.Remove(word);
-                mainWindowLogic.mostUsed.Add(word, mainWindowLogic.Category.ElementAt(i));
+                mainWindowLogic.mostUsed.Add(word, mainWindowLogic.CategoryPage.ElementAt(i));
             }
             else
             {
-                mainWindowLogic.mostUsed.Add(word, mainWindowLogic.Category.ElementAt(i));
+                mainWindowLogic.mostUsed.Add(word, mainWindowLogic.CategoryPage.ElementAt(i));
             }
         }
 
@@ -549,48 +393,14 @@ namespace EyeTalk
         {
             buttons.ElementAt(i).Visibility = Visibility.Hidden;
             textBlocks.ElementAt(i).Text = "";
-            UnhighlightPicture(buttons.ElementAt(i));
+            UnhighlightPicture(buttons, i);
         }
 
-        private void UpdatePicture(int i)
-        {
-            var filepath = mainWindowLogic.Category.ElementAt(i).FilePath;
-            var pictureName = mainWindowLogic.Category.ElementAt(i).Name;
-            buttons.ElementAt(i).Visibility = Visibility.Visible;
-            images.ElementAt(i).Source = new BitmapImage(new Uri(filepath));
-            textBlocks.ElementAt(i).Text = pictureName;
 
-            if (mainWindowLogic.Sentence.Contains(mainWindowLogic.Category.ElementAt(i).Name))
-            {
-                HighlightPicture(buttons.ElementAt(i));
-            }
-            else if (mainWindowLogic.Category.ElementAt(i).Selected == false)
-            {
-                UnhighlightPicture(buttons.ElementAt(i));
-            }
-            
-            else
-            {
-                HighlightPicture(buttons.ElementAt(i));
-            }
-        }
-
-        private void HighlightPicture(Button ButtonImage)
-        {
-            ButtonImage.BorderBrush = new SolidColorBrush(Colors.Yellow);
-            ButtonImage.BorderThickness = new Thickness(8, 8, 8, 8);
-        }
-
-        private void UnhighlightPicture(Button ButtonImage)
-        {
-            ButtonImage.BorderBrush = new SolidColorBrush(Colors.Black);
-            ButtonImage.BorderThickness = new Thickness(1, 1, 1, 1);
-
-        }
 
         private void AddWordToSentence(string word, int i)
         {
-            if (!mainWindowLogic.Sentence.Contains(mainWindowLogic.Category.ElementAt(i).Name))
+            if (!mainWindowLogic.Sentence.Contains(mainWindowLogic.CategoryPage.ElementAt(i).Name))
             {
                 mainWindowLogic.Sentence.Add(word, word);
                 StringBuilder sb = new StringBuilder();
@@ -602,7 +412,7 @@ namespace EyeTalk
 
                 mainWindowLogic.AmountOfWordsInSentence++;
 
-                mainWindowLogic.Category.ElementAt(i).Selected = true;
+                mainWindowLogic.CategoryPage.ElementAt(i).Selected = true;
             }
 
         }
@@ -619,7 +429,7 @@ namespace EyeTalk
 
             mainWindowLogic.AmountOfWordsInSentence--;
 
-            mainWindowLogic.Category.ElementAt(i).Selected = false;
+            mainWindowLogic.CategoryPage.ElementAt(i).Selected = false;
         }
 
 
@@ -1095,10 +905,150 @@ namespace EyeTalk
             optionsLogic.Options = saveInitialiser.LoadOptions();
         }
 
+        private void UpdateOptions()
+        {
+            VoiceType.Content = optionsLogic.Options.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
+            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
+            EyeSelectionSpeedStatus.Text = optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
+        }
+
+        private void Load_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var picturePath = addPictureLogic.LoadCustomPicture();
+            CustomFilePath.Text = picturePath;
+            CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(picturePath);
+            var uri = new Uri(picturePath);
+            var bitmap = new BitmapImage(uri);
+            CustomPicture.Source = bitmap;
+        }
+
+        private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(CustomFilePath.Text) && String.IsNullOrEmpty(CustomName.Text))
+            {
+                Status.Text = "Please select a picture and name before saving";
+
+            }
+            else
+            {
+                Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
+                var currentPage = mainWindowLogic.customCategory.ElementAt(mainWindowLogic.customCategory.Count - 1);
+                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, mainWindowLogic.customCategory);
+
+                if (pictureAlreadyAdded)
+                {
+                    Status.Text = "This image has already been added.";
+                }
+                else
+                {
+                    var spaceInCustomCategory = addPictureLogic.CheckNumberOfCustomImagesInPage(currentPage);
+
+                    if (spaceInCustomCategory == true)
+                    {
+                        addPictureLogic.AddCustomPicture(customPicture, currentPage);
+                        Status.Text = "Added picture. " + "Number of pictures in category: " + currentPage.Count;
+                    }
+
+                    else if (spaceInCustomCategory == false)
+                    {
+                        mainWindowLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
+                        Status.Text = "Created new category. \nNumber of categories is now: " + mainWindowLogic.customCategory.Count;
+
+                    }
+
+                    saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
+                }
+            }
+        }
 
 
 
 
-       
+        private void VoiceType_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.ChangeVoiceType();
+
+            if (optionsLogic.Options.VoiceTypeSelection == 0)
+            {
+                VoiceType.Content = "Female";
+                speech.SelectFemaleVoice();
+
+            }
+            else if (optionsLogic.Options.VoiceTypeSelection == 1)
+            {
+                VoiceType.Content = "Male";
+                speech.SelectMaleVoice();
+
+            }
+        }
+
+        private void Right_Delay_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.IncreaseSelectionDelay();
+            var seconds = optionsLogic.Options.EyeFixationValue / 4;
+            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
+        }
+
+        private void Left_Delay_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.DecreaseSelectionDelay();
+            var seconds = optionsLogic.Options.EyeFixationValue / 4;
+            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
+        }
+
+        private void Right_Speed_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.IncreaseVoiceSpeed();
+
+            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
+
+            if (SpeedStatus.Text == "Fast")
+            {
+                speech.SelectFastVoice();
+            }
+            else if (SpeedStatus.Text == "Normal")
+            {
+                speech.SelectNormalVoice();
+            }
+            else if (SpeedStatus.Text == "Slow")
+            {
+                speech.SelectSlowVoice();
+            }
+        }
+
+        private void Left_Speed_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.DecreaseVoiceSpeed();
+
+            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
+            if (SpeedStatus.Text == "Fast")
+            {
+                speech.SelectFastVoice();
+            }
+            else if (SpeedStatus.Text == "Normal")
+            {
+                speech.SelectNormalVoice();
+            }
+            else if (SpeedStatus.Text == "Slow")
+            {
+                speech.SelectSlowVoice();
+            }
+        }
+
+        private async void TestVoice_Click(object sender, RoutedEventArgs e)
+        {
+            await Task.Run(() => speech.Speak("Test Voice"));
+        }
+
+        private void Options_Click(object sender, RoutedEventArgs e)
+        {
+            myTabControl.SelectedIndex = 2;
+        }
+
+        private void Add_PictureCategory_Click(object sender, RoutedEventArgs e)
+        {
+            myTabControl.SelectedIndex = 3;
+        }
+
     }
 }
