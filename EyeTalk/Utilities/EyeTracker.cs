@@ -49,10 +49,62 @@ namespace EyeTalk
             });
         }
 
-        private void SetXY(double X, double Y)
+        public void SetXY(double X, double Y)
         {
             coordinates.X = X;
             coordinates.Y = Y;
+        }
+
+        public string CheckX()
+        {
+            if (coordinates.X < 480)
+            {
+                return "Left";
+            }
+            else if (coordinates.X > 480 && coordinates.X < 960)
+            {
+                return "Middle Left";
+
+            }
+            else if (coordinates.X > 960 && coordinates.X < 1440)
+            {
+                return "Middle Right";
+
+            }
+            else if (coordinates.X > 1440 && coordinates.X < 1920)
+            {
+                return "Right";
+
+            }
+            else
+            {
+                return coordinates.X.ToString();
+            }
+        }
+
+        public string CheckY()
+        {
+            if (coordinates.Y < 360)
+            {
+                return "Top";
+            }
+            else if (coordinates.Y > 360 && coordinates.Y < 720)
+            {
+                return "Middle";
+            }
+            else if (coordinates.Y > 720 && coordinates.Y < 1080)
+            {
+                return "Bottom";
+            }
+            else
+            {
+                return coordinates.Y.ToString();
+            }
+        }
+
+        public string GetCurrentPosition()
+        {
+            return CheckY() + " " + CheckX();
         }
     }
 }

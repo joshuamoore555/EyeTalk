@@ -26,6 +26,22 @@ namespace EyeTalk.Utilities
             }
         }
 
+        public void ChooseSpeedOfVoice(string speed)
+        {
+            if (speed == "Fast")
+            {
+               SelectFastVoice();
+            }
+            else if (speed == "Normal")
+            {
+                SelectNormalVoice();
+            }
+            else if (speed == "Slow")
+            {
+                SelectSlowVoice();
+            }
+        }
+
         public void SelectFemaleVoice()
         {
             synthesizer.SelectVoice(voices.ElementAt(0).VoiceInfo.Name);
@@ -39,7 +55,6 @@ namespace EyeTalk.Utilities
         public void SelectFastVoice()
         {
             synthesizer.Rate = 3;
-
         }
 
         public void SelectNormalVoice()

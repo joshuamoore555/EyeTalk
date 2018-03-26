@@ -71,10 +71,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Constants\Positions.cs" />
     <Compile Include="Logic\AddPictureLogic.cs" />
     <Compile Include="Logic\MainWindowLogic.cs" />
     <Compile Include="Logic\OptionsLogic.cs" />
     <Compile Include="Logic\SavedSentencesLogic.cs" />
+    <Compile Include="Utilities\CoordinateTimer.cs" />
     <Compile Include="Utilities\EyeTracker.cs" />
     <Compile Include="Objects\XYCoordinate.cs" />
     <Compile Include="Tests\HomeTests.cs" />

@@ -11,6 +11,7 @@ using System.Collections;
 using EyeTalk.Objects;
 using EyeTalk.Logic;
 using EyeTalk.Utilities;
+using EyeTalk.Constants;
 
 namespace EyeTalk
 {
@@ -19,8 +20,7 @@ namespace EyeTalk
     /// </summary>
     /// 
     public partial class MainWindow : Window
-    {
-     
+    { 
         private string previousPosition;
         private string currentPosition;
 
@@ -28,15 +28,16 @@ namespace EyeTalk
         List<Button> buttons;
         List<TextBlock> textBlocks;
 
-
         SaveFileSerialiser saveInitialiser;
         EyeTracker eyeTracker;
-        System.Timers.Timer timer;
+        SpeechGenerator speech;
+        CoordinateTimer timer;
+    
         MainWindowLogic mainWindowLogic;
         OptionsLogic optionsLogic;
         AddPictureLogic addPictureLogic;
         SavedSentencesLogic savedSentencesLogic;
-        SpeechGenerator speech;
+        
 
         public MainWindow()
         {
@@ -49,12 +50,13 @@ namespace EyeTalk
             speech = new SpeechGenerator();
             eyeTracker = new EyeTracker();
             saveInitialiser = new SaveFileSerialiser();
-              
-            BeginTimer();
+
+            timer = new CoordinateTimer();
+            timer.coordinateTimer.Elapsed += Check;
             UpdateOptions();
         }
 
-
+        //Home Page Buttons
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
@@ -73,6 +75,102 @@ namespace EyeTalk
             myTabControl.SelectedIndex = 1;
 
         }
+
+        private void Options_Click(object sender, RoutedEventArgs e)
+        {
+            myTabControl.SelectedIndex = 2;
+        }
+
+        private void Add_PictureCategory_Click(object sender, RoutedEventArgs e)
+        {
+            myTabControl.SelectedIndex = 3;
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            eyeTracker.eyeTracking = false;
+            timer.coordinateTimer.Stop();
+            Application.Current.Dispatcher.BeginInvokeShutdown(System.Windows.Threading.DispatcherPriority.Send);
+        }
+
+
+
+        //Begin Speaking Buttons
+
+        private void Sentences_Button_Click(object sender, RoutedEventArgs e)
+        {
+            currentSentence.Text = savedSentencesLogic.RetrieveFirstSavedSentenceIfExists();
+            myTabControl.SelectedIndex = 4;
+        }
+
+        private void Back_Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindowLogic.SaveMostUsedIfNotNull();
+            optionsLogic.SaveOptionsIfNotNull();
+            myTabControl.SelectedIndex = 0;
+        }
+
+        private void Save_Button_Click(object sender, RoutedEventArgs e)
+        {
+            SentenceUpdate.Text = savedSentencesLogic.SaveSentenceIfNotPreviouslySaved(SentenceTextBox.Text);
+        }
+
+        private async void PlaySound_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var sentence = SentenceTextBox.Text;
+            await Task.Run(() => speech.Speak(sentence));
+        }
+
+        private void Image1_Button_Click(object sender, RoutedEventArgs e)
+        {
+            int index = 0;
+            SelectPicture(index);
+        }
+
+        private void Image2_Button_Click(object sender, RoutedEventArgs e)
+        {
+            int index = 1;
+            SelectPicture(index);
+        }
+
+        private void Image3_Button_Click(object sender, RoutedEventArgs e)
+        {
+            int index = 2;
+            SelectPicture(index);
+        }
+
+        private void Image4_Button_Click(object sender, RoutedEventArgs e)
+        {
+            int index = 3;
+            SelectPicture(index);
+        }
+
+        private void Page_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindowLogic.GoToNextPage();
+            UpdatePageNumber();
+            CreatePage();
+        }
+
+        private void Next_Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindowLogic.CheckIfBackToFirstCategory();
+            mainWindowLogic.UpdateCategoryAndGoToFirstPage();
+            CreatePage();
+            UpdatePageNumber();
+
+
+        }
+
+        private void Previous_Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainWindowLogic.CheckIfBackToLastCategory();
+            mainWindowLogic.UpdateCategoryAndGoToFirstPage();
+            CreatePage();
+            UpdatePageNumber();
+        }
+
+        //Begin Speaking Methods
 
         private void CreatePage()
         {
@@ -119,97 +217,6 @@ namespace EyeTalk
                 HighlightPicture(buttons, i);
             }
         }
-        private void Sentences_Button_Click(object sender, RoutedEventArgs e)
-        {
-            currentSentence.Text = savedSentencesLogic.RetrieveFirstSavedSentenceIfExists();
-            myTabControl.SelectedIndex = 4;
-        }
-
-        private void Back_Button_Click(object sender, RoutedEventArgs e)
-        {
-            mainWindowLogic.SaveMostUsedIfNotNull();
-            optionsLogic.SaveOptionsIfNotNull();
-            myTabControl.SelectedIndex = 0;
-        }
-
-        
-
-        private void Save_Button_Click(object sender, RoutedEventArgs e)
-        {
-            SentenceUpdate.Text = savedSentencesLogic.SaveSentenceIfNotPreviouslySaved(SentenceTextBox.Text);
-        }
-
-        private async void PlaySound_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var sentence = SentenceTextBox.Text;
-            await Task.Run(() => speech.Speak(sentence));
-        }
-
-        private void Image1_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 0;
-            SelectPicture(index);
-        }
-
-        private void Image2_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 1;
-            SelectPicture(index);
-        }
-
-        private void Image3_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 2;
-            SelectPicture(index);
-        }
-
-        private void Image4_Button_Click(object sender, RoutedEventArgs e)
-        {
-            int index = 3;
-            SelectPicture(index);
-        }
-
-        private async void Play_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var sentence = currentSentence.Text;
-            await Task.Run(() => speech.Speak(sentence));
-        }
-
-        private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
-        {
-
-            currentSentence.Text = savedSentencesLogic.NextSentence();
-            
-        }
-
-        private void Previous_Sentence_Button_Click(object sender, RoutedEventArgs e)
-        {
-            currentSentence.Text = savedSentencesLogic.PreviousSentence();
-
-        }
-
-        private void Delete_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
-        {
-            currentSentence.Text = savedSentencesLogic.DeleteSavedSentence();  
-        }
-
-
-
-
-
-        private void Reset_Click(object sender, RoutedEventArgs e)
-        {
-           mainWindowLogic.ResetMostUsedIfNotNull();
-           Reset.Content = "Most Used Pictures category has been reset";     
-        }
-
-
-        private void Page_Click(object sender, RoutedEventArgs e)
-        {
-            mainWindowLogic.GoToNextPage();
-            UpdatePageNumber();
-            CreatePage();
-        }
 
         private void HighlightPicture(List<Button> buttons, int i)
         {
@@ -249,8 +256,6 @@ namespace EyeTalk
             }
         }
 
-
-
         private void HidePicture(int i)
         {
             buttons.ElementAt(i).Visibility = Visibility.Hidden;
@@ -260,24 +265,159 @@ namespace EyeTalk
 
 
 
+        //Saved Sentences Buttons
 
-
-
-
-        public void BeginTimer()
+        private async void Play_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
-            timer = new System.Timers.Timer();
-            timer.Interval = 125;
-            timer.Elapsed += Check;
-            timer.AutoReset = true;
-            timer.Enabled = true;
+            var sentence = currentSentence.Text;
+            await Task.Run(() => speech.Speak(sentence));
         }
+
+        private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            currentSentence.Text = savedSentencesLogic.NextSentence();
+            
+        }
+
+        private void Previous_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            currentSentence.Text = savedSentencesLogic.PreviousSentence();
+
+        }
+
+        private void Delete_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
+        {
+            currentSentence.Text = savedSentencesLogic.DeleteSavedSentence();  
+        }
+
+
+
+        //Options Buttons
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+           mainWindowLogic.ResetMostUsedIfNotNull();
+           Reset.Content = "Most Used Pictures category has been reset";     
+        }
+
+        private void VoiceType_Click(object sender, RoutedEventArgs e)
+        {
+            var type = optionsLogic.ChangeVoiceType();
+            VoiceType.Content = type;
+
+            if (type == "Female")
+            {
+                speech.SelectFemaleVoice();
+            }
+            else if (type == "Male")
+            {
+                speech.SelectMaleVoice();
+            }
+        }
+
+        private void Right_Delay_Click(object sender, RoutedEventArgs e)
+        {
+            EyeSelectionSpeedStatus.Text = optionsLogic.IncreaseSelectionDelay();
+        }
+
+        private void Left_Delay_Click(object sender, RoutedEventArgs e)
+        {
+            EyeSelectionSpeedStatus.Text = optionsLogic.DecreaseSelectionDelay();
+
+        }
+
+        private void Right_Speed_Click(object sender, RoutedEventArgs e)
+        {
+            SpeedStatus.Text = optionsLogic.IncreaseVoiceSpeed();
+            speech.ChooseSpeedOfVoice(SpeedStatus.Text);
+        }
+
+        private void Left_Speed_Click(object sender, RoutedEventArgs e)
+        {
+            SpeedStatus.Text = optionsLogic.DecreaseVoiceSpeed();
+            speech.ChooseSpeedOfVoice(SpeedStatus.Text);
+
+        }
+
+        private async void TestVoice_Click(object sender, RoutedEventArgs e)
+        {
+            await Task.Run(() => speech.Speak("Test Voice"));
+        }
+
+
+    
+        //Options Methods
+
+        private void UpdateOptions()
+        {
+            VoiceType.Content = optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
+            SpeedStatus.Text = optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
+            EyeSelectionSpeedStatus.Text = optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
+        }
+
+
+
+        //Add Custom Picture Buttons
+
+        private void Load_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var picturePath = addPictureLogic.LoadCustomPicture();
+            CustomFilePath.Text = picturePath;
+            CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(picturePath);
+            var uri = new Uri(picturePath);
+            var bitmap = new BitmapImage(uri);
+            CustomPicture.Source = bitmap;
+        }
+
+        private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(CustomFilePath.Text) && String.IsNullOrEmpty(CustomName.Text))
+            {
+                Status.Text = "Please select a picture and name before saving";
+
+            }
+            else
+            {
+                Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
+                var currentPage = mainWindowLogic.customCategory.ElementAt(mainWindowLogic.customCategory.Count - 1);
+                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, mainWindowLogic.customCategory);
+
+                if (pictureAlreadyAdded)
+                {
+                    Status.Text = "This image has already been added.";
+                }
+                else
+                {
+                    var spaceInCustomCategory = addPictureLogic.CheckNumberOfCustomImagesInPage(currentPage);
+
+                    if (spaceInCustomCategory == true)
+                    {
+                        addPictureLogic.AddCustomPicture(customPicture, currentPage);
+                        Status.Text = "Added picture. " + "Number of pictures in category: " + currentPage.Count;
+                    }
+
+                    else if (spaceInCustomCategory == false)
+                    {
+                        mainWindowLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
+                        Status.Text = "Created new category. \nNumber of categories is now: " + mainWindowLogic.customCategory.Count;
+
+                    }
+
+                    saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
+                }
+            }
+        }
+
+      
+
+        //Coordinate Checking Methods
 
         public void Check(object sender, EventArgs e)
         {
             Dispatcher.Invoke((Action)(() =>
             {
-                currentPosition = CheckY() + " " + CheckX();
+                currentPosition = eyeTracker.GetCurrentPosition();
 
                 if (eyeTracker.coordinates.X == 0 && eyeTracker.coordinates.X == 0)
                 {
@@ -286,7 +426,7 @@ namespace EyeTalk
 
                 if (currentPosition == previousPosition)
                 {
-                    optionsLogic.Options.EyeFixationDuration++;
+                    optionsLogic.IncreaseEyeFixationDuration();
 
                     if (myTabControl.SelectedIndex == 0)
                     {
@@ -312,7 +452,7 @@ namespace EyeTalk
                 }
                 else
                 {
-                    optionsLogic.Options.EyeFixationDuration = 0;
+                    optionsLogic.ResetEyeFixationDuration();
                 }
 
                 previousPosition = currentPosition;
@@ -321,226 +461,167 @@ namespace EyeTalk
 
         }
 
-        private string CheckX()
-        {
-            if (eyeTracker.coordinates.X < 480)
-            {
-                return "Left";
-            }
-            else if (eyeTracker.coordinates.X > 480 && eyeTracker.coordinates.X < 960)
-            {
-                return "Middle Left";
-
-            }
-            else if (eyeTracker.coordinates.X > 960 && eyeTracker.coordinates.X < 1440)
-            {
-                return "Middle Right";
-
-            }
-            else if (eyeTracker.coordinates.X > 1440 && eyeTracker.coordinates.X < 1920)
-            {
-                return "Right";
-
-            }
-            else
-            {
-                return eyeTracker.coordinates.X.ToString();
-            }
-        }
-
-        private string CheckY()
-        {
-            if (eyeTracker.coordinates.Y < 360)
-            {
-                return "Top";
-            }
-            else if (eyeTracker.coordinates.Y > 360 && eyeTracker.coordinates.Y < 720)
-            {
-                return "Middle";
-            }
-            else if (eyeTracker.coordinates.Y > 720 && eyeTracker.coordinates.Y < 1080)
-            {
-                return "Bottom";
-            }
-            else
-            {
-                return eyeTracker.coordinates.Y.ToString();
-            }
-        }
-
         private void CheckHomePage(string position)
         {
             ResetHomePage();
+            switch (position) {
 
-            if (position == "Top Left")
-            {
-                HoverOverButton(BeginSpeaking);
+                case Positions.TopLeft:
+                    HoverOverButton(BeginSpeaking);
+                    break;
 
-            }
-            else if (position == "Top Middle Left")
-            {
-                HoverOverButton(BeginSpeaking);
+                case Positions.TopMiddleLeft:
+                    HoverOverButton(BeginSpeaking);
+                    break;
 
-            }
-            else if (position == "Top Middle Right")
-            {
-                HoverOverButton(AddPicture);
+                case Positions.TopMiddleRight:
+                    HoverOverButton(AddPicture);
+                    break;
 
-            }
-            else if (position == "Top Right")
-            {
-                HoverOverButton(AddPicture);
+                case Positions.TopRight:
+                    HoverOverButton(AddPicture);
+                    break;
 
-            }
-            else if (position == "Middle Left")
-            {
+                case Positions.MiddleLeft:
+                    break;
 
-            }
-            else if (position == "Middle Middle Left")
-            {
+                case Positions.MiddleMiddleLeft:
+                    break;
 
-            }
-            else if (position == "Middle Middle Right")
-            {
+                case Positions.MiddleMiddleRight:
+                    break;
 
-            }
-            else if (position == "Middle Right")
-            {
+                case Positions.MiddleRight:
+                    break;
 
-            }
-            else if (position == "Bottom Left")
-            {
-                HoverOverButton(Options);
-            }
+                case Positions.BottomLeft:
+                    HoverOverButton(Options);
+                    break;
 
-            else if (position == "Bottom Middle Left")
-            {
-                HoverOverButton(Options);
+                case Positions.BottomMiddleLeft:
+                    HoverOverButton(Options);
+                    break;
 
-            }
-            else if (position == "Bottom Middle Right")
-            {
-                HoverOverButton(Exit);
+                case Positions.BottomMiddleRight:
+                    HoverOverButton(Exit);
+                    break;
+
+                case Positions.BottomRight:
+                    HoverOverButton(Exit);
+                    break;
 
             }
-            else if (position == "Bottom Right")
-            {
-                HoverOverButton(Exit);
-            }
+        
         }
 
         private void CheckSpeakingPage(string position)
         {
             ResetSentencePage();
+            switch (position)
+            {
 
-            if (position == "Top Left")
-            {
-                HoverOverButton(SaveSentence);
-            }
-            else if (position == "Top Middle Left")
-            {
-                HoverOverButton(Page);
-            }
-            else if (position == "Top Middle Right")
-            {
-                HoverOverButton(Page);
-            }
-            else if (position == "Top Right")
-            {
-                HoverOverButton(PlaySound);
-            }
-            else if (position == "Middle Left")
-            {
-                HoverOverButton(Previous);
-            }
-            else if (position == "Middle Middle Left")
-            {
-                HoverOverButton(Image1_Button);
-            }
-            else if (position == "Middle Middle Right")
-            {
-                HoverOverButton(Image2_Button);
-            }
-            else if (position == "Middle Right")
-            {
-                HoverOverButton(Next);
-            }
-            else if (position == "Bottom Left")
-            {
-                HoverOverButton(Home);
-            }
-            else if (position == "Bottom Middle Left")
-            {
-                HoverOverButton(Image3_Button);
-            }
-            else if (position == "Bottom Middle Right")
-            {
-                HoverOverButton(Image4_Button);
-            }
-            else if (position == "Bottom Right")
-            {
-                HoverOverButton(SentenceList);
+                case Positions.TopLeft:
+                    HoverOverButton(SaveSentence);
+                    break;
+
+                case Positions.TopMiddleLeft:
+                    HoverOverButton(Page);
+                    break;
+
+                case Positions.TopMiddleRight:
+                    HoverOverButton(Page);
+                    break;
+
+                case Positions.TopRight:
+                    HoverOverButton(PlaySound);
+                    break;
+
+                case Positions.MiddleLeft:
+                    HoverOverButton(Previous);
+                    break;
+
+                case Positions.MiddleMiddleLeft:
+                    HoverOverButton(Image1_Button);
+                    break;
+
+                case Positions.MiddleMiddleRight:
+                    HoverOverButton(Image2_Button);
+                    break;
+
+                case Positions.MiddleRight:
+                    HoverOverButton(Next);
+                    break;
+
+                case Positions.BottomLeft:
+                    HoverOverButton(Home);
+                    break;
+
+                case Positions.BottomMiddleLeft:
+                    HoverOverButton(Image3_Button);
+                    break;
+
+                case Positions.BottomMiddleRight:
+                    HoverOverButton(Image4_Button);
+                    break;
+
+                case Positions.BottomRight:
+                    HoverOverButton(SentenceList);
+                    break;
+
             }
         }
 
         private void CheckAddPicturePage(string position)
         {
             ResetAddPicturePage();
-
-            if (position == "Top Left")
+            switch (position)
             {
 
-            }
-            else if (position == "Top Middle Left")
-            {
-            }
-            else if (position == "Top Middle Right")
-            {
-                CustomName.Background = Brushes.LightBlue;
-                CustomName.Focus();
-                ResetPosition();
+                case Positions.TopLeft:
+                    break;
 
+                case Positions.TopMiddleLeft:
+                    break;
 
-            }
-            else if (position == "Top Right")
-            {
-                CustomName.Focus();
-                CustomName.Background = Brushes.LightBlue;
-                ResetPosition();
-            }
-            else if (position == "Middle Left")
-            {
+                case Positions.TopMiddleRight:
+                    CustomName.Background = Brushes.LightBlue;
+                    CustomName.Focus();
+                    ResetPosition();
+                    break;
 
-            }
-            else if (position == "Middle Middle Left")
-            {
+                case Positions.TopRight:
+                    CustomName.Focus();
+                    CustomName.Background = Brushes.LightBlue;
+                    ResetPosition();
+                    break;
 
-            }
-            else if (position == "Middle Middle Right")
-            {
+                case Positions.MiddleLeft:
+                    break;
 
-            }
-            else if (position == "Middle Right")
-            {
+                case Positions.MiddleMiddleLeft:
+                    break;
 
-            }
-            else if (position == "Bottom Left")
-            {
-                HoverOverButton(BackHome);
+                case Positions.MiddleMiddleRight:
+                    break;
 
-            }
-            else if (position == "Bottom Middle Left")
-            {
-            }
-            else if (position == "Bottom Middle Right")
-            {
-                position = "";
-                HoverOverButton(Select_Picture);
+                case Positions.MiddleRight:
+                    break;
 
-            }
-            else if (position == "Bottom Right")
-            {
-                HoverOverButton(Save_Custom_Button);
+                case Positions.BottomLeft:
+                    HoverOverButton(BackHome);
+                    break;
+
+                case Positions.BottomMiddleLeft:
+                    break;
+
+                case Positions.BottomMiddleRight:
+                    position = "";
+                    HoverOverButton(Select_Picture);
+                    break;
+
+                case Positions.BottomRight:
+                    HoverOverButton(Save_Custom_Button);
+                    break;
 
             }
         }
@@ -548,53 +629,51 @@ namespace EyeTalk
         private void CheckSavedSentencePage(string position)
         {
             ResetSaveSentencePage();
+            switch (position)
+            {
+                case Positions.TopLeft:
+                    break;
 
-            if (position == "Top Left")
-            {
+                case Positions.TopMiddleLeft:
+                    break;
 
-            }
-            else if (position == "Top Middle Left")
-            {
-            }
-            else if (position == "Top Middle Right")
-            {
-            }
-            else if (position == "Top Right")
-            {
-            }
-            else if (position == "Middle Left")
-            {
-                HoverOverButton(PreviousSentence);
+                case Positions.TopMiddleRight:
+                    break;
 
-            }
-            else if (position == "Middle Middle Left")
-            {
+                case Positions.TopRight:
+                    break;
 
-            }
-            else if (position == "Middle Middle Right")
-            {
+                case Positions.MiddleLeft:
+                    HoverOverButton(PreviousSentence);
+                    break;
 
-            }
-            else if (position == "Middle Right")
-            {
-                HoverOverButton(NextSentence);
+                case Positions.MiddleMiddleLeft:
+                    break;
 
-            }
-            else if (position == "Bottom Left")
-            {
-                HoverOverButton(BackToSpeaking);
-            }
-            else if (position == "Bottom Middle Left")
-            {
-                HoverOverButton(SpeakSentence);
-            }
-            else if (position == "Bottom Middle Right")
-            {
-                HoverOverButton(SpeakSentence);
-            }
-            else if (position == "Bottom Right")
-            {
-                HoverOverButton(DeleteSentence);
+                case Positions.MiddleMiddleRight:
+                    break;
+
+                case Positions.MiddleRight:
+                    HoverOverButton(NextSentence);
+                    break;
+
+                case Positions.BottomLeft:
+                    HoverOverButton(BackToSpeaking);
+                    break;
+
+                case Positions.BottomMiddleLeft:
+                    HoverOverButton(SpeakSentence);
+                    break;
+
+                case Positions.BottomMiddleRight:
+                    HoverOverButton(SpeakSentence);
+
+                    break;
+
+                case Positions.BottomRight:
+                    HoverOverButton(DeleteSentence);
+                    break;
+
             }
         }
 
@@ -602,55 +681,56 @@ namespace EyeTalk
         {
             ResetOptionsPage();
 
-            if (position == "Top Left")
+            switch (position)
             {
-                HoverOverButton(Left_Speed);
-            }
-            else if (position == "Top Middle Left")
-            {
-                HoverOverButton(Right_Speed);
-            }
-            else if (position == "Top Middle Right")
-            {
-                HoverOverButton(VoiceType);
-            }
-            else if (position == "Top Right")
-            {
-                HoverOverButton(VoiceType);
-            }
-            else if (position == "Middle Left")
-            {
-                HoverOverButton(Left_Delay);
-            }
-            else if (position == "Middle Middle Left")
-            {
-                HoverOverButton(Right_Delay);
+                case Positions.TopLeft:
+                    HoverOverButton(Left_Speed);
+                    break;
 
-            }
-            else if (position == "Middle Middle Right")
-            {
-                HoverOverButton(Reset);
+                case Positions.TopMiddleLeft:
+                    HoverOverButton(Right_Speed);
+                    break;
 
-            }
-            else if (position == "Middle Right")
-            {
-                HoverOverButton(Reset);
+                case Positions.TopMiddleRight:
+                    HoverOverButton(VoiceType);
+                    break;
 
-            }
-            else if (position == "Bottom Left")
-            {
-                HoverOverButton(Back);
-            }
-            else if (position == "Bottom Middle Left")
-            {
-            }
-            else if (position == "Bottom Middle Right")
-            {
-                HoverOverButton(TestVoice);
+                case Positions.TopRight:
+                    HoverOverButton(VoiceType);
+                    break;
 
-            }
-            else if (position == "Bottom Right")
-            {
+                case Positions.MiddleLeft:
+                    HoverOverButton(Left_Delay);
+                    break;
+
+                case Positions.MiddleMiddleLeft:
+                    HoverOverButton(Right_Delay);
+                    break;
+
+                case Positions.MiddleMiddleRight:
+                    HoverOverButton(Reset);
+                    break;
+
+                case Positions.MiddleRight:
+                    HoverOverButton(Reset);
+                    break;
+
+                case Positions.BottomLeft:
+                    HoverOverButton(Back);
+
+                    break;
+
+                case Positions.BottomMiddleLeft:
+                    break;
+
+                case Positions.BottomMiddleRight:
+                    HoverOverButton(TestVoice);
+
+                    break;
+
+                case Positions.BottomRight:
+                    break;
+
             }
         }
 
@@ -658,12 +738,15 @@ namespace EyeTalk
         {
             button.Background = Brushes.LightBlue;
 
-            if (optionsLogic.Options.EyeFixationDuration > optionsLogic.Options.EyeFixationValue)
+            if (optionsLogic.HasDurationBeenReached())
             {
                 ResetPosition();
                 button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             }
         }
+
+
+        //Reset Methods
 
         private void ResetPosition()
         {
@@ -724,6 +807,9 @@ namespace EyeTalk
             Back.Background = Brushes.Purple;
         }
 
+
+        //Save Methods
+
         private void LoadSaveFiles()
         {
             mainWindowLogic.categories = saveInitialiser.LoadCategories();
@@ -731,175 +817,5 @@ namespace EyeTalk
             mainWindowLogic.customCategory = saveInitialiser.LoadCustomCategory();
             optionsLogic.Options = saveInitialiser.LoadOptions();
         }
-
-        private void UpdateOptions()
-        {
-            VoiceType.Content = optionsLogic.Options.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
-            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
-            EyeSelectionSpeedStatus.Text = optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
-        }
-
-        private void Load_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
-        {
-            var picturePath = addPictureLogic.LoadCustomPicture();
-            CustomFilePath.Text = picturePath;
-            CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(picturePath);
-            var uri = new Uri(picturePath);
-            var bitmap = new BitmapImage(uri);
-            CustomPicture.Source = bitmap;
-        }
-
-        private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (String.IsNullOrEmpty(CustomFilePath.Text) && String.IsNullOrEmpty(CustomName.Text))
-            {
-                Status.Text = "Please select a picture and name before saving";
-
-            }
-            else
-            {
-                Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
-                var currentPage = mainWindowLogic.customCategory.ElementAt(mainWindowLogic.customCategory.Count - 1);
-                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, mainWindowLogic.customCategory);
-
-                if (pictureAlreadyAdded)
-                {
-                    Status.Text = "This image has already been added.";
-                }
-                else
-                {
-                    var spaceInCustomCategory = addPictureLogic.CheckNumberOfCustomImagesInPage(currentPage);
-
-                    if (spaceInCustomCategory == true)
-                    {
-                        addPictureLogic.AddCustomPicture(customPicture, currentPage);
-                        Status.Text = "Added picture. " + "Number of pictures in category: " + currentPage.Count;
-                    }
-
-                    else if (spaceInCustomCategory == false)
-                    {
-                        mainWindowLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
-                        Status.Text = "Created new category. \nNumber of categories is now: " + mainWindowLogic.customCategory.Count;
-
-                    }
-
-                    saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
-                }
-            }
-        }
-
-
-
-
-        private void VoiceType_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.ChangeVoiceType();
-
-            if (optionsLogic.Options.VoiceTypeSelection == 0)
-            {
-                VoiceType.Content = "Female";
-                speech.SelectFemaleVoice();
-
-            }
-            else if (optionsLogic.Options.VoiceTypeSelection == 1)
-            {
-                VoiceType.Content = "Male";
-                speech.SelectMaleVoice();
-
-            }
-        }
-
-        private void Right_Delay_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.IncreaseSelectionDelay();
-            var seconds = optionsLogic.Options.EyeFixationValue / 4;
-            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
-        }
-
-        private void Left_Delay_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.DecreaseSelectionDelay();
-            var seconds = optionsLogic.Options.EyeFixationValue / 4;
-            EyeSelectionSpeedStatus.Text = seconds + " Seconds";
-        }
-
-        private void Right_Speed_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.IncreaseVoiceSpeed();
-
-            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
-
-            if (SpeedStatus.Text == "Fast")
-            {
-                speech.SelectFastVoice();
-            }
-            else if (SpeedStatus.Text == "Normal")
-            {
-                speech.SelectNormalVoice();
-            }
-            else if (SpeedStatus.Text == "Slow")
-            {
-                speech.SelectSlowVoice();
-            }
-        }
-
-        private void Left_Speed_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.DecreaseVoiceSpeed();
-
-            SpeedStatus.Text = optionsLogic.Options.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
-            if (SpeedStatus.Text == "Fast")
-            {
-                speech.SelectFastVoice();
-            }
-            else if (SpeedStatus.Text == "Normal")
-            {
-                speech.SelectNormalVoice();
-            }
-            else if (SpeedStatus.Text == "Slow")
-            {
-                speech.SelectSlowVoice();
-            }
-        }
-
-        private async void TestVoice_Click(object sender, RoutedEventArgs e)
-        {
-            await Task.Run(() => speech.Speak("Test Voice"));
-        }
-
-        private void Options_Click(object sender, RoutedEventArgs e)
-        {
-            myTabControl.SelectedIndex = 2;
-        }
-
-        private void Add_PictureCategory_Click(object sender, RoutedEventArgs e)
-        {
-            myTabControl.SelectedIndex = 3;
-        }
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            eyeTracker.eyeTracking = false;
-            timer.Stop();
-            Application.Current.Dispatcher.BeginInvokeShutdown(System.Windows.Threading.DispatcherPriority.Send);
-        }
-
-        private void Next_Button_Click(object sender, RoutedEventArgs e)
-        {
-            mainWindowLogic.CheckIfBackToFirstCategory();
-            mainWindowLogic.UpdateCategoryAndGoToFirstPage();
-            CreatePage();
-            UpdatePageNumber();
-
-
-        }
-
-        private void Previous_Button_Click(object sender, RoutedEventArgs e)
-        {
-            mainWindowLogic.CheckIfBackToLastCategory();
-            mainWindowLogic.UpdateCategoryAndGoToFirstPage();
-            CreatePage();
-            UpdatePageNumber();
-        }
-
     }
 }

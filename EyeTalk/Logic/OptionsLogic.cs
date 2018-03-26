@@ -1,14 +1,20 @@
 ﻿using EyeTalk.Objects;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EyeTalk.Logic
 {
     class OptionsLogic
     {
        public Options Options{ get; set; }
-        public SaveFileSerialiser save;
-       public OptionsLogic()
+       public SaveFileSerialiser save;
+        public List<String> VoiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
+        public List<String> VoiceTypes = new List<String> { "Male", "Female" };
+
+        public OptionsLogic()
         {
-             save= new SaveFileSerialiser();
+            save= new SaveFileSerialiser();
             Options = save.LoadOptions();
             /*
             Options = new Options(0,0,0,0,false);
@@ -16,17 +22,49 @@ namespace EyeTalk.Logic
             */
         }
 
-       public void ChangeVoiceType()
+        public void IncreaseEyeFixationDuration()
         {
-            Options.VoiceTypeSelection++;
+            Options.EyeFixationDuration++;
+        }
 
-            if (Options.VoiceTypeSelection > Options.VoiceTypes.Count-1)
+        public void ResetEyeFixationDuration()
+        {
+            Options.EyeFixationDuration++;
+        }
+
+        public bool HasDurationBeenReached()
+        {
+            if (Options.EyeFixationDuration > Options.EyeFixationValue)
             {
-                Options.VoiceTypeSelection = 0;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        public void IncreaseVoiceSpeed()
+        public string ChangeVoiceType()
+        {
+            Options.VoiceTypeSelection++;
+
+            if (Options.VoiceTypeSelection > VoiceTypes.Count-1)
+            {
+                Options.VoiceTypeSelection = 0;
+            }
+
+            if(Options.VoiceTypeSelection == 0)
+            {
+                return "Female";
+            }
+            else
+            {
+                return "Male";
+            }
+
+        }
+
+        public string IncreaseVoiceSpeed()
         {
             Options.VoiceSpeedSelection++;
 
@@ -34,31 +72,39 @@ namespace EyeTalk.Logic
             {
                 Options.VoiceSpeedSelection = 0;
             }
+
+            
+
+            return VoiceSpeeds.ElementAt(Options.VoiceSpeedSelection);
         }
 
-        public void DecreaseVoiceSpeed()
+        public string DecreaseVoiceSpeed()
         {
             Options.VoiceSpeedSelection--;
             if (Options.VoiceSpeedSelection < 0)
             {
                 Options.VoiceSpeedSelection = 2;
             }
+            return VoiceSpeeds.ElementAt(Options.VoiceSpeedSelection);
+
         }
 
-        public void IncreaseSelectionDelay()
+        public string IncreaseSelectionDelay()
         {
             if (Options.EyeFixationValue < 21)
             {
                 Options.EyeFixationValue++;
             }
+            return Options.EyeFixationValue / 4 + " Seconds";
         }
 
-        public void DecreaseSelectionDelay()
+        public string DecreaseSelectionDelay()
         {
             if (Options.EyeFixationValue > 1)
             {
                 Options.EyeFixationValue--;
             }
+            return Options.EyeFixationValue / 4 + " Seconds";
         }
 
         public void SaveOptionsIfNotNull()
