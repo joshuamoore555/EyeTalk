@@ -74,8 +74,22 @@ namespace EyeTalk
                 categories.Add("Most Used", mostUsedCategory);
 
             }
+        }
 
+        public void UpdateCustomCategory()
+        {
+            categories.Remove("Custom");
+            categories.Add("Custom", customCategory);
+        }
 
+        public void ResetSentence()
+        {
+            CategoryIndex = 0;
+            PageIndex = 0;
+            AmountOfWordsInSentence = 0;
+            SentenceIndex = 0;
+            Sentence.Clear();
+           
         }
 
     }

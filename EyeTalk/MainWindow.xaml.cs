@@ -34,6 +34,7 @@ namespace EyeTalk
         System.Timers.Timer timer;
         MainWindowLogic mainWindowLogic;
         OptionsLogic optionsLogic;
+        AddPictureLogic addPictureLogic;
         SavedSentencesLogic savedSentencesLogic;
         SpeechGenerator speech;
 
@@ -43,12 +44,13 @@ namespace EyeTalk
             mainWindowLogic = new MainWindowLogic();
             optionsLogic = new OptionsLogic();
             savedSentencesLogic = new SavedSentencesLogic();
+            addPictureLogic = new AddPictureLogic();
+
             speech = new SpeechGenerator();
             eyeTracker = new EyeTracker();
             saveInitialiser = new SaveFileSerialiser();
               
             BeginTimer();
-            LoadSaveFiles();
             UpdateOptions();
         }
 
@@ -57,8 +59,10 @@ namespace EyeTalk
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
             LoadSaveFiles();
-            ResetSentence();
-            UpdateCustomCategory();
+            mainWindowLogic.ResetSentence();
+            SentenceTextBox.Text = "";
+            SentenceUpdate.Text = "";
+            mainWindowLogic.UpdateCustomCategory();
             mainWindowLogic.UpdateMostUsedCategory();
 
             images = new List<Image> { Image1, Image2, Image3, Image4 };
@@ -294,15 +298,56 @@ namespace EyeTalk
             saveInitialiser.SaveSentencesToFile(savedSentencesLogic.savedSentences);
         }
 
-        private void Add_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        private void Load_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
         {
-            LoadCustomPicture();
+            var picturePath = addPictureLogic.LoadCustomPicture();
+            CustomFilePath.Text = picturePath;
+            CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(picturePath);
+            var uri = new Uri(picturePath);
+            var bitmap = new BitmapImage(uri);
+            CustomPicture.Source = bitmap;
         }
 
         private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
         {
-            SaveCustomPicture();
+            if (String.IsNullOrEmpty(CustomFilePath.Text) && String.IsNullOrEmpty(CustomName.Text))
+            {
+                Status.Text = "Please select a picture and name before saving";
+
+            }
+            else
+            {
+                Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
+                var currentPage = mainWindowLogic.customCategory.ElementAt(mainWindowLogic.customCategory.Count - 1);
+                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, mainWindowLogic.customCategory);
+
+                if (pictureAlreadyAdded)
+                {
+                    Status.Text = "This image has already been added.";
+                }
+                else
+                {
+                    var spaceInCustomCategory = addPictureLogic.CheckNumberOfCustomImagesInPage(currentPage);
+
+                    if (spaceInCustomCategory == true)
+                    {
+                        addPictureLogic.AddCustomPicture(customPicture, currentPage);
+                        Status.Text = "Added picture. " + "Number of pictures in category: " + currentPage.Count; 
+                    }
+
+                    else if(spaceInCustomCategory == false)
+                    {
+                        mainWindowLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
+                        Status.Text = "Created new category. \nNumber of categories is now: " + mainWindowLogic.customCategory.Count;
+
+                    }
+
+                    saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
+                }
+            }
         }
+
+
 
 
         private void VoiceType_Click(object sender, RoutedEventArgs e)
@@ -579,78 +624,6 @@ namespace EyeTalk
 
 
 
-        private void LoadCustomPicture()
-        {
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
-            {
-                DefaultExt = ".png",
-                Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|GIF Files (*.gif)|*.gif"
-            };
-
-            Nullable<bool> result = dialog.ShowDialog();
-
-            List<BitmapImage> list = new List<BitmapImage>();
-
-            if (result == true)
-            {
-                CustomFilePath.Text = dialog.FileName;
-                CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName);
-                var uri = new Uri(dialog.FileName);
-                var bitmap = new BitmapImage(uri);
-                CustomPicture.Source = bitmap;
-            }
-        }
-
-        private void SaveCustomPicture()
-        {
-            if (String.IsNullOrEmpty(CustomFilePath.Text) && String.IsNullOrEmpty(CustomName.Text))
-            {
-                Status.Text = "Please select a picture and name before saving";
-
-            }
-            else
-            {
-                Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
-                var numberOfPages = mainWindowLogic.customCategory.Count - 1;
-                var currentPage = mainWindowLogic.customCategory.ElementAt(numberOfPages);
-
-                Boolean pictureAlreadyAdded = false;
-
-                foreach (var page in mainWindowLogic.customCategory)
-                {
-                    foreach (var picture in page)
-                    {
-                        if (picture.Name == customPicture.Name)
-                        {
-                            Status.Text = "This image has already been added.";
-                            pictureAlreadyAdded = true;
-                        }
-                    }
-                }
-
-                if (currentPage.Count < 4)
-                {
-                    if (pictureAlreadyAdded == false)
-                    {
-                        currentPage.Add(customPicture);
-                        Status.Text = "Added picture. Number of pictures is now: " + currentPage.Count;
-                        saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
-                    }
-
-                }
-                else
-                {
-                    if (pictureAlreadyAdded == false)
-                    {
-                        List<Picture> newCustomCategory = new List<Picture>() { };
-                        newCustomCategory.Add(customPicture);
-                        mainWindowLogic.customCategory.Add(newCustomCategory);
-                        Status.Text = "Number of pictures is now: " + currentPage.Count + "\nCreated new category. Number of categories is now: " + mainWindowLogic.customCategory.Count;
-                        saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
-                    }
-                }
-            }
-        }
 
 
 
@@ -1122,23 +1095,10 @@ namespace EyeTalk
             optionsLogic.Options = saveInitialiser.LoadOptions();
         }
 
-        private void UpdateCustomCategory()
-        {
-            mainWindowLogic.categories.Remove("Custom");
-            mainWindowLogic.categories.Add("Custom", mainWindowLogic.customCategory);
-        }
 
 
 
-        private void ResetSentence()
-        {
-            mainWindowLogic.CategoryIndex = 0;
-            mainWindowLogic.PageIndex = 0;
-            mainWindowLogic.AmountOfWordsInSentence = 0;
-            mainWindowLogic.SentenceIndex = 0;
-            mainWindowLogic.Sentence.Clear();
-            SentenceTextBox.Text = "";
-            SentenceUpdate.Text = "";
-        }
+
+       
     }
 }
