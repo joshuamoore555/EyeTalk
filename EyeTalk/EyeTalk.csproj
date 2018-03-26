@@ -79,7 +79,7 @@
     <Compile Include="Utilities\CoordinateTimer.cs" />
     <Compile Include="Utilities\EyeTracker.cs" />
     <Compile Include="Objects\XYCoordinate.cs" />
-    <Compile Include="Tests\HomeTests.cs" />
+    <Compile Include="Tests\UITests.cs" />
     <Compile Include="Utilities\SpeechGenerator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -10,16 +10,18 @@ namespace EyeTalk.Utilities
     {
         public System.Timers.Timer coordinateTimer;
 
-        public CoordinateTimer(){
+        public CoordinateTimer()
+        {
             coordinateTimer = new System.Timers.Timer();
+            BeginTimer();
         }
 
         public void BeginTimer()
         {
             coordinateTimer = new System.Timers.Timer();
             coordinateTimer.Interval = 125;
-            //timer.Elapsed += Check;
             coordinateTimer.AutoReset = true;
             coordinateTimer.Enabled = true;
         }
     }
+}

@@ -21,7 +21,10 @@ namespace EyeTalk.Logic
             {
                 DefaultExt = ".png",
                 Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|GIF Files (*.gif)|*.gif"
+                
             };
+
+            
 
             Nullable<bool> result = dialog.ShowDialog();
 

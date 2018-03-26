@@ -10,11 +10,11 @@ namespace EyeTalk.Logic
        public Options Options{ get; set; }
        public SaveFileSerialiser save;
         public List<String> VoiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
-        public List<String> VoiceTypes = new List<String> { "Male", "Female" };
+        public List<String> VoiceTypes = new List<String> {  "Female","Male" };
 
         public OptionsLogic()
         {
-            save= new SaveFileSerialiser();
+            save = new SaveFileSerialiser();
             Options = save.LoadOptions();
             /*
             Options = new Options(0,0,0,0,false);
@@ -72,8 +72,6 @@ namespace EyeTalk.Logic
             {
                 Options.VoiceSpeedSelection = 0;
             }
-
-            
 
             return VoiceSpeeds.ElementAt(Options.VoiceSpeedSelection);
         }

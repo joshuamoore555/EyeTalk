@@ -42,6 +42,7 @@ namespace EyeTalk
         public MainWindow()
         {
             InitializeComponent();
+
             mainWindowLogic = new MainWindowLogic();
             optionsLogic = new OptionsLogic();
             savedSentencesLogic = new SavedSentencesLogic();
@@ -50,9 +51,10 @@ namespace EyeTalk
             speech = new SpeechGenerator();
             eyeTracker = new EyeTracker();
             saveInitialiser = new SaveFileSerialiser();
-
             timer = new CoordinateTimer();
-            timer.coordinateTimer.Elapsed += Check;
+
+            timer.coordinateTimer.Elapsed += CheckCoordinates;
+            LoadSaveFiles();
             UpdateOptions();
         }
 
@@ -365,9 +367,12 @@ namespace EyeTalk
             var picturePath = addPictureLogic.LoadCustomPicture();
             CustomFilePath.Text = picturePath;
             CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(picturePath);
-            var uri = new Uri(picturePath);
-            var bitmap = new BitmapImage(uri);
-            CustomPicture.Source = bitmap;
+            if (picturePath != null)
+            {
+                var uri = new Uri(picturePath);
+                var bitmap = new BitmapImage(uri);
+                CustomPicture.Source = bitmap;
+            }
         }
 
         private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
@@ -413,7 +418,7 @@ namespace EyeTalk
 
         //Coordinate Checking Methods
 
-        public void Check(object sender, EventArgs e)
+        public void CheckCoordinates(object sender, EventArgs e)
         {
             Dispatcher.Invoke((Action)(() =>
             {
