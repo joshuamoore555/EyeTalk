@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace EyeTalk
     {
         public int CategoryIndex { get; set; }
         public int PageIndex { get; set; }
-        public int SentenceIndex { get; set; }
+        //public int SentenceIndex { get; set; }
         public int AmountOfWordsInSentence { get; set; }
         public OrderedDictionary Sentence { get; set; }
         public SortedList<String, List<List<Picture>>> categories;
@@ -36,7 +37,7 @@ namespace EyeTalk
 
             CategoryIndex = 0;
             PageIndex = 0;
-            SentenceIndex = 0;
+            //SentenceIndex = 0;
             AmountOfWordsInSentence = 0;
 
 
@@ -90,7 +91,7 @@ namespace EyeTalk
             CategoryIndex = 0;
             PageIndex = 0;
             AmountOfWordsInSentence = 0;
-            SentenceIndex = 0;
+            //SentenceIndex = 0;
             Sentence.Clear();
         }
 
@@ -103,7 +104,7 @@ namespace EyeTalk
             {
                 CategoryIndex = categories.Count - 1;
             }
-            
+
         }
 
         public void UpdateCategoryAndGoToFirstPage()
@@ -119,7 +120,7 @@ namespace EyeTalk
             var numberOfPages = categoryPages.Value.Count;
             PageIndex++;
 
-            if(PageIndex >= numberOfPages)
+            if (PageIndex >= numberOfPages)
             {
                 PageIndex = 0;
                 CategoryPage = categoryPages.Value.ElementAt(PageIndex);
@@ -138,8 +139,8 @@ namespace EyeTalk
             var categoryPages = categories.ElementAt(CategoryIndex);
             var numberOfPages = categoryPages.Value.Count;
             return categoryName + " \nPage " + (PageIndex + 1) + "/" + numberOfPages;
-        
-    }
+
+        }
 
         public void CheckIfBackToFirstCategory()
         {
@@ -148,8 +149,8 @@ namespace EyeTalk
             if (CategoryIndex >= categories.Count)
             {
                 CategoryIndex = 0;
-               
-            }   
+
+            }
         }
 
         public void Begin()
@@ -160,10 +161,83 @@ namespace EyeTalk
 
             var categoryPages = categories.ElementAt(CategoryIndex);
             categoryName = categories.ElementAt(CategoryIndex).Key;
-            CategoryPage  = categoryPages.Value.ElementAt(PageIndex);
-            
+            CategoryPage = categoryPages.Value.ElementAt(PageIndex);
+
+        }
+        public void SaveMostUsedIfNotNull()
+        {
+            if (mostUsed != null)
+            {
+                save.SaveMostUsed(mostUsed);
+            }
         }
 
-    
+        public void ResetMostUsedIfNotNull()
+        {
+            if (mostUsed != null)
+            {
+                mostUsed.Clear();
+                categories.Remove("Most Used");
+                save.CreateMostUsed();
+            }
+
+        }
+
+        public void UpdateMostUsedPicture(int i, string word)
+        {
+            if (mostUsed == null)
+            {
+                mostUsed = new SortedDictionary<String, Picture>();
+            }
+
+            CategoryPage.ElementAt(i).Count++;
+
+            if (mostUsed.ContainsKey(word))
+            {
+                mostUsed.Remove(word);
+                mostUsed.Add(word, CategoryPage.ElementAt(i));
+            }
+            else
+            {
+                mostUsed.Add(word, CategoryPage.ElementAt(i));
+            }
+        }
+
+
+        public string AddWordToSentence(string word, int i)
+        {
+            if (!Sentence.Contains(CategoryPage.ElementAt(i).Name))
+            {
+                Sentence.Add(word, word);
+                StringBuilder sb = new StringBuilder();
+                foreach (DictionaryEntry s in Sentence)
+                {
+                    sb.Append(s.Value + " ");
+                }
+                AmountOfWordsInSentence++;
+                CategoryPage.ElementAt(i).Selected = true;
+                return sb.ToString();
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public string RemoveWordFromSentence(string word, int i)
+        {
+            Sentence.Remove(word);
+            StringBuilder sb = new StringBuilder();
+            foreach (DictionaryEntry s in Sentence)
+            {
+                sb.Append(s.Value + " ");
+            }
+            AmountOfWordsInSentence--;
+
+            CategoryPage.ElementAt(i).Selected = false;
+
+            return sb.ToString();
+         
+        }
     }
 }

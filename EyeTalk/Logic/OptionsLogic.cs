@@ -5,10 +5,10 @@ namespace EyeTalk.Logic
     class OptionsLogic
     {
        public Options Options{ get; set; }
-
+        public SaveFileSerialiser save;
        public OptionsLogic()
         {
-            SaveFileSerialiser save = new SaveFileSerialiser();
+             save= new SaveFileSerialiser();
             Options = save.LoadOptions();
             /*
             Options = new Options(0,0,0,0,false);
@@ -58,6 +58,14 @@ namespace EyeTalk.Logic
             if (Options.EyeFixationValue > 1)
             {
                 Options.EyeFixationValue--;
+            }
+        }
+
+        public void SaveOptionsIfNotNull()
+        {
+            if(Options != null)
+            {
+                save.SaveOptions(Options);
             }
         }
     }
