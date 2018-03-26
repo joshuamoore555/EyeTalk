@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Speech.Synthesis;
-using System.Collections.Specialized;
 using System.Collections;
-using Tobii.EyeX.Framework;
-using EyeXFramework;
 using EyeTalk.Objects;
 using EyeTalk.Logic;
 using EyeTalk.Utilities;
@@ -29,21 +24,17 @@ namespace EyeTalk
         private string previousPosition;
         private string currentPosition;
 
-        SortedList<String, List<List<Picture>>> categories;
-        List<List<Picture>> customCategory;
-        List<String> savedSentences;
-        List<Picture> categoryData;
-        SortedDictionary<String, Picture> mostUsed;
         List<Image> images;
         List<Button> buttons;
         List<TextBlock> textBlocks;
 
+
         SaveFileSerialiser saveInitialiser;
-        OrderedDictionary sentence;
         EyeTracker eyeTracker;
         System.Timers.Timer timer;
         MainWindowLogic mainWindowLogic;
         OptionsLogic optionsLogic;
+        SavedSentencesLogic savedSentencesLogic;
         SpeechGenerator speech;
 
         public MainWindow()
@@ -51,13 +42,11 @@ namespace EyeTalk
             InitializeComponent();
             mainWindowLogic = new MainWindowLogic();
             optionsLogic = new OptionsLogic();
+            savedSentencesLogic = new SavedSentencesLogic();
             speech = new SpeechGenerator();
-
             eyeTracker = new EyeTracker();
             saveInitialiser = new SaveFileSerialiser();
-            sentence = new OrderedDictionary();
-            
-           
+              
             BeginTimer();
             LoadSaveFiles();
             UpdateOptions();
@@ -70,14 +59,14 @@ namespace EyeTalk
             LoadSaveFiles();
             ResetSentence();
             UpdateCustomCategory();
-            UpdateMostUsedCategory();
+            mainWindowLogic.UpdateMostUsedCategory();
 
             images = new List<Image> { Image1, Image2, Image3, Image4 };
             buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
             textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
 
-            var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
-            string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+            var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
+            string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
             var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
 
             CreatePage(page);
@@ -99,14 +88,14 @@ namespace EyeTalk
 
         private void Sentences_Button_Click(object sender, RoutedEventArgs e)
         {
-            var numberOfSentences = savedSentences.Count;
+            var numberOfSentences = savedSentencesLogic.savedSentences.Count;
             if (numberOfSentences <= 0)
             {
                 currentSentence.Text = "No sentences saved";
             }
             else
             {
-                currentSentence.Text = savedSentences.First();
+                currentSentence.Text = savedSentencesLogic.savedSentences.First();
             }
             myTabControl.SelectedIndex = 4;
 
@@ -114,9 +103,9 @@ namespace EyeTalk
 
         private void Back_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (mostUsed != null)
+            if (mainWindowLogic.mostUsed != null)
             {
-                saveInitialiser.SaveMostUsed(mostUsed);
+                saveInitialiser.SaveMostUsed(mainWindowLogic.mostUsed);
             }
 
             saveInitialiser.SaveOptions(optionsLogic.Options);
@@ -132,15 +121,15 @@ namespace EyeTalk
 
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
-            var size = categories.Count;
+            var size = mainWindowLogic.categories.Count;
             mainWindowLogic.CategoryIndex++;
             mainWindowLogic.PageIndex = 0;
 
             if (mainWindowLogic.CategoryIndex >= size)
             {
                 mainWindowLogic.CategoryIndex = 0;
-                var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
-                string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+                var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
+                string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
                 var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
                 UpdatePageNumber(categoryName);
@@ -148,8 +137,8 @@ namespace EyeTalk
             }
             else
             {
-                var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
-                string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+                var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
+                string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
                 var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
                 UpdatePageNumber(categoryName);
@@ -159,7 +148,7 @@ namespace EyeTalk
 
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
         {
-            var size = categories.Count;
+            var size = mainWindowLogic.categories.Count;
             mainWindowLogic.CategoryIndex--;
             mainWindowLogic.PageIndex = 0;
 
@@ -167,8 +156,8 @@ namespace EyeTalk
             {
                 mainWindowLogic.CategoryIndex = size - 1;
 
-                var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
-                string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+                var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
+                string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
                 var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
                 UpdatePageNumber(categoryName);
@@ -177,8 +166,8 @@ namespace EyeTalk
             }
             else
             {
-                var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
-                string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+                var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
+                string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
                 var page = categoryPages.Value.ElementAt(mainWindowLogic.PageIndex);
                 CreatePage(page);
                 UpdatePageNumber(categoryName);
@@ -193,14 +182,14 @@ namespace EyeTalk
                 SentenceUpdate.Text = "Please create a sentence before saving";
 
             }
-            else if (savedSentences.Count > 0 && savedSentences.Contains(SentenceTextBox.Text))
+            else if (savedSentencesLogic.savedSentences.Count > 0 && savedSentencesLogic.savedSentences.Contains(SentenceTextBox.Text))
             {
                 SentenceUpdate.Text = "Sentence has already been saved";
             }
             else
             {
-                savedSentences.Add(SentenceTextBox.Text);
-                saveInitialiser.SaveSentencesToFile(savedSentences);
+                savedSentencesLogic.savedSentences.Add(SentenceTextBox.Text);
+                saveInitialiser.SaveSentencesToFile(savedSentencesLogic.savedSentences);
                 SentenceUpdate.Text = "Sentence Saved";
             }
 
@@ -246,7 +235,7 @@ namespace EyeTalk
 
         private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
-            var numberOfSentences = savedSentences.Count;
+            var numberOfSentences = savedSentencesLogic.savedSentences.Count;
             mainWindowLogic.SentenceIndex++;
             if (numberOfSentences <= 0)
             {
@@ -254,18 +243,18 @@ namespace EyeTalk
             }
             else if (mainWindowLogic.SentenceIndex <= numberOfSentences - 1)
             {
-                currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
+                currentSentence.Text = savedSentencesLogic.savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
             }
             else
             {
                 mainWindowLogic.SentenceIndex = 0;
-                currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
+                currentSentence.Text = savedSentencesLogic.savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
             }
         }
 
         private void Previous_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
-            var numberOfSentences = savedSentences.Count;
+            var numberOfSentences = savedSentencesLogic.savedSentences.Count;
             mainWindowLogic.SentenceIndex--;
             if (numberOfSentences <= 0)
             {
@@ -273,36 +262,36 @@ namespace EyeTalk
             }
             else if (mainWindowLogic.SentenceIndex >= 0)
             {
-                currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
+                currentSentence.Text = savedSentencesLogic.savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
             }
             else
             {
                 mainWindowLogic.SentenceIndex = numberOfSentences - 1;
-                currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
+                currentSentence.Text = savedSentencesLogic.savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
             }
         }
 
         private void Delete_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (savedSentences.Count <= 0)
+            if (savedSentencesLogic.savedSentences.Count <= 0)
             {
                 currentSentence.Text = "No sentences saved";
             }
             else
             {
-                savedSentences.RemoveAt(mainWindowLogic.SentenceIndex);
+                savedSentencesLogic.savedSentences.RemoveAt(mainWindowLogic.SentenceIndex);
                 mainWindowLogic.SentenceIndex = 0;
 
-                if (savedSentences.Count <= 0)
+                if (savedSentencesLogic.savedSentences.Count <= 0)
                 {
                     currentSentence.Text = "No sentences saved";
                 }
                 else
                 {
-                    currentSentence.Text = savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
+                    currentSentence.Text = savedSentencesLogic.savedSentences.ElementAt(mainWindowLogic.SentenceIndex);
                 }
             }
-            saveInitialiser.SaveSentencesToFile(savedSentences);
+            saveInitialiser.SaveSentencesToFile(savedSentencesLogic.savedSentences);
         }
 
         private void Add_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
@@ -402,12 +391,12 @@ namespace EyeTalk
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            if (mostUsed != null)
+            if (mainWindowLogic.mostUsed != null)
             {
                 saveInitialiser.CreateMostUsed();
-                mostUsed.Clear();
+                mainWindowLogic.mostUsed.Clear();
                 Reset.Content = "Most Used Pictures category has been reset";
-                categories.Remove("Most Used");
+                mainWindowLogic.categories.Remove("Most Used");
             }
             else
             {
@@ -420,8 +409,8 @@ namespace EyeTalk
 
         private void Page_Click(object sender, RoutedEventArgs e)
         {
-            var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
-            string categoryName = categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
+            var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
+            string categoryName = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex).Key;
             var numberOfPages = categoryPages.Value.Count;
             mainWindowLogic.PageIndex++;
 
@@ -443,7 +432,7 @@ namespace EyeTalk
 
         private void CreatePage(List<Picture> page)
         {
-            categoryData = page;
+            mainWindowLogic.Category = page;
             var numberOfPictures = page.Count;
 
             if (numberOfPictures > 0)
@@ -469,7 +458,7 @@ namespace EyeTalk
 
         private void UpdatePageNumber(string categoryName)
         {
-            var categoryPages = categories.ElementAt(mainWindowLogic.CategoryIndex);
+            var categoryPages = mainWindowLogic.categories.ElementAt(mainWindowLogic.CategoryIndex);
             var numberOfPages = categoryPages.Value.Count;
             Page.Content = categoryName + " \nPage " + (mainWindowLogic.PageIndex + 1) + "/" + numberOfPages;
         }
@@ -477,10 +466,10 @@ namespace EyeTalk
         private void SelectPicture(int i)
         {
             var word = textBlocks.ElementAt(i).Text;
-            var selected = categoryData.ElementAt(i).Selected;
-            if(mostUsed == null)
+            var selected = mainWindowLogic.Category.ElementAt(i).Selected;
+            if(mainWindowLogic.mostUsed == null)
             {
-                mostUsed = new SortedDictionary<String, Picture>();
+                mainWindowLogic.mostUsed = new SortedDictionary<String, Picture>();
             }
             UpdateMostUsedPicture(i, word);
 
@@ -499,15 +488,15 @@ namespace EyeTalk
 
         private void UpdateMostUsedPicture(int i, string word)
         {
-            categoryData.ElementAt(i).Count++;
-            if (mostUsed.ContainsKey(word))
+            mainWindowLogic.Category.ElementAt(i).Count++;
+            if (mainWindowLogic.mostUsed.ContainsKey(word))
             {
-                mostUsed.Remove(word);
-                mostUsed.Add(word, categoryData.ElementAt(i));
+                mainWindowLogic.mostUsed.Remove(word);
+                mainWindowLogic.mostUsed.Add(word, mainWindowLogic.Category.ElementAt(i));
             }
             else
             {
-                mostUsed.Add(word, categoryData.ElementAt(i));
+                mainWindowLogic.mostUsed.Add(word, mainWindowLogic.Category.ElementAt(i));
             }
         }
 
@@ -520,17 +509,17 @@ namespace EyeTalk
 
         private void UpdatePicture(int i)
         {
-            var filepath = categoryData.ElementAt(i).FilePath;
-            var pictureName = categoryData.ElementAt(i).Name;
+            var filepath = mainWindowLogic.Category.ElementAt(i).FilePath;
+            var pictureName = mainWindowLogic.Category.ElementAt(i).Name;
             buttons.ElementAt(i).Visibility = Visibility.Visible;
             images.ElementAt(i).Source = new BitmapImage(new Uri(filepath));
             textBlocks.ElementAt(i).Text = pictureName;
 
-            if (sentence.Contains(categoryData.ElementAt(i).Name))
+            if (mainWindowLogic.Sentence.Contains(mainWindowLogic.Category.ElementAt(i).Name))
             {
                 HighlightPicture(buttons.ElementAt(i));
             }
-            else if (categoryData.ElementAt(i).Selected == false)
+            else if (mainWindowLogic.Category.ElementAt(i).Selected == false)
             {
                 UnhighlightPicture(buttons.ElementAt(i));
             }
@@ -556,11 +545,11 @@ namespace EyeTalk
 
         private void AddWordToSentence(string word, int i)
         {
-            if (!sentence.Contains(categoryData.ElementAt(i).Name))
+            if (!mainWindowLogic.Sentence.Contains(mainWindowLogic.Category.ElementAt(i).Name))
             {
-                sentence.Add(word, word);
+                mainWindowLogic.Sentence.Add(word, word);
                 StringBuilder sb = new StringBuilder();
-                foreach (DictionaryEntry s in sentence)
+                foreach (DictionaryEntry s in mainWindowLogic.Sentence)
                 {
                     sb.Append(s.Value + " ");
                 }
@@ -568,16 +557,16 @@ namespace EyeTalk
 
                 mainWindowLogic.AmountOfWordsInSentence++;
 
-                categoryData.ElementAt(i).Selected = true;
+                mainWindowLogic.Category.ElementAt(i).Selected = true;
             }
 
         }
 
         private void RemoveWordFromSentence(string word, int i)
         {
-            sentence.Remove(word);
+            mainWindowLogic.Sentence.Remove(word);
             StringBuilder sb = new StringBuilder();
-            foreach (DictionaryEntry s in sentence)
+            foreach (DictionaryEntry s in mainWindowLogic.Sentence)
             {
                 sb.Append(s.Value + " ");
             }
@@ -585,7 +574,7 @@ namespace EyeTalk
 
             mainWindowLogic.AmountOfWordsInSentence--;
 
-            categoryData.ElementAt(i).Selected = false;
+            mainWindowLogic.Category.ElementAt(i).Selected = false;
         }
 
 
@@ -622,12 +611,12 @@ namespace EyeTalk
             else
             {
                 Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
-                var numberOfPages = customCategory.Count - 1;
-                var currentPage = customCategory.ElementAt(numberOfPages);
+                var numberOfPages = mainWindowLogic.customCategory.Count - 1;
+                var currentPage = mainWindowLogic.customCategory.ElementAt(numberOfPages);
 
                 Boolean pictureAlreadyAdded = false;
 
-                foreach (var page in customCategory)
+                foreach (var page in mainWindowLogic.customCategory)
                 {
                     foreach (var picture in page)
                     {
@@ -645,7 +634,7 @@ namespace EyeTalk
                     {
                         currentPage.Add(customPicture);
                         Status.Text = "Added picture. Number of pictures is now: " + currentPage.Count;
-                        saveInitialiser.SaveCustomCategory(customCategory);
+                        saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
                     }
 
                 }
@@ -655,9 +644,9 @@ namespace EyeTalk
                     {
                         List<Picture> newCustomCategory = new List<Picture>() { };
                         newCustomCategory.Add(customPicture);
-                        customCategory.Add(newCustomCategory);
-                        Status.Text = "Number of pictures is now: " + currentPage.Count + "\nCreated new category. Number of categories is now: " + customCategory.Count;
-                        saveInitialiser.SaveCustomCategory(customCategory);
+                        mainWindowLogic.customCategory.Add(newCustomCategory);
+                        Status.Text = "Number of pictures is now: " + currentPage.Count + "\nCreated new category. Number of categories is now: " + mainWindowLogic.customCategory.Count;
+                        saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
                     }
                 }
             }
@@ -1127,56 +1116,19 @@ namespace EyeTalk
 
         private void LoadSaveFiles()
         {
-            categories = saveInitialiser.LoadCategories();
-            savedSentences = saveInitialiser.LoadSentences();
-            customCategory = saveInitialiser.LoadCustomCategory();
+            mainWindowLogic.categories = saveInitialiser.LoadCategories();
+            savedSentencesLogic.savedSentences = saveInitialiser.LoadSentences();
+            mainWindowLogic.customCategory = saveInitialiser.LoadCustomCategory();
             optionsLogic.Options = saveInitialiser.LoadOptions();
         }
 
         private void UpdateCustomCategory()
         {
-            categories.Remove("Custom");
-            categories.Add("Custom", customCategory);
+            mainWindowLogic.categories.Remove("Custom");
+            mainWindowLogic.categories.Add("Custom", mainWindowLogic.customCategory);
         }
 
-        private void UpdateMostUsedCategory()
-        {
-            categories.Remove("Most Used");
 
-            if (mostUsed != null)
-            {
-                mostUsed = saveInitialiser.LoadMostUsed();
-
-                List<List<Picture>> mostUsedCategory = new List<List<Picture>>();
-                List<Picture> mostUsedPage1 = new List<Picture>();
-                List<Picture> mostUsedPage2 = new List<Picture>();
-
-                var topFour = mostUsed.OrderBy(entry => entry.Value.Count).Take(4).ToDictionary(pair => pair.Key, pair => pair.Value);
-
-                var nextFour = mostUsed.OrderBy(entry => entry.Value.Count).Skip(4).Take(4).ToDictionary(pair => pair.Key, pair => pair.Value);
-
-                for (int i = 0; i < topFour.Count(); i++)
-                {
-                    topFour.ElementAt(i).Value.Name = "" + topFour.ElementAt(i).Value.Count;
-                    mostUsedPage1.Add(topFour.ElementAt(i).Value);
-                    mostUsedPage1.ElementAt(i).Selected = false;
-                }
-
-                for (int i = 0; i < nextFour.Count(); i++)
-                {
-                    nextFour.ElementAt(i).Value.Name = "" + nextFour.ElementAt(i).Value.Count;
-                    mostUsedPage2.Add(nextFour.ElementAt(i).Value);
-                    mostUsedPage2.ElementAt(i).Selected = false;
-                }
-
-                mostUsedCategory.Add(mostUsedPage1);
-                mostUsedCategory.Add(mostUsedPage2);
-                categories.Add("Most Used", mostUsedCategory);
-
-            }
-
-
-        }
 
         private void ResetSentence()
         {
@@ -1184,8 +1136,8 @@ namespace EyeTalk
             mainWindowLogic.PageIndex = 0;
             mainWindowLogic.AmountOfWordsInSentence = 0;
             mainWindowLogic.SentenceIndex = 0;
+            mainWindowLogic.Sentence.Clear();
             SentenceTextBox.Text = "";
-            sentence.Clear();
             SentenceUpdate.Text = "";
         }
     }
