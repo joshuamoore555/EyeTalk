@@ -172,6 +172,7 @@ namespace EyeTalk
             UpdatePageNumber();
         }
 
+
         //Begin Speaking Methods
 
         private void CreatePage()
@@ -245,7 +246,7 @@ namespace EyeTalk
 
             mainWindowLogic.UpdateMostUsedPicture(i, word);
 
-            if (mainWindowLogic.AmountOfWordsInSentence < 3 && selected == false)
+            if (mainWindowLogic.AmountOfWordsInSentence < 6 && selected == false)
             {
                 SentenceTextBox.Text = mainWindowLogic.AddWordToSentence(word, i);
                 HighlightPicture(buttons, i);
