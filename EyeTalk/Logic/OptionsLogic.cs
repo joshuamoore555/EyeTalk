@@ -29,7 +29,7 @@ namespace EyeTalk.Logic
 
         public void ResetEyeFixationDuration()
         {
-            Options.EyeFixationDuration++;
+            Options.EyeFixationDuration = 0;
         }
 
         public bool HasDurationBeenReached()
@@ -89,7 +89,7 @@ namespace EyeTalk.Logic
 
         public string IncreaseSelectionDelay()
         {
-            if (Options.EyeFixationValue < 21)
+            if (Options.EyeFixationValue < 40)
             {
                 Options.EyeFixationValue++;
             }
@@ -98,7 +98,7 @@ namespace EyeTalk.Logic
 
         public string DecreaseSelectionDelay()
         {
-            if (Options.EyeFixationValue > 1)
+            if (Options.EyeFixationValue > 2)
             {
                 Options.EyeFixationValue--;
             }

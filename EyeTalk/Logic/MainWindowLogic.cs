@@ -172,13 +172,17 @@ namespace EyeTalk
             }
         }
 
-        public void ResetMostUsedIfNotNull()
+        public string ResetMostUsedIfNotEmpty()
         {
-            if (mostUsed != null)
+           
+            if (mostUsed.Count > 1)
             {
                 mostUsed.Clear();
-                categories.Remove("Most Used");
-                save.CreateMostUsed();
+                return "Most Used category has been reset.";
+            }
+            else
+            {
+                return "Most Used category is already empty.";
             }
 
         }

@@ -80,6 +80,7 @@ namespace EyeTalk
 
         private void Options_Click(object sender, RoutedEventArgs e)
         {
+            UpdateOptions();
             myTabControl.SelectedIndex = 2;
         }
 
@@ -300,8 +301,8 @@ namespace EyeTalk
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-           mainWindowLogic.ResetMostUsedIfNotNull();
-           Reset.Content = "Most Used Pictures category has been reset";     
+           
+           Reset.Content = mainWindowLogic.ResetMostUsedIfNotEmpty();
         }
 
         private void VoiceType_Click(object sender, RoutedEventArgs e)
@@ -354,6 +355,7 @@ namespace EyeTalk
 
         private void UpdateOptions()
         {
+            Reset.Content = "Reset Most Used category";
             VoiceType.Content = optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
             SpeedStatus.Text = optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
             EyeSelectionSpeedStatus.Text = optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
@@ -368,7 +370,7 @@ namespace EyeTalk
             var picturePath = addPictureLogic.LoadCustomPicture();
             CustomFilePath.Text = picturePath;
             CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(picturePath);
-            if (picturePath != null)
+            if (picturePath != null && picturePath != "")
             {
                 var uri = new Uri(picturePath);
                 var bitmap = new BitmapImage(uri);
