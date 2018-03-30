@@ -245,11 +245,11 @@ namespace EyeTalk
             var word = textBlocks.ElementAt(i).Text;
             var selected = mainWindowLogic.CategoryPage.ElementAt(i).Selected;
 
-            mainWindowLogic.UpdateMostUsedPicture(i, word);
 
             if (mainWindowLogic.AmountOfWordsInSentence < 6 && selected == false)
             {
                 SentenceTextBox.Text = mainWindowLogic.AddWordToSentence(word, i);
+                mainWindowLogic.UpdateMostUsedPicture(i, word);
                 HighlightPicture(buttons, i);
             }
             else if (selected == true)

@@ -11,7 +11,8 @@ namespace EyeTalk.Objects
         public string dir = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
         PictureInitialiser pictureInitialiser;
         public List<string> savedSentences = new List<string>();
-        SortedDictionary<String, Picture> mostUsed = new SortedDictionary<String, Picture>();
+        List<List<Picture>> mostUsed = new List<List<Picture>>();
+        //SortedDictionary<String, Picture> mostUsed = new SortedDictionary<String, Picture>();
         Options options = new Options(0, 6, 0, 0, false);
         List<List<Picture>> customPages = new List<List<Picture>>();
 
@@ -66,7 +67,7 @@ namespace EyeTalk.Objects
                 CreateOptions();
             }
 
-            if (!File.Exists(mostUsedPath))
+            if (File.Exists(mostUsedPath))
             {
                 CreateMostUsed();
             }
@@ -170,15 +171,15 @@ namespace EyeTalk.Objects
         }
 
 
-        public SortedDictionary<String, Picture> LoadMostUsed()
+        public List<List<Picture>> LoadMostUsed()
         {
             using (Stream stream = File.Open(mostUsedPath, FileMode.Open))
             {
-                return (SortedDictionary<String, Picture>)bformatter.Deserialize(stream);
+                return (List<List<Picture>>)bformatter.Deserialize(stream);
             }
         }
 
-        public void SaveMostUsed(SortedDictionary<String, Picture> mostUsed)
+        public void SaveMostUsed(List<List<Picture>> mostUsed)
         {
             using (Stream stream = File.Open(mostUsedPath, FileMode.Create))
             {

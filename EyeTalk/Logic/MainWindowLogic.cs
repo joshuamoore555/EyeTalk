@@ -13,12 +13,15 @@ namespace EyeTalk
     {
         public int CategoryIndex { get; set; }
         public int PageIndex { get; set; }
-        //public int SentenceIndex { get; set; }
         public int AmountOfWordsInSentence { get; set; }
         public OrderedDictionary Sentence { get; set; }
         public SortedList<String, List<List<Picture>>> categories;
         public List<List<Picture>> customCategory;
-        public SortedDictionary<String, Picture> mostUsed;
+
+        public List<List<Picture>> mostUsed;
+        public List<Picture> mostUsedList;
+
+        //public SortedDictionary<String, Picture> mostUsed;
         SaveFileSerialiser save;
 
         public string categoryName { get; set; }
@@ -37,39 +40,40 @@ namespace EyeTalk
 
             CategoryIndex = 0;
             PageIndex = 0;
-            //SentenceIndex = 0;
             AmountOfWordsInSentence = 0;
 
 
+        }
+        public List<Picture> OrderMostUsedByCount()
+        {
+            return mostUsedList.OrderByDescending(entry => entry.Count).ToList();
         }
 
         public void UpdateMostUsedCategory()
         {
             categories.Remove("Most Used");
 
-            if (mostUsed != null)
+            if (mostUsed != null && mostUsedList != null)
             {
-                mostUsed = save.LoadMostUsed();
+
+                var orderedMostUsed = OrderMostUsedByCount();
+                var topFour = orderedMostUsed.Take(4);
+                var nextFour = orderedMostUsed.Skip(4).Take(4);
+
 
                 List<List<Picture>> mostUsedCategory = new List<List<Picture>>();
                 List<Picture> mostUsedPage1 = new List<Picture>();
                 List<Picture> mostUsedPage2 = new List<Picture>();
 
-                var topFour = mostUsed.OrderBy(entry => entry.Value.Count).Take(4).ToDictionary(pair => pair.Key, pair => pair.Value);
-
-                var nextFour = mostUsed.OrderBy(entry => entry.Value.Count).Skip(4).Take(4).ToDictionary(pair => pair.Key, pair => pair.Value);
-
                 for (int i = 0; i < topFour.Count(); i++)
                 {
-                    topFour.ElementAt(i).Value.Name = "" + topFour.ElementAt(i).Value.Count;
-                    mostUsedPage1.Add(topFour.ElementAt(i).Value);
+                    mostUsedPage1.Add(topFour.ElementAt(i));
                     mostUsedPage1.ElementAt(i).Selected = false;
                 }
 
                 for (int i = 0; i < nextFour.Count(); i++)
                 {
-                    nextFour.ElementAt(i).Value.Name = "" + nextFour.ElementAt(i).Value.Count;
-                    mostUsedPage2.Add(nextFour.ElementAt(i).Value);
+                    mostUsedPage2.Add(nextFour.ElementAt(i));
                     mostUsedPage2.ElementAt(i).Selected = false;
                 }
 
@@ -91,7 +95,6 @@ namespace EyeTalk
             CategoryIndex = 0;
             PageIndex = 0;
             AmountOfWordsInSentence = 0;
-            //SentenceIndex = 0;
             Sentence.Clear();
         }
 
@@ -191,22 +194,45 @@ namespace EyeTalk
         {
             if (mostUsed == null)
             {
-                mostUsed = new SortedDictionary<String, Picture>();
+                mostUsed = new List<List<Picture>>();
+            }
+
+            if (mostUsedList == null)
+            {
+                mostUsedList = new List<Picture>();
             }
 
             CategoryPage.ElementAt(i).Count++;
+  
 
-            if (mostUsed.ContainsKey(word))
+            if (CheckMostUsedContainsWord(word))
             {
-                mostUsed.Remove(word);
-                mostUsed.Add(word, CategoryPage.ElementAt(i));
+                mostUsedList.RemoveAll(u=> u.Name.StartsWith(word));
+                mostUsedList.Add(CategoryPage.ElementAt(i));
+                //if contains word, remove it and then re-add
             }
             else
             {
-                mostUsed.Add(word, CategoryPage.ElementAt(i));
+                //if not contained, add
+                mostUsedList.Add(CategoryPage.ElementAt(i));
+
             }
+
+
         }
 
+        private bool CheckMostUsedContainsWord(string word)
+        {
+            foreach (Picture picture in mostUsedList)
+            {
+                if (picture.Name == word)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public string AddWordToSentence(string word, int i)
         {
