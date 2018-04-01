@@ -23,9 +23,7 @@ namespace EyeTalk.Logic
                 Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg"
                 
             };
-
             
-
             Nullable<bool> result = dialog.ShowDialog();
 
             List<BitmapImage> list = new List<BitmapImage>();

@@ -143,6 +143,7 @@
                             <Image Source="Images\back.png"></Image>
                         </Button>
                         <TextBox x:Name="currentSentence" HorizontalAlignment="Left" Margin="10,87,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Height="200" Width="1904" FontSize="24" FontWeight="Bold"/>
+                        
                         <Button x:Name="SpeakSentence" HorizontalAlignment="Left" Margin="474,741,0,0" VerticalAlignment="Top" Width="960" FontSize="48" Click="Play_Saved_Sentence_Button_Click" Height="360" Background="Red" >
                             <Image Source="Images\sound.png"></Image>
                         </Button>

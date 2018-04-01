@@ -9,10 +9,12 @@ namespace EyeTalk.Objects
     public class SaveFileSerialiser
     {
         public string dir = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+
+
+
         PictureInitialiser pictureInitialiser;
         public List<string> savedSentences = new List<string>();
         List<List<Picture>> mostUsed = new List<List<Picture>>();
-        //SortedDictionary<String, Picture> mostUsed = new SortedDictionary<String, Picture>();
         Options options = new Options(0, 6, 0, 0, false);
         List<List<Picture>> customPages = new List<List<Picture>>();
 
@@ -30,6 +32,8 @@ namespace EyeTalk.Objects
 
         public SaveFileSerialiser()
         {
+            
+
             categoryPath = Path.Combine(dir, saveDir, "Categories.bin");
             savedSentencesPath = Path.Combine(dir,saveDir, "SavedSentences.bin");
             customPicturesPath = Path.Combine(dir, saveDir,"CustomPictures.bin");
@@ -45,9 +49,12 @@ namespace EyeTalk.Objects
 
         public void CreateInitialFoldersAndFiles()
         {
-            Directory.CreateDirectory(saveDir);
-
-            if (File.Exists(categoryPath))
+            if (!Directory.Exists(saveDir))
+            {
+                Directory.CreateDirectory(saveDir);
+            }
+           
+            if (!File.Exists(categoryPath))
             {
                 CreateCategoryFile();
             }
@@ -67,7 +74,7 @@ namespace EyeTalk.Objects
                 CreateOptions();
             }
 
-            if (File.Exists(mostUsedPath))
+            if (!File.Exists(mostUsedPath))
             {
                 CreateMostUsed();
             }

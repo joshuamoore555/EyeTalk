@@ -184,6 +184,7 @@ namespace EyeTalk
             {
                 for (int i = 0; i < numberOfPictures; i++)
                 {
+                    CreatePicture(i);
                     UpdatePicture(i);
                 }
 
@@ -210,8 +211,6 @@ namespace EyeTalk
 
         private void UpdatePicture(int i)
         {
-            CreatePicture(i);
-
             if (mainWindowLogic.CategoryPage.ElementAt(i).Selected == false)
             {
                 UnhighlightPicture(buttons, i);
@@ -220,6 +219,13 @@ namespace EyeTalk
             {
                 HighlightPicture(buttons, i);
             }
+        }
+
+        private void HidePicture(int i)
+        {
+            buttons.ElementAt(i).Visibility = Visibility.Hidden;
+            textBlocks.ElementAt(i).Text = "";
+            UnhighlightPicture(buttons, i);
         }
 
         private void HighlightPicture(List<Button> buttons, int i)
@@ -245,7 +251,6 @@ namespace EyeTalk
             var word = textBlocks.ElementAt(i).Text;
             var selected = mainWindowLogic.CategoryPage.ElementAt(i).Selected;
 
-
             if (mainWindowLogic.AmountOfWordsInSentence < 6 && selected == false)
             {
                 SentenceTextBox.Text = mainWindowLogic.AddWordToSentence(word, i);
@@ -259,15 +264,6 @@ namespace EyeTalk
 
             }
         }
-
-        private void HidePicture(int i)
-        {
-            buttons.ElementAt(i).Visibility = Visibility.Hidden;
-            textBlocks.ElementAt(i).Text = "";
-            UnhighlightPicture(buttons, i);
-        }
-
-
 
         //Saved Sentences Buttons
 

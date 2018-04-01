@@ -21,7 +21,6 @@ namespace EyeTalk
         public List<List<Picture>> mostUsed;
         public List<Picture> mostUsedList;
 
-        //public SortedDictionary<String, Picture> mostUsed;
         SaveFileSerialiser save;
 
         public string categoryName { get; set; }
