@@ -11,19 +11,108 @@ namespace EyeTalk.Tests
     class SavedSentencesLogicTests
     {
         SavedSentencesLogic logic;
-        public List<String> savedSentences;
 
         public SavedSentencesLogicTests()
         {
-            savedSentences = new List<string>();
-            savedSentences.Add("Hello World");
+            logic = new SavedSentencesLogic();
+            
         }
 
         [Test]
-        public void TestMethod1()
+        public void RetrieveFirstSentenceThatExists()
         {
-            var root = Path.GetPathRoot(Environment.CurrentDirectory);
-            var temp = Path.Combine(root, "Save");
+            logic.savedSentences.Add("Hello World");
+            var same = logic.RetrieveFirstSavedSentenceIfExists();
+            Assert.AreEqual("Hello World", same);
+          
+        }
+
+        [Test]
+        public void RetrieveFirstSentenceIfNotExisting()
+        {
+            logic.savedSentences.Clear();
+            var same = logic.RetrieveFirstSavedSentenceIfExists();
+            Assert.AreEqual("No sentences saved", same);
+
+        }
+
+        [Test]
+        public void SaveSentenceThatIsNull()
+        {      
+            var same = logic.SaveSentenceIfNotPreviouslySaved("");
+            Assert.AreEqual("Please create a sentence before saving",same);
+
+        }
+
+        [Test]
+        public void SaveSentenceDuplicate()
+        {
+            logic.SaveSentenceIfNotPreviouslySaved("Hello World");
+            var same = logic.SaveSentenceIfNotPreviouslySaved("Hello World");
+            Assert.AreEqual("Sentence has already been saved", same);
+
+        }
+
+        [Test]
+        public void SaveSentenceUnique()
+        {
+            var same = logic.SaveSentenceIfNotPreviouslySaved("Test");
+            Assert.AreEqual( "Sentence Saved", same);
+
+        }
+
+        [Test]
+        public void ChangeSentences()
+        {
+            logic.savedSentences.Clear();
+            logic.SaveSentenceIfNotPreviouslySaved("1");
+            logic.SaveSentenceIfNotPreviouslySaved("2");
+            var index = logic.SentenceIndex;
+
+            Assert.AreEqual(index, 0);
+
+            Assert.AreEqual("2", logic.NextSentence());
+            
+            Assert.AreEqual("1", logic.NextSentence());
+
+            Assert.AreEqual("2", logic.PreviousSentence());
+
+
+        }
+
+        [Test]
+        public void NoSentenceSavedWhenChangingSentences()
+        {
+            logic.savedSentences.Clear();
+
+            Assert.AreEqual("No Sentences Saved", logic.NextSentence());
+            Assert.AreEqual("No Sentences Saved", logic.PreviousSentence());
+
+
+        }
+
+        [Test]
+        public void DeleteSentenceWhenNoneSaved()
+        {
+            logic.savedSentences.Clear();
+            var same = logic.DeleteSavedSentence();
+            Assert.AreEqual("No Sentences Saved", same);
+
+        }
+
+        [Test]
+        public void DeleteSentence()
+        {
+            logic.savedSentences.Clear();
+            logic.SaveSentenceIfNotPreviouslySaved("1");
+            logic.SaveSentenceIfNotPreviouslySaved("2");
+            var index = logic.SentenceIndex;
+            Assert.AreEqual(0, index);
+            var firstDelete = logic.DeleteSavedSentence();
+            Assert.AreEqual("2", firstDelete);
+            var secondDelete = logic.DeleteSavedSentence();
+
+            Assert.AreEqual("No Sentences Saved", secondDelete);
 
         }
     }

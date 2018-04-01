@@ -345,8 +345,6 @@ namespace EyeTalk
             await Task.Run(() => speech.Speak("Test Voice"));
         }
 
-
-    
         //Options Methods
 
         private void UpdateOptions()
@@ -399,16 +397,18 @@ namespace EyeTalk
                     {
                         addPictureLogic.AddCustomPicture(customPicture, currentPage);
                         Status.Text = "Added picture. " + "Number of pictures in category: " + currentPage.Count;
+                        saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
+
                     }
 
                     else if (spaceInCustomCategory == false)
                     {
                         mainWindowLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
                         Status.Text = "Created new category. \nNumber of categories is now: " + mainWindowLogic.customCategory.Count;
+                        saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
 
                     }
 
-                    saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
                 }
             }
         }

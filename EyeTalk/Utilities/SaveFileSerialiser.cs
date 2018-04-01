@@ -8,23 +8,19 @@ namespace EyeTalk.Objects
 {
     public class SaveFileSerialiser
     {
-        public string dir = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-
-
-
         PictureInitialiser pictureInitialiser;
         public List<string> savedSentences = new List<string>();
         List<List<Picture>> mostUsed = new List<List<Picture>>();
         Options options = new Options(0, 6, 0, 0, false);
         List<List<Picture>> customPages = new List<List<Picture>>();
 
-        public static string saveDir = "Saves/";
-        public static string picturesDir = "Pictures/";
-        string categoryPath = "";
-        string savedSentencesPath = "";
-        string customPicturesPath = "";
-        string optionsPath = "";
-        string mostUsedPath = "";
+        public string saveFolder;
+
+        public string categoryPath;
+        public string savedSentencesPath;
+        public string customPicturesPath;
+        public string optionsPath;
+        public string mostUsedPath;
         
 
         System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
@@ -32,13 +28,14 @@ namespace EyeTalk.Objects
 
         public SaveFileSerialiser()
         {
-            
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            saveFolder = Path.Combine(path, "Saves");
 
-            categoryPath = Path.Combine(dir, saveDir, "Categories.bin");
-            savedSentencesPath = Path.Combine(dir,saveDir, "SavedSentences.bin");
-            customPicturesPath = Path.Combine(dir, saveDir,"CustomPictures.bin");
-            optionsPath = Path.Combine(dir, saveDir, "Options.bin");
-            mostUsedPath = Path.Combine(dir, saveDir, "MostUsed.bin");
+            categoryPath = Path.Combine(saveFolder, "Categories.bin");
+            savedSentencesPath = Path.Combine(saveFolder, "SavedSentences.bin");
+            customPicturesPath = Path.Combine(saveFolder, "CustomPictures.bin");
+            optionsPath = Path.Combine(saveFolder, "Options.bin");
+            mostUsedPath = Path.Combine(saveFolder, "MostUsed.bin");
 
             pictureInitialiser = new PictureInitialiser(); 
             CreateInitialFoldersAndFiles();
@@ -49,9 +46,9 @@ namespace EyeTalk.Objects
 
         public void CreateInitialFoldersAndFiles()
         {
-            if (!Directory.Exists(saveDir))
+            if (!Directory.Exists(saveFolder))
             {
-                Directory.CreateDirectory(saveDir);
+                Directory.CreateDirectory(saveFolder);
             }
            
             if (!File.Exists(categoryPath))
@@ -124,7 +121,7 @@ namespace EyeTalk.Objects
         {
             using (Stream stream = File.Open(customPicturesPath, FileMode.Create))
             {
-                bformatter.Serialize(stream, pictureInitialiser.customPages);
+                bformatter.Serialize(stream, customPages);
             }
         }
 
@@ -140,7 +137,7 @@ namespace EyeTalk.Objects
         {
             using (Stream stream = File.Open(customPicturesPath, FileMode.Create))
             {
-                bformatter.Serialize(stream, pictureInitialiser.customPages);
+                bformatter.Serialize(stream, customPages);
             }
         }
 

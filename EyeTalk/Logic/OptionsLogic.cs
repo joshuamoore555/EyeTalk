@@ -9,17 +9,14 @@ namespace EyeTalk.Logic
     {
        public Options Options{ get; set; }
        public SaveFileSerialiser save;
-        public List<String> VoiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
-        public List<String> VoiceTypes = new List<String> {  "Female","Male" };
+       public List<String> VoiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
+       public List<String> VoiceTypes = new List<String> {  "Female","Male" };
 
         public OptionsLogic()
         {
             save = new SaveFileSerialiser();
             Options = save.LoadOptions();
-            /*
-            Options = new Options(0,0,0,0,false);
-            save.SaveOptions(Options);
-            */
+
         }
 
         public void IncreaseEyeFixationDuration()

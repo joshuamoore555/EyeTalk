@@ -119,7 +119,7 @@ namespace EyeTalk.Tests
             picture3.Click();
             playsound.Click();
             var sentence = window.Get<TextBox>("SentenceTextBox");
-            Assert.IsTrue(sentence.Text == "Wash Hands Toilet Shower ");
+            Assert.IsTrue(sentence.Text == "my your his ");
 
             app.Close();
         }
