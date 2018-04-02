@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using EyeTalk.Objects;
 
 namespace EyeTalk
@@ -139,9 +141,9 @@ namespace EyeTalk
 
         public void UpdateCategoryAndGoToFirstPage()
         {
-            var categoryPages = categories.ElementAt(CategoryIndex);
+            var categoryPages = categories.ElementAt(CategoryIndex);        
             CategoryPage = categoryPages.Value.ElementAt(0);
-            CategoryName = categories.ElementAt(CategoryIndex).Key;
+            CategoryName = categories.ElementAt(CategoryIndex).Key;                    
         }
 
         public void GoToNextPage()
@@ -184,15 +186,34 @@ namespace EyeTalk
 
         public string ResetMostUsedIfNotEmpty()
         {
-           
             if (mostUsed.Count > 0)
             {
                 mostUsed.Clear();
+                save.SaveMostUsed(mostUsed);
                 return "Most Used category has been reset.";
             }
             else
             {
                 return "Most Used category is already empty.";
+                
+            }
+           
+        }
+
+        public string ResetCustomPictureCategoryIfNotEmpty()
+        {
+
+            if (customCategory.Count > 0)
+            {
+                customCategory.Clear();
+                List<Picture> x = new List<Picture>();
+                customCategory.Add(x);
+                save.SaveCustomCategory(customCategory);
+                return "Custom category has been reset.";
+            }
+            else
+            {
+                return "Custom category is already empty.";
             }
 
         }
@@ -275,6 +296,29 @@ namespace EyeTalk
 
             return sb.ToString();
          
+        }
+
+
+        public BitmapImage GenerateBitmap(string filepath)
+        {
+            BitmapImage bmp = new BitmapImage();
+            try
+            {
+                bmp.BeginInit();
+                bmp.UriSource = new Uri(filepath);
+                bmp.DecodePixelWidth = 400;
+                bmp.EndInit();
+            }
+            catch 
+            {
+                //if file path has been changed, give a file not found image
+                bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = new Uri("pack://application:,,,/Images/filenotfound.png");
+                bmp.DecodePixelWidth = 400;
+                bmp.EndInit();
+            }
+            return bmp;   
         }
     }
 }

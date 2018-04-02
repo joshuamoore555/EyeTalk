@@ -73,8 +73,12 @@ namespace EyeTalk.Tests
             var leftspeed = window.Get<Button>("Left_Speed");
             leftspeed.Click();
 
-            var reset = window.Get<Button>("Reset");
-            reset.Click();
+            var resetMostUsed = window.Get<Button>("ResetMostUsed");
+            resetMostUsed.Click();
+
+            var resetCustomPictures = window.Get<Button>("ResetCustomPictures");
+            resetCustomPictures.Click();
+
 
             var leftdelay = window.Get<Button>("Left_Delay");
             leftdelay.Click();

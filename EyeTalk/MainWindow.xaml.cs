@@ -63,12 +63,12 @@ namespace EyeTalk
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
             LoadSaveFiles();
-            SentenceTextBox.Text = "";
-            SentenceUpdate.Text = "";
-     
+
             images = new List<Image> { Image1, Image2, Image3, Image4 };
             buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
             textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
+
+            FormatTextBoxes();
 
             mainWindowLogic.Begin();
             CreatePage();
@@ -206,7 +206,8 @@ namespace EyeTalk
         {
             textBlocks.ElementAt(i).Text = mainWindowLogic.CategoryPage.ElementAt(i).Name;
             buttons.ElementAt(i).Visibility = Visibility.Visible;
-            images.ElementAt(i).Source = new BitmapImage(new Uri(mainWindowLogic.CategoryPage.ElementAt(i).FilePath));
+            var filepath = mainWindowLogic.CategoryPage.ElementAt(i).FilePath;
+            images.ElementAt(i).Source = mainWindowLogic.GenerateBitmap(filepath);
         }
 
         private void UpdatePicture(int i)
@@ -215,9 +216,13 @@ namespace EyeTalk
             {
                 UnhighlightPicture(buttons, i);
             }
-            else
+            else if(mainWindowLogic.CategoryPage.ElementAt(i).Selected == true)
             {
                 HighlightPicture(buttons, i);
+            }
+            else
+            {
+                UnhighlightPicture(buttons, i);
             }
         }
 
@@ -265,6 +270,8 @@ namespace EyeTalk
             }
         }
 
+
+
         //Saved Sentences Buttons
 
         private async void Play_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
@@ -295,10 +302,16 @@ namespace EyeTalk
 
         //Options Buttons
 
-        private void Reset_Click(object sender, RoutedEventArgs e)
+        private void ResetMostUsed_Click(object sender, RoutedEventArgs e)
         {
            
-           Reset.Content = mainWindowLogic.ResetMostUsedIfNotEmpty();
+           ResetMostUsed.Content = mainWindowLogic.ResetMostUsedIfNotEmpty();
+        }
+
+        private void ResetCustomPicture_Click(object sender, RoutedEventArgs e)
+        {
+
+            ResetCustomPictures.Content = mainWindowLogic.ResetCustomPictureCategoryIfNotEmpty();
         }
 
         private void VoiceType_Click(object sender, RoutedEventArgs e)
@@ -349,7 +362,9 @@ namespace EyeTalk
 
         private void UpdateOptions()
         {
-            Reset.Content = "Reset Most Used category";
+            ResetMostUsed.Content = "Reset Most Used category";
+            ResetCustomPictures.Content = "Reset Custom category";
+
             VoiceType.Content = optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
             SpeedStatus.Text = optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
             EyeSelectionSpeedStatus.Text = optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
@@ -368,6 +383,7 @@ namespace EyeTalk
             {
                 var uri = new Uri(picturePath);
                 var bitmap = new BitmapImage(uri);
+
                 CustomPicture.Source = bitmap;
             }
         }
@@ -413,7 +429,6 @@ namespace EyeTalk
             }
         }
 
-      
 
         //Coordinate Checking Methods
 
@@ -712,11 +727,11 @@ namespace EyeTalk
                     break;
 
                 case Positions.MiddleMiddleRight:
-                    HoverOverButton(Reset);
+                    HoverOverButton(ResetCustomPictures);
                     break;
 
                 case Positions.MiddleRight:
-                    HoverOverButton(Reset);
+                    HoverOverButton(ResetMostUsed);
                     break;
 
                 case Positions.BottomLeft:
@@ -806,9 +821,16 @@ namespace EyeTalk
             Right_Speed.Background = Brushes.Yellow;
             Left_Delay.Background = Brushes.Red;
             Right_Delay.Background = Brushes.Red;
-            Reset.Background = Brushes.RoyalBlue;
+            ResetMostUsed.Background = Brushes.RoyalBlue;
+            ResetCustomPictures.Background = Brushes.BlueViolet;
             VoiceType.Background = Brushes.ForestGreen;
             Back.Background = Brushes.Purple;
+        }
+
+        private void FormatTextBoxes()
+        {
+            SentenceTextBox.Text = "";
+            SentenceUpdate.Text = "";
         }
 
 

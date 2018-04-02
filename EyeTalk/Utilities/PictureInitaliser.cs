@@ -182,8 +182,7 @@ namespace EyeTalk.Utilities
         public void GenerateCategories()
         {
             categories = new SortedList<string, List<List<Picture>>>(){
-            {"Most Used", mostUsedPages },
-           
+            {"Most Used", mostUsedPages },        
             {"Emotions", emotionPages },
             {"Bathroom", bathroomPages },
             {"Verbs", verbPages },

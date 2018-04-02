@@ -12,7 +12,7 @@ namespace EyeTalk.Logic
     {
         public AddPictureLogic()
         {
-
+            
         }
 
         public string LoadCustomPicture()
