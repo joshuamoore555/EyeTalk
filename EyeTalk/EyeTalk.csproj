@@ -82,6 +82,7 @@
     <Compile Include="Logic\OptionsLogic.cs" />
     <Compile Include="Logic\SavedSentencesLogic.cs" />
     <Compile Include="Tests\AddPictureLogicTests.cs" />
+    <Compile Include="Tests\MainWindowLogicTests.cs" />
     <Compile Include="Tests\OptionLogicTests.cs" />
     <Compile Include="Tests\SavedSentencesLogicTests.cs" />
     <Compile Include="Utilities\PictureInitaliser.cs" />

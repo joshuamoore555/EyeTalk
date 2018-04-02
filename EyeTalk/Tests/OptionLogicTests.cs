@@ -39,7 +39,7 @@ namespace EyeTalk.Tests
         {
             logic.Options.EyeFixationValue = 0;
             logic.IncreaseSelectionDelay();
-            Assert.AreEqual("0.5 Seconds", logic.DecreaseSelectionDelay());
+            Assert.AreEqual("0.5 Seconds", logic.IncreaseSelectionDelay());
         }
 
         [Test]

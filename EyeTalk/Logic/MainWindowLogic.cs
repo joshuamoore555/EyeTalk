@@ -23,7 +23,7 @@ namespace EyeTalk
 
         SaveFileSerialiser save;
 
-        public string categoryName { get; set; }
+        public string CategoryName { get; set; }
         public List<Picture> CategoryPage { get; set; }
 
 
@@ -43,9 +43,31 @@ namespace EyeTalk
 
 
         }
-        public List<Picture> OrderMostUsedByCount()
+
+        public void Begin()
         {
-            return mostUsedList.OrderByDescending(entry => entry.Count).ToList();
+            ResetSentence();
+            UpdateCustomCategory();
+            UpdateMostUsedCategory();
+
+            var categoryPages = categories.ElementAt(CategoryIndex);
+            CategoryName = categories.ElementAt(CategoryIndex).Key;
+            CategoryPage = categoryPages.Value.ElementAt(PageIndex);
+
+        }
+
+        public void ResetSentence()
+        {
+            CategoryIndex = 0;
+            PageIndex = 0;
+            AmountOfWordsInSentence = 0;
+            Sentence.Clear();
+        }
+
+        public void UpdateCustomCategory()
+        {
+            categories.Remove("Custom");
+            categories.Add("Custom", customCategory);
         }
 
         public void UpdateMostUsedCategory()
@@ -83,19 +105,14 @@ namespace EyeTalk
             }
         }
 
-        public void UpdateCustomCategory()
+        public List<Picture> OrderMostUsedByCount()
         {
-            categories.Remove("Custom");
-            categories.Add("Custom", customCategory);
+            return mostUsedList.OrderByDescending(entry => entry.Count).ToList();
         }
 
-        public void ResetSentence()
-        {
-            CategoryIndex = 0;
-            PageIndex = 0;
-            AmountOfWordsInSentence = 0;
-            Sentence.Clear();
-        }
+
+
+
 
         public void CheckIfBackToLastCategory()
         {
@@ -109,11 +126,22 @@ namespace EyeTalk
 
         }
 
+        public void CheckIfBackToFirstCategory()
+        {
+            CategoryIndex++;
+            PageIndex = 0;
+            if (CategoryIndex >= categories.Count)
+            {
+                CategoryIndex = 0;
+
+            }
+        }
+
         public void UpdateCategoryAndGoToFirstPage()
         {
             var categoryPages = categories.ElementAt(CategoryIndex);
             CategoryPage = categoryPages.Value.ElementAt(0);
-            categoryName = categories.ElementAt(CategoryIndex).Key;
+            CategoryName = categories.ElementAt(CategoryIndex).Key;
         }
 
         public void GoToNextPage()
@@ -140,32 +168,12 @@ namespace EyeTalk
         {
             var categoryPages = categories.ElementAt(CategoryIndex);
             var numberOfPages = categoryPages.Value.Count;
-            return categoryName + " \nPage " + (PageIndex + 1) + "/" + numberOfPages;
+            return CategoryName + " \nPage " + (PageIndex + 1) + "/" + numberOfPages;
 
         }
 
-        public void CheckIfBackToFirstCategory()
-        {
-            CategoryIndex++;
-            PageIndex = 0;
-            if (CategoryIndex >= categories.Count)
-            {
-                CategoryIndex = 0;
+ 
 
-            }
-        }
-
-        public void Begin()
-        {
-            ResetSentence();
-            UpdateCustomCategory();
-            UpdateMostUsedCategory();
-
-            var categoryPages = categories.ElementAt(CategoryIndex);
-            categoryName = categories.ElementAt(CategoryIndex).Key;
-            CategoryPage = categoryPages.Value.ElementAt(PageIndex);
-
-        }
         public void SaveMostUsedIfNotNull()
         {
             if (mostUsed != null)
@@ -177,7 +185,7 @@ namespace EyeTalk
         public string ResetMostUsedIfNotEmpty()
         {
            
-            if (mostUsed.Count > 1)
+            if (mostUsed.Count > 0)
             {
                 mostUsed.Clear();
                 return "Most Used category has been reset.";
@@ -220,7 +228,7 @@ namespace EyeTalk
 
         }
 
-        private bool CheckMostUsedContainsWord(string word)
+        public bool CheckMostUsedContainsWord(string word)
         {
             foreach (Picture picture in mostUsedList)
             {

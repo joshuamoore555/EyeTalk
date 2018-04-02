@@ -106,6 +106,7 @@ namespace EyeTalk.Tests
             logic.savedSentences.Clear();
             logic.SaveSentenceIfNotPreviouslySaved("1");
             logic.SaveSentenceIfNotPreviouslySaved("2");
+            logic.SentenceIndex = 0;
             var index = logic.SentenceIndex;
             Assert.AreEqual(0, index);
             var firstDelete = logic.DeleteSavedSentence();
