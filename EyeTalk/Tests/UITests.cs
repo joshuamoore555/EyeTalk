@@ -22,6 +22,8 @@ namespace EyeTalk.Tests
             var exitButton = window.Get<Button>("Exit");
             exitButton.Click();
 
+         
+
         }
 
         [TestMethod]

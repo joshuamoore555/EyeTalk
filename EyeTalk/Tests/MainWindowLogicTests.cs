@@ -141,7 +141,7 @@ namespace EyeTalk.Tests
         }
 
         [Test]
-        public void ResetMostUsedIfNotEmpty()
+        public void ResetMostUsed()
         {
             logic.Begin();
             logic.mostUsed.Clear();
@@ -156,10 +156,29 @@ namespace EyeTalk.Tests
         }
 
         [Test]
+        public void ResetCustomPictureCategoryIfNotEmpty()
+        {
+            logic.Begin();
+            logic.customCategory.Clear();
+            List<Picture> page = new List<Picture>();
+            page.Add(new Picture("dd", false, "s", 1));
+            
+            logic.customCategory.Add(page);
+
+            Assert.AreEqual("Custom category has been reset.", logic.ResetCustomPictureCategoryIfNotEmpty());
+            Assert.AreEqual("Custom category is already empty.", logic.ResetCustomPictureCategoryIfNotEmpty());
+
+
+        }
+
+        [Test]
         public void UpdateMostUsedPicture()
         {
             logic.Begin();
-            for(int i = 0; i < 1000000; i++)
+            logic.CategoryIndex = 2;
+          
+
+            for (int i = 0; i < 1000000; i++)
             {
                 logic.UpdateMostUsedPicture(0, "my");
 
@@ -168,6 +187,8 @@ namespace EyeTalk.Tests
 
 
         }
+
+
 
         [Test]
         public void CheckMostUsedContainsWord()
@@ -196,10 +217,11 @@ namespace EyeTalk.Tests
         {
             logic.Begin();
             logic.Sentence.Clear();
+            logic.CategoryIndex = 0;
+            logic.PageIndex = 0;
             logic.AddWordToSentence("hello", 0);
-            logic.AddWordToSentence("world", 1);
-            logic.RemoveWordFromSentence("world", 1);
-            Assert.AreEqual(false, logic.Sentence.Contains("world"));
+            logic.RemoveWordFromSentence("hello", 0);
+            Assert.AreEqual(false, logic.Sentence.Contains("hello"));
 
         }
     }

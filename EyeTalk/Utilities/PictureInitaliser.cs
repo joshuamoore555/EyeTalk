@@ -182,7 +182,6 @@ namespace EyeTalk.Utilities
         public void GenerateCategories()
         {
             categories = new SortedList<string, List<List<Picture>>>(){
-            {"Most Used", mostUsedPages },        
             {"Emotions", emotionPages },
             {"Bathroom", bathroomPages },
             {"Verbs", verbPages },
@@ -194,6 +193,8 @@ namespace EyeTalk.Utilities
             { "Adjective Pronouns", adjectivePronouns },
             { "Possesive Pronouns", possesivePronouns },
              {"Foods", foodPages },
+                         {"Most Used", mostUsedPages },
+
             };
     }
     }

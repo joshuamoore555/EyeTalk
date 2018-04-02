@@ -203,7 +203,7 @@ namespace EyeTalk
         public string ResetCustomPictureCategoryIfNotEmpty()
         {
 
-            if (customCategory.Count > 0)
+            if (customCategory.ElementAt(0).Count > 0)
             {
                 customCategory.Clear();
                 List<Picture> x = new List<Picture>();
