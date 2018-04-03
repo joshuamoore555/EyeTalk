@@ -69,7 +69,12 @@ namespace EyeTalk
         public void UpdateCustomCategory()
         {
             categories.Remove("Custom");
-            categories.Add("Custom", customCategory);
+            if (customCategory.Count == 0)
+            {
+                List<Picture> page = new List<Picture>();
+                customCategory.Add(page);
+            }            
+                categories.Add("Custom", customCategory);            
         }
 
         public void UpdateMostUsedCategory()
@@ -111,10 +116,6 @@ namespace EyeTalk
         {
             return mostUsedList.OrderByDescending(entry => entry.Count).ToList();
         }
-
-
-
-
 
         public void CheckIfBackToLastCategory()
         {
@@ -176,14 +177,6 @@ namespace EyeTalk
 
  
 
-        public void SaveMostUsedIfNotNull()
-        {
-            if (mostUsed != null)
-            {
-                save.SaveMostUsed(mostUsed);
-            }
-        }
-
         public string ResetMostUsedIfNotEmpty()
         {
             if (mostUsed.Count > 0)
@@ -203,7 +196,7 @@ namespace EyeTalk
         public string ResetCustomPictureCategoryIfNotEmpty()
         {
 
-            if (customCategory.ElementAt(0).Count > 0)
+            if (customCategory.Count > 0)
             {
                 customCategory.Clear();
                 List<Picture> x = new List<Picture>();
@@ -264,10 +257,12 @@ namespace EyeTalk
 
         public string AddWordToSentence(string word, int i)
         {
-            if (!Sentence.Contains(CategoryPage.ElementAt(i).Name))
+            var name = " " +  CategoryPage.ElementAt(i).Name + " ";
+            if (!Sentence.Contains(name))
             {
                 Sentence.Add(word, word);
                 StringBuilder sb = new StringBuilder();
+                sb.Append(" ");
                 foreach (DictionaryEntry s in Sentence)
                 {
                     sb.Append(s.Value + " ");
@@ -286,6 +281,7 @@ namespace EyeTalk
         {
             Sentence.Remove(word);
             StringBuilder sb = new StringBuilder();
+            sb.Append(" ");
             foreach (DictionaryEntry s in Sentence)
             {
                 sb.Append(s.Value + " ");

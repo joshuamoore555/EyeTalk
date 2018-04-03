@@ -99,15 +99,7 @@ namespace EyeTalk.Logic
             {
                 Options.EyeFixationValue--;
             }
-            return Options.EyeFixationValue / 4 + " Seconds";
-        }
-
-        public void SaveOptionsIfNotNull()
-        {
-            if(Options != null)
-            {
-                save.SaveOptions(Options);
-            }
+            return "Eye Fixation Value: " + Options.EyeFixationValue / 4 + " Seconds";
         }
     }
 }

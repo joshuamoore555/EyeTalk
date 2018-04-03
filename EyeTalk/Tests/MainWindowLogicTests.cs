@@ -132,15 +132,6 @@ namespace EyeTalk.Tests
         }
 
         [Test]
-        public void SaveMostUsedIfNotNull()
-        {
-            logic.Begin();
-            logic.SaveMostUsedIfNotNull();
-            Assert.NotNull(logic.mostUsed);
-
-        }
-
-        [Test]
         public void ResetMostUsed()
         {
             logic.Begin();

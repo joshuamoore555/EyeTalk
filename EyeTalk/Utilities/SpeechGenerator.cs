@@ -42,6 +42,18 @@ namespace EyeTalk.Utilities
             }
         }
 
+        public void ChooseVoice(string type)
+        {
+            if (type == "Female")
+            {
+                SelectFemaleVoice();
+            }
+            else if (type == "Male")
+            {
+                SelectMaleVoice();
+            }
+        }
+
         public void SelectFemaleVoice()
         {
             synthesizer.SelectVoice(voices.ElementAt(0).VoiceInfo.Name);
