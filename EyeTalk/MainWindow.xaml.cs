@@ -325,7 +325,7 @@ namespace EyeTalk
         private void VoiceType_Click(object sender, RoutedEventArgs e)
         {
             var type = optionsLogic.ChangeVoiceType();
-            VoiceType.Content = type;
+            VoiceType.Content = "Voice Type: " + type;
 
             speech.ChooseVoice(type);
         }
@@ -372,13 +372,12 @@ namespace EyeTalk
             ResetMostUsed.Content = "Reset Most Used category";
             ResetCustomPictures.Content = "Reset Custom category";
 
-            VoiceType.Content = optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
+            VoiceType.Content = "Voice Type: " + optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
             speech.ChooseVoice(VoiceType.Content.ToString());
 
-            SpeedStatus.Text = optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
-            //speech.ChooseSpeedOfVoice(SpeedStatus.Text);
+            SpeedStatus.Text = "Voice Speed: " + optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
 
-            EyeSelectionSpeedStatus.Text = optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
+            EyeSelectionSpeedStatus.Text = "Eye Fixation Value: " + optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
         }
 
 
@@ -394,7 +393,7 @@ namespace EyeTalk
             {
                 var uri = new Uri(picturePath);
                 var bitmap = new BitmapImage(uri);
-
+                      
                 CustomPicture.Source = bitmap;
             }
         }
@@ -738,11 +737,11 @@ namespace EyeTalk
                     break;
 
                 case Positions.MiddleMiddleRight:
-                    HoverOverButton(ResetCustomPictures);
+                    HoverOverButton(ResetMostUsed);
                     break;
 
                 case Positions.MiddleRight:
-                    HoverOverButton(ResetMostUsed);
+                    HoverOverButton(ResetCustomPictures);
                     break;
 
                 case Positions.BottomLeft:
