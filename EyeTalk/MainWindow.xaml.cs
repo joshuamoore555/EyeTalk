@@ -72,7 +72,7 @@ namespace EyeTalk
 
             mainWindowLogic.Begin();
             CreatePage();
-            Page.Content = mainWindowLogic.UpdatePageNumber();
+            PageNumber.Text = mainWindowLogic.UpdatePageNumber();
 
             myTabControl.SelectedIndex = 1;
 
@@ -179,8 +179,11 @@ namespace EyeTalk
         {
             var numberOfPictures = mainWindowLogic.CategoryPage.Count;
             SentenceUpdate.Text = " ";
-            Page.Content = mainWindowLogic.UpdatePageNumber();
-            CategoryName.Text = mainWindowLogic.GetCategoryName();
+            PageNumber.Text = mainWindowLogic.UpdatePageNumber();
+            CategoryName.Content = mainWindowLogic.GetCategoryName();
+            NextCategoryText.Text = mainWindowLogic.GetNextCategoryName();
+            PreviousCategoryText.Text = mainWindowLogic.GetPreviousCategoryName();
+
 
             if (numberOfPictures > 0)
             {
@@ -309,12 +312,12 @@ namespace EyeTalk
 
         private void ResetMostUsed_Click(object sender, RoutedEventArgs e)
         {
-           ResetMostUsed.Content = mainWindowLogic.ResetMostUsedIfNotEmpty();
+           ResetMostUsedText.Text = mainWindowLogic.ResetMostUsedIfNotEmpty();
         }
 
         private void ResetCustomPicture_Click(object sender, RoutedEventArgs e)
         {
-            ResetCustomPictures.Content = mainWindowLogic.ResetCustomPictureCategoryIfNotEmpty();
+            ResetCustomText.Text = mainWindowLogic.ResetCustomPictureCategoryIfNotEmpty();
         }
 
         private void VoiceType_Click(object sender, RoutedEventArgs e)
@@ -364,12 +367,8 @@ namespace EyeTalk
 
         private void UpdateOptions()
         {
-            ResetMostUsed.Content = "Reset Most Used category";
-            ResetCustomPictures.Content = "Reset Custom category";
-
             VoiceType.Content = "Voice Type: " + optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
             SpeedStatus.Text = "Voice Speed: " + optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
-
             EyeSelectionSpeedStatus.Text = "Eye Fixation Value: " + optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
         }
 
@@ -736,23 +735,21 @@ namespace EyeTalk
                     break;
 
                 case Positions.TopMiddleRight:
-                    HoverOverButton(VoiceType);
-                    break;
-
-                case Positions.TopRight:
-                    HoverOverButton(VoiceType);
-                    break;
-
-                case Positions.MiddleLeft:
                     HoverOverButton(Left_Delay);
                     break;
 
-                case Positions.MiddleMiddleLeft:
+                case Positions.TopRight:
                     HoverOverButton(Right_Delay);
                     break;
 
+                case Positions.MiddleLeft:
+                    HoverOverButton(ResetCustomPictures);
+                    break;
+
+                case Positions.MiddleMiddleLeft:
+                    break;
+
                 case Positions.MiddleMiddleRight:
-                    HoverOverButton(ResetMostUsed);
                     break;
 
                 case Positions.MiddleRight:
@@ -761,18 +758,19 @@ namespace EyeTalk
 
                 case Positions.BottomLeft:
                     HoverOverButton(Back);
-
                     break;
 
                 case Positions.BottomMiddleLeft:
+                    HoverOverButton(VoiceType);
                     break;
 
                 case Positions.BottomMiddleRight:
-                    HoverOverButton(TestVoice);
+                    HoverOverButton(VoiceType);
 
                     break;
 
                 case Positions.BottomRight:
+                    HoverOverButton(TestVoice);
                     break;
 
                 case "":
@@ -812,13 +810,13 @@ namespace EyeTalk
         private void ResetSentencePage()
         {
             SaveSentence.Background = Brushes.LightSeaGreen;
-            Page.Background = Brushes.MediumOrchid;
+            Page.Background = Brushes.DeepPink;
             SentenceList.Background = Brushes.GreenYellow;
             Previous.Background = Brushes.Yellow;
             Next.Background = Brushes.Yellow;
             Home.Background = Brushes.BlueViolet;
             PlaySound.Background = Brushes.Red;
-            RemoveAll.Background = Brushes.DeepPink;
+            RemoveAll.Background = Brushes.RoyalBlue;
 
             Image1_Button.Background = Brushes.Transparent;
             Image2_Button.Background = Brushes.Transparent;

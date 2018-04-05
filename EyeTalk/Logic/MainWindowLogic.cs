@@ -180,7 +180,42 @@ namespace EyeTalk
             return categories.ElementAt(CategoryIndex).Key;
         }
 
- 
+        public string GetPreviousCategoryName()
+        {
+            if (CategoryIndex-1 < 0)
+            {
+                return categories.ElementAt(categories.Count-1).Key;
+            }
+            else if (CategoryIndex - 2 < 0)
+            {
+                return categories.ElementAt(categories.Count - 2).Key;
+
+            }
+            else
+            {
+                return categories.ElementAt(CategoryIndex - 1).Key;
+
+            }
+
+        }
+
+        public string GetNextCategoryName()
+        {
+            if (CategoryIndex + 1 > categories.Count)
+            {
+                return categories.ElementAt(0).Key;
+            }
+            else if (CategoryIndex + 2 > categories.Count)
+            {
+                return categories.ElementAt(0+1).Key;
+            }
+            else
+            {
+                return categories.ElementAt(CategoryIndex + 1).Key;
+
+            }
+        }
+
 
         public string ResetMostUsedIfNotEmpty()
         {

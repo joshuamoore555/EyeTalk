@@ -243,6 +243,72 @@
     <Resource Include="Images\arrowleft.png" />
     <Resource Include="Images\arrowright.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\reset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\page.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\hungry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\sleepy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\sick.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\uncomfortable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\hello.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\goodbye.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\yes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\no.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\blue.png" />
+    <Resource Include="Images\green.png" />
+    <Resource Include="Images\hour.png" />
+    <Resource Include="Images\red.png" />
+    <Resource Include="Images\yellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cat.png" />
+    <Resource Include="Images\dog.png" />
+    <Resource Include="Images\excuseme.png" />
+    <Resource Include="Images\please.png" />
+    <Resource Include="Images\thankyou.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\burger.png" />
+    <Resource Include="Images\chips.png" />
+    <Resource Include="Images\eggs.png" />
+    <Resource Include="Images\hamster.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\beer.png" />
+    <Resource Include="Images\cocktail.png" />
+    <Resource Include="Images\coffee.png" />
+    <Resource Include="Images\juice.png" />
+    <Resource Include="Images\tea.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\water.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\wine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\chicken.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Tobii.EyeX.Client.1.8.504\build\Tobii.EyeX.Client.targets" Condition="Exists('..\packages\Tobii.EyeX.Client.1.8.504\build\Tobii.EyeX.Client.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
