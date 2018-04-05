@@ -127,7 +127,7 @@
                             <Image Source="Images\home.png" Height="240"></Image>
                         </Button>
 
-                        <Button x:Name="Right_Speed" BorderBrush ="Transparent" HorizontalAlignment="Left" Margin="480,10,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Yellow" Click="Right_Speed_Click" >
+                        <Button x:Name="Right_Speed" BorderBrush ="Transparent" HorizontalAlignment="Left" Margin="466,10,0,0" VerticalAlignment="Top" Width="494" FontSize="48" Height="360" Background="Yellow" Click="Right_Speed_Click" >
                             <Image Source="Images\arrowright.png" Height="240"></Image>
                         </Button>
 
@@ -147,7 +147,7 @@
                             <Image Source="Images\arrowleft.png" Height="240"></Image>
                         </Button>
 
-                        <Button x:Name="Right_Delay" BorderBrush ="Transparent"  HorizontalAlignment="Left" Margin="1440,10,-6,0" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Red" Click="Right_Delay_Click" >
+                        <Button x:Name="Right_Delay" BorderBrush ="Transparent"  HorizontalAlignment="Left" Margin="1426,10,-6,0" VerticalAlignment="Top" Width="494" FontSize="48" Height="360" Background="Red" Click="Right_Delay_Click" >
                             <Image Source="Images\arrowright.png" Height="240"></Image>
                         </Button>
 

@@ -51,7 +51,7 @@ namespace EyeTalk.Objects
                 Directory.CreateDirectory(saveFolder);
             }
            
-            if (File.Exists(categoryPath))
+            if (!File.Exists(categoryPath))
             {
                 CreateCategoryFile();
             }
