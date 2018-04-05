@@ -9,57 +9,69 @@ namespace EyeTalk.Utilities
 {
     class PictureInitialiser
     {
-        //pictures
+        //Food
         public Picture pizza = new Picture("Pizza", false, "pack://application:,,,/Images/pizza.png", 0);
         public Picture hotdog = new Picture("Hotdog", false, "pack://application:,,,/Images/hotdog.png", 0);
         public Picture apple = new Picture("Apple", false, "pack://application:,,,/Images/apple.png", 0);
         public Picture banana = new Picture("Banana", false, "pack://application:,,,/Images/banana.png", 0);
-        public Picture sad = new Picture("Sad", false, "pack://application:,,,/Images/sad.png", 0);
-        public Picture happy = new Picture("Happy", false, "pack://application:,,,/Images/happy.png", 0);
-        public Picture ecstatic = new Picture("Ecstatic", false, "pack://application:,,,/Images/ecstatic.png", 0);
+
+        //emotions
+        public Picture sad = new Picture("I am sad", false, "pack://application:,,,/Images/sad.png", 0);
+        public Picture happy = new Picture("I am happy", false, "pack://application:,,,/Images/happy.png", 0);
+        public Picture love = new Picture("I love", false, "pack://application:,,,/Images/love.png", 0);
+        public Picture angry = new Picture("I am angry", false, "pack://application:,,,/Images/angry.png", 0);
+
+        //Feelings
         public Picture awkward = new Picture("Awkward", false, "pack://application:,,,/Images/awkward.png", 0);
-        public Picture angry = new Picture("Angry", false, "pack://application:,,,/Images/angry.png", 0);
+        public Picture ecstatic = new Picture("Ecstatic", false, "pack://application:,,,/Images/ecstatic.png", 0);
         public Picture funny = new Picture("Funny", false, "pack://application:,,,/Images/funny.png", 0);
         public Picture hilarious = new Picture("Hilarious", false, "pack://application:,,,/Images/hilarious.png", 0);
-        public Picture love = new Picture("Love", false, "pack://application:,,,/Images/love.png", 0);
-        public Picture smug = new Picture("Smug", false, "pack://application:,,,/Images/smug.png", 0);
-        public Picture wow = new Picture("Wow", false, "pack://application:,,,/Images/wow.png", 0);
-        public Picture washhands = new Picture("Wash Hands", false, "pack://application:,,,/Images/washhands.png", 0);
-        public Picture toilet = new Picture("Toilet", false, "pack://application:,,,/Images/toilet.png", 0);
-        public Picture shower = new Picture("Shower", false, "pack://application:,,,/Images/shower.png", 0);
-        public Picture iwant = new Picture("I want", false, "pack://application:,,,/Images/want.png", 0);
+
+    
+        //Greetings
+        public Picture hello = new Picture("hello", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture goodbye = new Picture("goodbye", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture seeyoulater = new Picture("See you later", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture seeyou = new Picture("Nice to see you", false, "pack://application:,,,/Images/want.png", 0);
+
+        // replies
+        public Picture yes = new Picture("Yes", false, "pack://application:,,,/Images/shower.png", 0);
+        public Picture no = new Picture("No", false, "pack://application:,,,/Images/want.png", 0);
         public Picture idontknow = new Picture("I don't know", false, "pack://application:,,,/Images/idontknow.png", 0);
 
-        //subject
-        public Picture i = new Picture("I", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture you = new Picture("you", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture he = new Picture("he", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture she = new Picture("she", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture it = new Picture("it", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture we = new Picture("we", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture they = new Picture("they", false, "pack://application:,,,/Images/want.png", 0);
-
-        //object
-        public Picture me = new Picture("me", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture him = new Picture("him", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture her = new Picture("her", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture us = new Picture("us", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture them = new Picture("them", false, "pack://application:,,,/Images/want.png", 0);
-
-        //adjective
-        public Picture my = new Picture("my", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture your = new Picture("your", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture his = new Picture("his", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture its = new Picture("its", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture our = new Picture("our", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture their = new Picture("their", false, "pack://application:,,,/Images/want.png", 0);
+        //Actions Words
+        public Picture iwant = new Picture("I want", false, "pack://application:,,,/Images/smug.png", 0);
+        public Picture idontwant = new Picture("I don't want a", false, "pack://application:,,,/Images/wow.png", 0);
+        public Picture iwouldlike = new Picture("I would like", false, "pack://application:,,,/Images/washhands.png", 0);
+        public Picture a = new Picture("a ", false, "pack://application:,,,/Images/toilet.png", 0);
 
 
-        //possesive
-        public Picture mine = new Picture("mine", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture yours = new Picture("yours", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture ours = new Picture("ours", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture theirs = new Picture("theirs", false, "pack://application:,,,/Images/want.png", 0);
+        //Social
+        public Picture thankyou = new Picture("Thank you", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture please = new Picture("Please", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture excuseme = new Picture("Excuse me", false, "pack://application:,,,/Images/want.png", 0);
+
+        //Time
+        public Picture fivemins = new Picture("in 5 minutes", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture thirtymins = new Picture("in 30 minutes", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture onehour = new Picture("in 1 hour", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture fewhours = new Picture("in a few hours", false, "pack://application:,,,/Images/want.png", 0);
+
+        //When?
+        public Picture now = new Picture("Now", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture later = new Picture("Later", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture today = new Picture("Today", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture tomorrow = new Picture("Tomorrow", false, "pack://application:,,,/Images/want.png", 0);
+
+        //Colours
+        public Picture red = new Picture("Red", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture blue = new Picture("Blue", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture green = new Picture("Green", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture yellow = new Picture("Yellow", false, "pack://application:,,,/Images/want.png", 0);
+
+        //Animals
+        public Picture dog = new Picture("Dog", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture cat = new Picture("Cat", false, "pack://application:,,,/Images/want.png", 0);
 
         //conjunctions
         public Picture and = new Picture("and", false, "pack://application:,,,/Images/want.png", 0);
@@ -78,21 +90,21 @@ namespace EyeTalk.Utilities
         public Picture since = new Picture("since", false, "pack://application:,,,/Images/want.png", 0);
 
 
-        public SortedList<String, List<List<Picture>>> categories;
+        public Dictionary<String, List<List<Picture>>> categories;
 
 
         //pages
         public List<List<Picture>> foodPages;
         public List<List<Picture>> emotionPages;
-        public List<List<Picture>> bathroomPages;
-        public List<List<Picture>> verbPages;
+        public List<List<Picture>> actionPages;
+        public List<List<Picture>> greetingsPages;
         public List<List<Picture>> replyPages;
         public List<List<Picture>> customPages;
         public List<List<Picture>> mostUsedPages;
-        public List<List<Picture>> conjunctionPages;
-        public List<List<Picture>> subjectPronouns;
-        public List<List<Picture>> objectPronouns;
-        public List<List<Picture>> adjectivePronouns;
+        public List<List<Picture>> timePages;
+        public List<List<Picture>> colourPages;
+        public List<List<Picture>> animalPages;
+        public List<List<Picture>> feelingPages;
         public List<List<Picture>> possesivePronouns;
 
 
@@ -100,27 +112,20 @@ namespace EyeTalk.Utilities
         public List<Picture> food1;
         public List<Picture> food2;
         public List<Picture> emotions1;
-        public List<Picture> emotions2;
-        public List<Picture> emotions3;
-        public List<Picture> bathroom1;
+        public List<Picture> feelings1;
+        public List<Picture> replies;
+        public List<Picture> actionwords;
         public List<Picture> verb1;
-        public List<Picture> reply1;
+        public List<Picture> greetings;
 
-        public List<Picture> conjunction1;
-        public List<Picture> conjunction2;
-        public List<Picture> conjunction3;
+        public List<Picture> social;
+        public List<Picture> animals;
+        public List<Picture> when;
 
-        public List<Picture> subjectPronoun1;
-        public List<Picture> subjectPronoun2;
+        public List<Picture> colours;
 
-        public List<Picture> objectPronoun1;
-        public List<Picture> objectPronoun2;
+        public List<Picture> time;
 
-        public List<Picture> adjectivePronoun1;
-        public List<Picture> adjectivePronoun2;
-
-        public List<Picture> possesivePronoun1;
-        public List<Picture> possesivePronoun2;
 
         public List<Picture> custom1;
         public List<Picture> mostused;
@@ -136,64 +141,60 @@ namespace EyeTalk.Utilities
         public void GenerateCategoryPage()
         {
             food1 = new List<Picture>() { pizza, hotdog, apple, banana };
-            food2 = new List<Picture>() { };
+
             emotions1 = new List<Picture>() { happy, sad, angry, love };
-            emotions2 = new List<Picture>() { ecstatic, awkward, funny, hilarious };
-            emotions3 = new List<Picture>() { wow, smug };
-            bathroom1 = new List<Picture>() { washhands, toilet, shower };
-            verb1 = new List<Picture>() { iwant };
-            reply1 = new List<Picture>() { idontknow };
+
+            feelings1 = new List<Picture>() { ecstatic, awkward, funny, hilarious };
+
+            replies = new List<Picture>() { yes, no, idontknow };
+            actionwords = new List<Picture>() {iwant, idontwant, iwouldlike, a};
+
+            greetings = new List<Picture>() { hello, goodbye, seeyoulater };
+
+     
+            animals = new List<Picture>() {dog, cat };
+            when = new List<Picture>() {now, later, today, tomorrow };
+
+            colours = new List<Picture>() {red, blue, yellow, green };
+            social = new List<Picture>() { thankyou,please,excuseme};
+
+            time = new List<Picture>() { fivemins, thirtymins, onehour, fewhours};
+
             custom1 = new List<Picture>() { };
             mostused = new List<Picture>() { };
-            conjunction1 = new List<Picture>() {and, although, _as, because };
-            conjunction2 = new List<Picture>() {but, _if, or, where };
-            conjunction3 = new List<Picture>() {before, after, until, since };
-
-            subjectPronoun1 = new List<Picture>() {i, you,he,she };
-            subjectPronoun2 = new List<Picture>() { it,we,they};
-
-            objectPronoun1 = new List<Picture>() { me, him, her, us};
-            objectPronoun2 = new List<Picture>() { them };
-
-            adjectivePronoun1 = new List<Picture>() { my, your, his, its };
-            adjectivePronoun2 = new List<Picture>() { our, their};
-
-            possesivePronoun1 = new List<Picture>() { mine, yours, its, ours };
-            possesivePronoun2 = new List<Picture>() { theirs };
 
         }
 
         public void GenerateCategoryPages()
         {
          foodPages = new List<List<Picture>>() { food1 };
-         emotionPages = new List<List<Picture>>() { emotions1, emotions2, emotions3 };
-         bathroomPages = new List<List<Picture>>() { bathroom1 };
-         verbPages = new List<List<Picture>>() { verb1 };
-         replyPages = new List<List<Picture>>() { reply1 };
+         emotionPages = new List<List<Picture>>() { emotions1 };
+         actionPages = new List<List<Picture>>() { actionwords };
+         greetingsPages = new List<List<Picture>>() { greetings };
+         replyPages = new List<List<Picture>>() { replies };
          customPages = new List<List<Picture>>() { custom1 };
          mostUsedPages = new List<List<Picture>>() { mostused };
-         conjunctionPages = new List<List<Picture>>() { conjunction1, conjunction2, conjunction3 };
-         subjectPronouns = new List<List<Picture>>() { subjectPronoun1, subjectPronoun2 };
-         objectPronouns = new List<List<Picture>>() { objectPronoun1, objectPronoun2 };
-         adjectivePronouns = new List<List<Picture>>() { adjectivePronoun1, adjectivePronoun2 };
-         possesivePronouns = new List<List<Picture>>() { possesivePronoun1, possesivePronoun2 };
+         timePages = new List<List<Picture>>() { time, when };
+         colourPages = new List<List<Picture>>() { colours };
+         animalPages = new List<List<Picture>>() { animals };
+         feelingPages = new List<List<Picture>>() { feelings1 };
         }
 
         public void GenerateCategories()
         {
-            categories = new SortedList<string, List<List<Picture>>>(){
-            {"Emotions", emotionPages },
-            {"Bathroom", bathroomPages },
-            {"Verbs", verbPages },
+            categories = new Dictionary<string, List<List<Picture>>>(){
+            {"Most Used", mostUsedPages },
+            {"Action Words", actionPages },
             {"Replies", replyPages },
+            {"Greetings", greetingsPages },
+            {"Feelings", feelingPages },
             {"Custom", customPages },
-            {"Conjunctions", conjunctionPages },
-            {"Subject Pronouns", subjectPronouns },
-            {"Object Pronouns", objectPronouns },
-            { "Adjective Pronouns", adjectivePronouns },
-            { "Possesive Pronouns", possesivePronouns },
+            {"Emotions", emotionPages },
+            {"Colours", colourPages },
+            {"Animals", animalPages },
+            { "Times", timePages },
              {"Foods", foodPages },
-                         {"Most Used", mostUsedPages },
+             
 
             };
     }

@@ -51,7 +51,7 @@ namespace EyeTalk.Objects
                 Directory.CreateDirectory(saveFolder);
             }
            
-            if (!File.Exists(categoryPath))
+            if (File.Exists(categoryPath))
             {
                 CreateCategoryFile();
             }
@@ -85,11 +85,11 @@ namespace EyeTalk.Objects
             }
         }
 
-        public SortedList<String, List<List<Picture>>> LoadCategories()
+        public Dictionary<String, List<List<Picture>>> LoadCategories()
         {
             using (Stream stream = File.Open(categoryPath, FileMode.Open))
             {
-                return (SortedList<String, List<List<Picture>>>)bformatter.Deserialize(stream);
+                return (Dictionary<String, List<List<Picture>>>)bformatter.Deserialize(stream);
             }
         }
 

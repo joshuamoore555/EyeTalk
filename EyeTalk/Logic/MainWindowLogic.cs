@@ -17,7 +17,7 @@ namespace EyeTalk
         public int PageIndex { get; set; }
         public int AmountOfWordsInSentence { get; set; }
         public OrderedDictionary Sentence { get; set; }
-        public SortedList<String, List<List<Picture>>> categories;
+        public Dictionary<String, List<List<Picture>>> categories;
         public List<List<Picture>> customCategory;
 
         public List<List<Picture>> mostUsed;

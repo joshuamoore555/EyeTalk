@@ -446,7 +446,15 @@ namespace EyeTalk
         {
             Dispatcher.Invoke((Action)(() =>
             {
-                currentPosition = eyeTracker.GetCurrentPosition();
+                if(myTabControl.SelectedIndex == 1)
+                {
+                    currentPosition = eyeTracker.GetCurrentPositionBeginSpeaking();
+
+                }
+                else
+                {
+                    currentPosition = eyeTracker.GetCurrentPosition();
+                }
 
                 if (eyeTracker.coordinates.X == 0 && eyeTracker.coordinates.X == 0)
                 {
@@ -550,15 +558,15 @@ namespace EyeTalk
             {
 
                 case Positions.TopLeft:
-                    HoverOverButton(SaveSentence);
+                    HoverOverButton(Page);
                     break;
 
                 case Positions.TopMiddleLeft:
-                    HoverOverButton(Page);
+                    HoverOverButton(Image1_Button);
                     break;
 
                 case Positions.TopMiddleRight:
-                    HoverOverButton(Page);
+                    HoverOverButton(Image2_Button);
                     break;
 
                 case Positions.TopRight:
@@ -570,11 +578,9 @@ namespace EyeTalk
                     break;
 
                 case Positions.MiddleMiddleLeft:
-                    HoverOverButton(Image1_Button);
                     break;
 
                 case Positions.MiddleMiddleRight:
-                    HoverOverButton(Image2_Button);
                     break;
 
                 case Positions.MiddleRight:
@@ -594,6 +600,10 @@ namespace EyeTalk
                     break;
 
                 case Positions.BottomRight:
+                    HoverOverButton(SaveSentence);
+                    break;
+
+                case Positions.BottomRightAlternate:
                     HoverOverButton(SentenceList);
                     break;
 
@@ -787,18 +797,18 @@ namespace EyeTalk
         {
             BeginSpeaking.Background = Brushes.Red;
             AddPicture.Background = Brushes.Yellow;
-            Options.Background = Brushes.ForestGreen;
-            Exit.Background = Brushes.Purple;
+            Options.Background = Brushes.GreenYellow;
+            Exit.Background = Brushes.BlueViolet;
         }
 
         private void ResetSentencePage()
         {
             SaveSentence.Background = Brushes.RoyalBlue;
             Page.Background = Brushes.LightGray;
-            SentenceList.Background = Brushes.ForestGreen;
+            SentenceList.Background = Brushes.GreenYellow;
             Previous.Background = Brushes.Yellow;
             Next.Background = Brushes.Yellow;
-            Home.Background = Brushes.Purple;
+            Home.Background = Brushes.BlueViolet;
             PlaySound.Background = Brushes.Red;
 
             Image1_Button.Background = Brushes.Transparent;
@@ -811,7 +821,7 @@ namespace EyeTalk
         {
             CustomName.Background = Brushes.White;
             Select_Picture.Background = Brushes.Red;
-            BackHome.Background = Brushes.Purple;
+            BackHome.Background = Brushes.BlueViolet;
             Save_Custom_Button.Background = Brushes.Yellow;
         }
 
@@ -821,7 +831,7 @@ namespace EyeTalk
             NextSentence.Background = Brushes.Yellow;
             PreviousSentence.Background = Brushes.Yellow;
             BackToSpeaking.Background = Brushes.Purple;
-            DeleteSentence.Background = Brushes.ForestGreen;
+            DeleteSentence.Background = Brushes.YellowGreen;
         }
 
         private void ResetOptionsPage()
@@ -832,9 +842,10 @@ namespace EyeTalk
             Left_Delay.Background = Brushes.Red;
             Right_Delay.Background = Brushes.Red;
             ResetMostUsed.Background = Brushes.RoyalBlue;
-            ResetCustomPictures.Background = Brushes.BlueViolet;
-            VoiceType.Background = Brushes.ForestGreen;
-            Back.Background = Brushes.Purple;
+            ResetCustomPictures.Background = Brushes.Magenta;
+            TestVoice.Background = Brushes.Crimson;
+            VoiceType.Background = Brushes.GreenYellow;
+            Back.Background = Brushes.BlueViolet;
         }
 
         private void FormatTextBoxes()

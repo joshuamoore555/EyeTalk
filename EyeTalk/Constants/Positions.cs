@@ -23,8 +23,10 @@ namespace EyeTalk.Constants
             public const string BottomMiddleLeft = "Bottom Middle Left";
             public const string BottomMiddleRight = "Bottom Middle Right";
             public const string BottomRight = "Bottom Right";
+            public const string BottomRightAlternate = "Bottom Right Alternate";
 
 
-        }
-    
+
+    }
+
 }

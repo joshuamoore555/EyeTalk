@@ -71,9 +71,46 @@ namespace EyeTalk
                 return "Middle Right";
 
             }
-            else if (coordinates.X > 1440 && coordinates.X < 1920)
+            else if (coordinates.X > 1440 && coordinates.X < 1680)
             {
                 return "Right";
+
+            }
+            else if (coordinates.X > 1680 && coordinates.X < 1920)
+            {
+                return "Right";
+
+            }
+            else
+            {
+                return coordinates.X.ToString();
+            }
+        }
+
+        public string CheckXBeginSpeakingPage()
+        {
+            if (coordinates.X < 480)
+            {
+                return "Left";
+            }
+            else if (coordinates.X > 480 && coordinates.X < 960)
+            {
+                return "Middle Left";
+
+            }
+            else if (coordinates.X > 960 && coordinates.X < 1440)
+            {
+                return "Middle Right";
+
+            }
+            else if (coordinates.X > 1440 && coordinates.X < 1680)
+            {
+                return "Right";
+
+            }
+            else if (coordinates.X > 1680 && coordinates.X < 1920)
+            {
+                return "Right Alternate";
 
             }
             else
@@ -105,6 +142,11 @@ namespace EyeTalk
         public string GetCurrentPosition()
         {
             return CheckY() + " " + CheckX();
+        }
+
+        public string GetCurrentPositionBeginSpeaking()
+        {
+            return CheckY() + " " + CheckXBeginSpeakingPage();
         }
     }
 }
