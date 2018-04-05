@@ -89,9 +89,15 @@ namespace EyeTalk
 
         public string CheckXBeginSpeakingPage()
         {
-            if (coordinates.X < 480)
+            if (coordinates.X < 240)
+            {
+                return "Left Alternate";
+            }
+
+            else if (coordinates.X > 240 && coordinates.X < 480)
             {
                 return "Left";
+
             }
             else if (coordinates.X > 480 && coordinates.X < 960)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EyeTalk.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Synthesis;
@@ -14,6 +15,7 @@ namespace EyeTalk.Utilities
 
         public SpeechGenerator()
         {
+            OptionsLogic optionsLogic = new OptionsLogic();
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
             synthesizer.Rate = 0;
@@ -24,6 +26,10 @@ namespace EyeTalk.Utilities
             {
                 voices.Add(voice);
             }
+
+            ChooseVoice(optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection));
+            ChooseSpeedOfVoice(optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection));
+
         }
 
         public void ChooseSpeedOfVoice(string speed)

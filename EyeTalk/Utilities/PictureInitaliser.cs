@@ -10,10 +10,10 @@ namespace EyeTalk.Utilities
     class PictureInitialiser
     {
         //Food
-        public Picture pizza = new Picture("Pizza", false, "pack://application:,,,/Images/pizza.png", 0);
-        public Picture hotdog = new Picture("Hotdog", false, "pack://application:,,,/Images/hotdog.png", 0);
-        public Picture apple = new Picture("Apple", false, "pack://application:,,,/Images/apple.png", 0);
-        public Picture banana = new Picture("Banana", false, "pack://application:,,,/Images/banana.png", 0);
+        public Picture pizza = new Picture("a Pizza", false, "pack://application:,,,/Images/pizza.png", 0);
+        public Picture hotdog = new Picture("a Hotdog", false, "pack://application:,,,/Images/hotdog.png", 0);
+        public Picture apple = new Picture("an Apple", false, "pack://application:,,,/Images/apple.png", 0);
+        public Picture banana = new Picture("a Banana", false, "pack://application:,,,/Images/banana.png", 0);
 
         //emotions
         public Picture sad = new Picture("I am sad", false, "pack://application:,,,/Images/sad.png", 0);
@@ -22,10 +22,10 @@ namespace EyeTalk.Utilities
         public Picture angry = new Picture("I am angry", false, "pack://application:,,,/Images/angry.png", 0);
 
         //Feelings
-        public Picture awkward = new Picture("Awkward", false, "pack://application:,,,/Images/awkward.png", 0);
-        public Picture ecstatic = new Picture("Ecstatic", false, "pack://application:,,,/Images/ecstatic.png", 0);
-        public Picture funny = new Picture("Funny", false, "pack://application:,,,/Images/funny.png", 0);
-        public Picture hilarious = new Picture("Hilarious", false, "pack://application:,,,/Images/hilarious.png", 0);
+        public Picture hungry = new Picture("I feel hungry", false, "pack://application:,,,/Images/awkward.png", 0);
+        public Picture sleepy = new Picture("I feel sleepy", false, "pack://application:,,,/Images/ecstatic.png", 0);
+        public Picture uncomfortable = new Picture("I feel uncomfortable", false, "pack://application:,,,/Images/funny.png", 0);
+        public Picture pain = new Picture("I am in pain", false, "pack://application:,,,/Images/hilarious.png", 0);
 
     
         //Greetings
@@ -39,11 +39,10 @@ namespace EyeTalk.Utilities
         public Picture no = new Picture("No", false, "pack://application:,,,/Images/want.png", 0);
         public Picture idontknow = new Picture("I don't know", false, "pack://application:,,,/Images/idontknow.png", 0);
 
-        //Actions Words
+        //Action Words
         public Picture iwant = new Picture("I want", false, "pack://application:,,,/Images/smug.png", 0);
-        public Picture idontwant = new Picture("I don't want a", false, "pack://application:,,,/Images/wow.png", 0);
-        public Picture iwouldlike = new Picture("I would like", false, "pack://application:,,,/Images/washhands.png", 0);
-        public Picture a = new Picture("a ", false, "pack://application:,,,/Images/toilet.png", 0);
+        public Picture idontwant = new Picture("I don't want", false, "pack://application:,,,/Images/wow.png", 0);
+        public Picture help = new Picture("I need help with", false, "pack://application:,,,/Images/wow.png", 0);
 
 
         //Social
@@ -70,24 +69,10 @@ namespace EyeTalk.Utilities
         public Picture yellow = new Picture("Yellow", false, "pack://application:,,,/Images/want.png", 0);
 
         //Animals
-        public Picture dog = new Picture("Dog", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture cat = new Picture("Cat", false, "pack://application:,,,/Images/want.png", 0);
-
-        //conjunctions
-        public Picture and = new Picture("and", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture although = new Picture("although", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture _as = new Picture("as", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture because = new Picture("because", false, "pack://application:,,,/Images/want.png", 0);
-
-        public Picture but = new Picture("but", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture _if = new Picture("if", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture or = new Picture("or", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture where = new Picture("where", false, "pack://application:,,,/Images/want.png", 0);
-
-        public Picture before = new Picture("before", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture after = new Picture("after", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture until = new Picture("until", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture since = new Picture("since", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture own = new Picture("I own", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture dog = new Picture("a Dog", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture cat = new Picture("a Cat", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture hamster = new Picture("a Hamster", false, "pack://application:,,,/Images/want.png", 0);
 
 
         public Dictionary<String, List<List<Picture>>> categories;
@@ -105,26 +90,22 @@ namespace EyeTalk.Utilities
         public List<List<Picture>> colourPages;
         public List<List<Picture>> animalPages;
         public List<List<Picture>> feelingPages;
-        public List<List<Picture>> possesivePronouns;
 
 
         //page
         public List<Picture> food1;
-        public List<Picture> food2;
         public List<Picture> emotions1;
         public List<Picture> feelings1;
-        public List<Picture> replies;
-        public List<Picture> actionwords;
-        public List<Picture> verb1;
-        public List<Picture> greetings;
+        public List<Picture> replies1;
+        public List<Picture> actionwords1;
+        public List<Picture> greetings1;
 
-        public List<Picture> social;
-        public List<Picture> animals;
-        public List<Picture> when;
+        public List<Picture> animals1;
+        public List<Picture> time2;
 
-        public List<Picture> colours;
+        public List<Picture> colours1;
 
-        public List<Picture> time;
+        public List<Picture> time1;
 
 
         public List<Picture> custom1;
@@ -144,21 +125,20 @@ namespace EyeTalk.Utilities
 
             emotions1 = new List<Picture>() { happy, sad, angry, love };
 
-            feelings1 = new List<Picture>() { ecstatic, awkward, funny, hilarious };
+            feelings1 = new List<Picture>() { sleepy, hungry, uncomfortable, pain };
 
-            replies = new List<Picture>() { yes, no, idontknow };
-            actionwords = new List<Picture>() {iwant, idontwant, iwouldlike, a};
+            replies1 = new List<Picture>() { yes, no, idontknow, thankyou };
 
-            greetings = new List<Picture>() { hello, goodbye, seeyoulater };
+            actionwords1 = new List<Picture>() {iwant, idontwant, help};
 
-     
-            animals = new List<Picture>() {dog, cat };
-            when = new List<Picture>() {now, later, today, tomorrow };
+            greetings1 = new List<Picture>() { hello, goodbye, seeyoulater };
+   
+            animals1 = new List<Picture>() {own, dog, cat };
 
-            colours = new List<Picture>() {red, blue, yellow, green };
-            social = new List<Picture>() { thankyou,please,excuseme};
+            colours1 = new List<Picture>() {red, blue, yellow, green };
 
-            time = new List<Picture>() { fivemins, thirtymins, onehour, fewhours};
+            time1 = new List<Picture>() { fivemins, thirtymins, onehour, fewhours};
+            time2 = new List<Picture>() { now, later, today, tomorrow };
 
             custom1 = new List<Picture>() { };
             mostused = new List<Picture>() { };
@@ -169,14 +149,14 @@ namespace EyeTalk.Utilities
         {
          foodPages = new List<List<Picture>>() { food1 };
          emotionPages = new List<List<Picture>>() { emotions1 };
-         actionPages = new List<List<Picture>>() { actionwords };
-         greetingsPages = new List<List<Picture>>() { greetings };
-         replyPages = new List<List<Picture>>() { replies };
+         actionPages = new List<List<Picture>>() { actionwords1 };
+         greetingsPages = new List<List<Picture>>() { greetings1 };
+         replyPages = new List<List<Picture>>() { replies1 };
          customPages = new List<List<Picture>>() { custom1 };
          mostUsedPages = new List<List<Picture>>() { mostused };
-         timePages = new List<List<Picture>>() { time, when };
-         colourPages = new List<List<Picture>>() { colours };
-         animalPages = new List<List<Picture>>() { animals };
+         timePages = new List<List<Picture>>() { time1, time2 };
+         colourPages = new List<List<Picture>>() { colours1 };
+         animalPages = new List<List<Picture>>() { animals1 };
          feelingPages = new List<List<Picture>>() { feelings1 };
         }
 
@@ -187,15 +167,13 @@ namespace EyeTalk.Utilities
             {"Action Words", actionPages },
             {"Replies", replyPages },
             {"Greetings", greetingsPages },
-            {"Feelings", feelingPages },
-            {"Custom", customPages },
+            {"Feelings", feelingPages },          
             {"Emotions", emotionPages },
             {"Colours", colourPages },
             {"Animals", animalPages },
             { "Times", timePages },
              {"Foods", foodPages },
-             
-
+              {"Custom", customPages },
             };
     }
     }

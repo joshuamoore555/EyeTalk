@@ -72,7 +72,7 @@ namespace EyeTalk
 
             mainWindowLogic.Begin();
             CreatePage();
-            UpdatePageNumber();
+            Page.Content = mainWindowLogic.UpdatePageNumber();
 
             myTabControl.SelectedIndex = 1;
 
@@ -151,8 +151,8 @@ namespace EyeTalk
         private void Page_Click(object sender, RoutedEventArgs e)
         {
             mainWindowLogic.GoToNextPage();
-            UpdatePageNumber();
             CreatePage();
+            
         }
 
         private void Next_Button_Click(object sender, RoutedEventArgs e)
@@ -160,8 +160,7 @@ namespace EyeTalk
             mainWindowLogic.CheckIfBackToFirstCategory();
             mainWindowLogic.UpdateCategoryAndGoToFirstPage();
             CreatePage();
-            UpdatePageNumber();
-
+            
 
         }
 
@@ -170,7 +169,7 @@ namespace EyeTalk
             mainWindowLogic.CheckIfBackToLastCategory();
             mainWindowLogic.UpdateCategoryAndGoToFirstPage();
             CreatePage();
-            UpdatePageNumber();
+            
         }
 
 
@@ -179,6 +178,9 @@ namespace EyeTalk
         private void CreatePage()
         {
             var numberOfPictures = mainWindowLogic.CategoryPage.Count;
+            SentenceUpdate.Text = " ";
+            Page.Content = mainWindowLogic.UpdatePageNumber();
+            CategoryName.Text = mainWindowLogic.GetCategoryName();
 
             if (numberOfPictures > 0)
             {
@@ -235,7 +237,7 @@ namespace EyeTalk
         private void HighlightPicture(List<Button> buttons, int i)
         {
             buttons.ElementAt(i).BorderBrush = new SolidColorBrush(Colors.Yellow);
-            buttons.ElementAt(i).BorderThickness = new Thickness(8, 8, 8, 8);
+            buttons.ElementAt(i).BorderThickness = new Thickness(12, 12, 12, 12);
         }
 
         private void UnhighlightPicture(List<Button> buttons, int i)
@@ -243,11 +245,6 @@ namespace EyeTalk
             buttons.ElementAt(i).BorderBrush = new SolidColorBrush(Colors.Black);
             buttons.ElementAt(i).BorderThickness = new Thickness(1, 1, 1, 1);
 
-        }
-
-        private void UpdatePageNumber()
-        {
-            Page.Content = mainWindowLogic.UpdatePageNumber();
         }
 
         private void SelectPicture(int i)
@@ -312,13 +309,11 @@ namespace EyeTalk
 
         private void ResetMostUsed_Click(object sender, RoutedEventArgs e)
         {
-           
            ResetMostUsed.Content = mainWindowLogic.ResetMostUsedIfNotEmpty();
         }
 
         private void ResetCustomPicture_Click(object sender, RoutedEventArgs e)
         {
-
             ResetCustomPictures.Content = mainWindowLogic.ResetCustomPictureCategoryIfNotEmpty();
         }
 
@@ -373,8 +368,6 @@ namespace EyeTalk
             ResetCustomPictures.Content = "Reset Custom category";
 
             VoiceType.Content = "Voice Type: " + optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
-            speech.ChooseVoice(VoiceType.Content.ToString());
-
             SpeedStatus.Text = "Voice Speed: " + optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
 
             EyeSelectionSpeedStatus.Text = "Eye Fixation Value: " + optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
@@ -449,7 +442,6 @@ namespace EyeTalk
                 if(myTabControl.SelectedIndex == 1)
                 {
                     currentPosition = eyeTracker.GetCurrentPositionBeginSpeaking();
-
                 }
                 else
                 {
@@ -556,9 +548,12 @@ namespace EyeTalk
             ResetSentencePage();
             switch (position)
             {
+                case Positions.TopLeftAlternate:
+                    HoverOverButton(Page);
+                    break;
 
                 case Positions.TopLeft:
-                    HoverOverButton(Page);
+                    HoverOverButton(PlaySound);
                     break;
 
                 case Positions.TopMiddleLeft:
@@ -570,7 +565,7 @@ namespace EyeTalk
                     break;
 
                 case Positions.TopRight:
-                    HoverOverButton(PlaySound);
+                    HoverOverButton(RemoveAll);
                     break;
 
                 case Positions.MiddleLeft:
@@ -606,6 +601,10 @@ namespace EyeTalk
                 case Positions.BottomRightAlternate:
                     HoverOverButton(SentenceList);
                     break;
+
+                case "":
+                    break;
+
 
             }
         }
@@ -662,6 +661,9 @@ namespace EyeTalk
                     HoverOverButton(Save_Custom_Button);
                     break;
 
+                case "":
+                    break;
+
             }
         }
 
@@ -711,6 +713,9 @@ namespace EyeTalk
 
                 case Positions.BottomRight:
                     HoverOverButton(DeleteSentence);
+                    break;
+
+                case "":
                     break;
 
             }
@@ -770,6 +775,9 @@ namespace EyeTalk
                 case Positions.BottomRight:
                     break;
 
+                case "":
+                    break;
+
             }
         }
 
@@ -803,13 +811,14 @@ namespace EyeTalk
 
         private void ResetSentencePage()
         {
-            SaveSentence.Background = Brushes.RoyalBlue;
-            Page.Background = Brushes.LightGray;
+            SaveSentence.Background = Brushes.LightSeaGreen;
+            Page.Background = Brushes.MediumOrchid;
             SentenceList.Background = Brushes.GreenYellow;
             Previous.Background = Brushes.Yellow;
             Next.Background = Brushes.Yellow;
             Home.Background = Brushes.BlueViolet;
             PlaySound.Background = Brushes.Red;
+            RemoveAll.Background = Brushes.DeepPink;
 
             Image1_Button.Background = Brushes.Transparent;
             Image2_Button.Background = Brushes.Transparent;
@@ -861,8 +870,8 @@ namespace EyeTalk
         {
             mainWindowLogic.categories = saveInitialiser.LoadCategories();
             savedSentencesLogic.savedSentences = saveInitialiser.LoadSentences();
-            mainWindowLogic.customCategory = saveInitialiser.LoadCustomCategory();
             optionsLogic.Options = saveInitialiser.LoadOptions();
+            mainWindowLogic.customCategory = saveInitialiser.LoadCustomCategory();
         }
 
         private void SaveAllFiles()
@@ -871,5 +880,14 @@ namespace EyeTalk
             saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
             saveInitialiser.SaveOptions(optionsLogic.Options);
         }
+
+        private void Remove_All_Click(object sender, RoutedEventArgs e)
+        {
+            SentenceTextBox.Clear();
+            mainWindowLogic.RemoveAllWordsFromSentence();
+            CreatePage();
+
+        }
+
     }
 }

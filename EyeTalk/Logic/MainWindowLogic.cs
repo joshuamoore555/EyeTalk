@@ -171,8 +171,13 @@ namespace EyeTalk
         {
             var categoryPages = categories.ElementAt(CategoryIndex);
             var numberOfPages = categoryPages.Value.Count;
-            return CategoryName + " \nPage " + (PageIndex + 1) + "/" + numberOfPages;
+            return "Page " + (PageIndex + 1) + "/" + numberOfPages;
 
+        }
+
+        public string GetCategoryName()
+        {
+            return categories.ElementAt(CategoryIndex).Key;
         }
 
  
@@ -315,6 +320,24 @@ namespace EyeTalk
                 bmp.EndInit();
             }
             return bmp;   
+        }
+
+
+        public void RemoveAllWordsFromSentence()
+        {
+            AmountOfWordsInSentence = 0;
+            Sentence.Clear();
+         
+            foreach (var category in categories)
+            {
+                foreach (List<Picture> page in category.Value)
+                {
+                    foreach (Picture picture in page)
+                    {
+                        picture.Selected = false;
+                    }
+                }
+            }
         }
     }
 }

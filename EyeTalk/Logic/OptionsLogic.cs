@@ -17,6 +17,7 @@ namespace EyeTalk.Logic
             save = new SaveFileSerialiser();
             Options = save.LoadOptions();
 
+
         }
 
         public void IncreaseEyeFixationDuration()
