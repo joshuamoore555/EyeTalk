@@ -32,6 +32,8 @@
                         <TextBlock x:Name="addCustomPictureText" HorizontalAlignment="Left" Margin="1668,319,0,0" TextWrapping="Wrap" Text="Add Custom Picture" VerticalAlignment="Top" FontSize="24" Width="232" Height="41"/>
                         <TextBlock x:Name="OptionsText" HorizontalAlignment="Left" Margin="825,1039,0,0" TextWrapping="Wrap" Text="Options" VerticalAlignment="Top" FontSize="24" Width="115" Height="41"/>
                         <TextBlock x:Name="ExitText" HorizontalAlignment="Left" Margin="1836,1039,0,0" TextWrapping="Wrap" Text="Exit" VerticalAlignment="Top" FontSize="24" Width="64" Height="41"/>
+                        <TextBlock x:Name="displayPos" HorizontalAlignment="Left" Margin="369,511,0,0" TextWrapping="Wrap" Text="Display" VerticalAlignment="Top" FontSize="24" Width="1284" Height="41"/>
+
 
                     </Grid>
                 </TabItem>
@@ -161,7 +163,7 @@
 
                         <TextBlock x:Name="SpeedStatus" HorizontalAlignment="Left" Margin="304,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="12" Width="354" Height="32" TextAlignment="Center"><Run Text=""/><LineBreak/><Run/></TextBlock>
 
-                        <Button x:Name="TestVoice"  BorderBrush ="Transparent"  HorizontalAlignment="Left" Margin="1440,730,-6,0" VerticalAlignment="Top" Width="480" FontSize="48"  Background="DeepPink" Height="360" Click="TestVoice_Click" >
+                        <Button x:Name="TestVoice"  BorderBrush ="Transparent"  HorizontalAlignment="Left" Margin="1440,730,-6,0" VerticalAlignment="Top" Width="480" FontSize="48"  Background="Transparent" Height="360" Click="TestVoice_Click" >
                             <Image Source="Images\sound.png" Height="120"></Image>
                         </Button>
                         <TextBlock x:Name="ResetCustomText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="368" Height="59" Margin="72,647,0,0"><Run Text="Reset "/><Run Text="Custom Pictures"/><Run Text=" "/><Run Text="Category"/></TextBlock>
@@ -169,6 +171,7 @@
                         <TextBlock x:Name="ResetCustomText_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="232" Height="59" Margin="1578,1006,0,0" Text="Test Current Voice"/>
                         <TextBlock x:Name="HomeText2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="74" Height="59" Margin="206,1006,0,0" Text="Home"/>
                         <Button x:Name="ColourType"  BorderBrush ="Transparent" Content="Change Colour" HorizontalAlignment="Left" Margin="960,730,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Lavender" Click="ColourType_Click" />
+                        <TextBlock x:Name="display" HorizontalAlignment="Left" Margin="539,511,0,0" TextWrapping="Wrap" Text="Display" VerticalAlignment="Top" FontSize="24" Width="896" Height="41"/>
 
 
 

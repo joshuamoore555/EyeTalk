@@ -72,7 +72,7 @@ namespace EyeTalk
 
         public void GenerateSentencePage()
         {
-            ResetSentence();
+            
             UpdateCustomCategory();
             UpdateMostUsedCategory();
 
@@ -82,17 +82,12 @@ namespace EyeTalk
 
         }
 
-        public void ResetSentence()
-        {
-           
-            AmountOfWordsInSentence = 0;
-            Sentence.Clear();
-        }
 
         public void ResetCategoryChoice()
         {
             CategoryIndex = 0;
             PageIndex = 0;
+
         }
 
         public void UpdateCustomCategory()

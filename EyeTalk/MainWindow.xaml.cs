@@ -37,7 +37,8 @@ namespace EyeTalk
         OptionsLogic optionsLogic;
         AddPictureLogic addPictureLogic;
         SavedSentencesLogic savedSentencesLogic;
-        
+        Brush brush;
+
 
         public MainWindow()
         {
@@ -52,6 +53,7 @@ namespace EyeTalk
             eyeTracker = new EyeTracker();
             saveInitialiser = new SaveFileSerialiser();
             timer = new CoordinateTimer();
+            brush = GetBrush();
 
             timer.coordinateTimer.Elapsed += CheckCoordinates;
             LoadSaveFiles();
@@ -63,7 +65,10 @@ namespace EyeTalk
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
             sentenceLogic.ResetCategoryChoice();
+            ResetSentence();
+            FormatTextBoxes();
             GoToSentencePage();
+
 
         }
 
@@ -100,6 +105,7 @@ namespace EyeTalk
         private void Back_Button_Click(object sender, RoutedEventArgs e)
         {
             SaveAllFiles();
+            brush = GetBrush();
             myTabControl.SelectedIndex = 0;
         }
 
@@ -446,6 +452,9 @@ namespace EyeTalk
                     currentPosition = "";
                 }
 
+                SentenceUpdate.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration;
+                displayPos.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration ;
+
                 if (currentPosition == previousPosition)
                 {
                     optionsLogic.IncreaseEyeFixationDuration();
@@ -568,6 +577,10 @@ namespace EyeTalk
                     HoverOverButton(Previous);
                     break;
 
+                case Positions.MiddleLeftAlternate:
+                    HoverOverButton(Previous);
+                    break;
+
                 case Positions.MiddleMiddleLeft:
                     break;
 
@@ -578,7 +591,15 @@ namespace EyeTalk
                     HoverOverButton(Next);
                     break;
 
+                case Positions.MiddleRightAlternate:
+                    HoverOverButton(Next);
+                    break;
+
                 case Positions.BottomLeft:
+                    HoverOverButton(ChooseCategory);
+                    break;
+
+                case Positions.BottomLeftAlternate:
                     HoverOverButton(Home);
                     break;
 
@@ -587,6 +608,10 @@ namespace EyeTalk
                     break;
 
                 case Positions.BottomMiddleRight:
+                    HoverOverButton(Image4_Button);
+                    break;
+
+                case Positions.BottomMiddleRightAlternate:
                     HoverOverButton(Image4_Button);
                     break;
 
@@ -750,7 +775,7 @@ namespace EyeTalk
                     break;
 
                 case Positions.MiddleRight:
-                    HoverOverButton(ResetCustomPictures);
+                    HoverOverButton(ResetMostUsed);
                     break;
 
                 case Positions.BottomLeft:
@@ -912,8 +937,6 @@ namespace EyeTalk
 
         private void ResetHomePage()
         {
-            Brush brush = GetBrush();
-
             BeginSpeaking.Background = brush;
             AddPicture.Background = brush;
             Options.Background = brush;
@@ -922,7 +945,6 @@ namespace EyeTalk
 
         private void ResetSentencePage()
         {
-            Brush brush = GetBrush();
             SaveSentence.Background = brush;
             SentenceList.Background = brush;
 
@@ -946,7 +968,6 @@ namespace EyeTalk
         private void ResetAddPicturePage()
         {
             CustomName.Background = Brushes.White;
-            Brush brush = GetBrush();
             Select_Picture.Background = brush;
             BackHome.Background = brush;
             Save_Custom_Button.Background = brush;
@@ -954,8 +975,6 @@ namespace EyeTalk
 
         private void ResetSaveSentencePage()
         {
-            Brush brush = GetBrush();
-
             SpeakSentence.Background = brush;
             NextSentence.Background = Brushes.Lavender;
             PreviousSentence.Background = Brushes.Lavender;
@@ -965,8 +984,6 @@ namespace EyeTalk
 
         private void ResetOptionsPage()
         {
-            Brush brush = GetBrush();
-
             Left_Speed.Background = brush;
             Right_Speed.Background = brush;
             Left_Delay.Background = brush;
@@ -981,7 +998,7 @@ namespace EyeTalk
 
         private void ResetChooseCategoryPage()
         {
-            Brush brush = GetBrush();
+            
             BackToSpeak.Background  = brush;
 
             Actions.Background = Brushes.Lavender;
@@ -999,6 +1016,7 @@ namespace EyeTalk
             Replies.Background = Brushes.Lavender;
             MostUsed.Background = Brushes.Lavender;
             Custom.Background = Brushes.Lavender;
+            Animals.Background = Brushes.Lavender;
 
         }
 
@@ -1183,8 +1201,6 @@ namespace EyeTalk
             buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
             textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
 
-            FormatTextBoxes();
-
             sentenceLogic.GenerateSentencePage();
             CreatePage();
             PageNumber.Text = sentenceLogic.UpdatePageNumber();
@@ -1195,7 +1211,16 @@ namespace EyeTalk
         private void ColourType_Click(object sender, RoutedEventArgs e)
         {
             optionsLogic.ChangeColour();
-            
+            Brush brush = GetBrush();
+
         }
+
+        public void ResetSentence()
+        {
+
+            sentenceLogic.AmountOfWordsInSentence = 0;
+            sentenceLogic.Sentence.Clear();
+        }
+
     }
 }

@@ -43,7 +43,7 @@ namespace EyeTalk
                 while (eyeTracking)
                 {
                     stream.Next += (s, t) => SetXY(t.X, t.Y);
-                    await Task.Delay(125);
+                    await Task.Delay(200);
                 }
 
             });
@@ -71,12 +71,7 @@ namespace EyeTalk
                 return "Middle Right";
 
             }
-            else if (coordinates.X > 1440 && coordinates.X < 1680)
-            {
-                return "Right";
-
-            }
-            else if (coordinates.X > 1680 && coordinates.X < 1920)
+            else if (coordinates.X > 1440 && coordinates.X < 1920)
             {
                 return "Right";
 
@@ -89,11 +84,16 @@ namespace EyeTalk
 
         public string CheckXOfBeginSpeakingPage()
         {
-            if (coordinates.X < 240)
+            if (coordinates.X < 240 && coordinates.Y < 360 || coordinates.X < 240 && coordinates.Y > 720)
             {
                 return "Left Alternate";
             }
 
+            else if (coordinates.X < 240 && coordinates.Y > 360 && coordinates.X < 720)
+            {
+                return "Left";
+
+            }
             else if (coordinates.X > 240 && coordinates.X < 480)
             {
                 return "Left";
@@ -114,9 +114,14 @@ namespace EyeTalk
                 return "Right";
 
             }
-            else if (coordinates.X > 1680 && coordinates.X < 1920)
+            else if (coordinates.X > 1680 && coordinates.X < 1920 && coordinates.Y > 720)
             {
                 return "Right Alternate";
+
+            }
+            else if (coordinates.X > 1680 && coordinates.X < 1920 && coordinates.Y < 720)
+            {
+                return "Right";
 
             }
             else

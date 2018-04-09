@@ -19,7 +19,7 @@ namespace EyeTalk.Utilities
         public void BeginTimer()
         {
             coordinateTimer = new System.Timers.Timer();
-            coordinateTimer.Interval = 125;
+            coordinateTimer.Interval = 200;
             coordinateTimer.AutoReset = true;
             coordinateTimer.Enabled = true;
         }
