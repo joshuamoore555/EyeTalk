@@ -54,8 +54,8 @@ namespace EyeTalk.Utilities
         public Picture idontknow = new Picture("I don't know", false, "pack://application:,,,/Images/idontknow.png", 0);
 
         //Action Words
-        public Picture iwant = new Picture("I want", false, "pack://application:,,,/Images/want.png", 0);
-        public Picture idontwant = new Picture("I don't want", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture iwant = new Picture("I want", false, "pack://application:,,,/Images/iwant.png", 0);
+        public Picture idontwant = new Picture("I don't want", false, "pack://application:,,,/Images/dontwant.png", 0);
         public Picture help = new Picture("I need help with", false, "pack://application:,,,/Images/wow.png", 0);
 
 
@@ -88,15 +88,47 @@ namespace EyeTalk.Utilities
         public Picture cat = new Picture("cat", false, "pack://application:,,,/Images/cat.png", 0);
         public Picture called = new Picture("called", false, "pack://application:,,,/Images/want.png", 0);
 
+        //people
+        public Picture man = new Picture("man", false, "pack://application:,,,/Images/man.png", 0);
+        public Picture woman = new Picture("woman", false, "pack://application:,,,/Images/woman.png", 0);
+        public Picture girl = new Picture("girl", false, "pack://application:,,,/Images/girl.png", 0);
+        public Picture boy = new Picture("boy", false, "pack://application:,,,/Images/boy.png", 0);
+
+        //family
+        public Picture brother = new Picture("brother", false, "pack://application:,,,/Images/boy.png", 0);
+        public Picture sister = new Picture("sister", false, "pack://application:,,,/Images/girl.png", 0);
+        public Picture mum = new Picture("mum", false, "pack://application:,,,/Images/woman.png", 0);
+        public Picture dad = new Picture("dad", false, "pack://application:,,,/Images/man.png", 0);
+
+        //Personal Care
+        public Picture bath = new Picture("a bath", false, "pack://application:,,,/Images/bath.png", 0);
+        public Picture washHands  = new Picture("to wash my hands", false, "pack://application:,,,/Images/washHands.png", 0);
+        public Picture shower = new Picture("a shower", false, "pack://application:,,,/Images/shower.png", 0);
+        public Picture toilet = new Picture("to go to the toilet", false, "pack://application:,,,/Images/toilet.png", 0);
+
+        //Carers
+        public Picture ineed = new Picture("I need", false, "pack://application:,,,/Images/iwant.png", 0);
+        public Picture teacher = new Picture("a teacher", false, "pack://application:,,,/Images/teacher.png", 0);
+        public Picture doctor = new Picture("a doctor", false, "pack://application:,,,/Images/doctor.png", 0);
+        public Picture nurse = new Picture("a nurse", false, "pack://application:,,,/Images/nurse.png", 0);
+
+        //Kitchen Items
+        public Picture spoon = new Picture("a spoon", false, "pack://application:,,,/Images/spoon.png", 0);
+        public Picture cup = new Picture("a cup", false, "pack://application:,,,/Images/cup.png", 0);
+        public Picture plate = new Picture("a plate", false, "pack://application:,,,/Images/plate.png", 0);
+        public Picture knifeAndFork = new Picture("a knife and fork", false, "pack://application:,,,/Images/knifeAndFork.png", 0);
+
+        //entertainment Items
+        public Picture television = new Picture("to watch television", false, "pack://application:,,,/Images/television.png", 0);
+        public Picture radio = new Picture("to listen to radio", false, "pack://application:,,,/Images/radio.png", 0);
+        public Picture book = new Picture("to read", false, "pack://application:,,,/Images/book.png", 0);
+        public Picture games = new Picture("to play games", false, "pack://application:,,,/Images/games.png", 0);
 
         public Dictionary<String, List<List<Picture>>> categories;
 
-
         //pages
         public List<List<Picture>> foodPages;
-
         public List<List<Picture>> drinkPages;
-
         public List<List<Picture>> emotionPages;
         public List<List<Picture>> actionPages;
         public List<List<Picture>> greetingsPages;
@@ -107,9 +139,20 @@ namespace EyeTalk.Utilities
         public List<List<Picture>> colourPages;
         public List<List<Picture>> animalPages;
         public List<List<Picture>> feelingPages;
+        public List<List<Picture>> entertainmentPages;
+        public List<List<Picture>> kitchenPages;
+        public List<List<Picture>> carersPages;
+        public List<List<Picture>> personalCarePages;
+        public List<List<Picture>> familyPages;
 
 
-        //page
+        public List<Picture> family1;
+        public List<Picture> personalCare1;
+        public List<Picture> carers1;
+        public List<Picture> kitchen1;
+        public List<Picture> entertainment1;
+
+
         public List<Picture> food1;
         public List<Picture> food2;
 
@@ -155,7 +198,7 @@ namespace EyeTalk.Utilities
 
             replies1 = new List<Picture>() { yes, no, idontknow, thankyou };
 
-            actionwords1 = new List<Picture>() {iwant, idontwant, help};
+            actionwords1 = new List<Picture>() {iwant, idontwant};
 
             greetings1 = new List<Picture>() { hello, goodbye };
    
@@ -165,6 +208,15 @@ namespace EyeTalk.Utilities
 
             time1 = new List<Picture>() { fivemins, thirtymins, onehour, fewhours};
             time2 = new List<Picture>() { now, later, today, tomorrow };
+
+            carers1 = new List<Picture>() { ineed, doctor, teacher, nurse };
+            kitchen1 = new List<Picture>() { knifeAndFork, spoon, cup, plate };
+            personalCare1 = new List<Picture>() { shower, bath, washHands, toilet };
+            entertainment1 = new List<Picture>() { television, book, radio, games };
+            family1 = new List<Picture>() { mum, dad, brother, sister };
+
+
+
 
             custom1 = new List<Picture>() { };
             mostused = new List<Picture>() { };
@@ -185,6 +237,12 @@ namespace EyeTalk.Utilities
             colourPages = new List<List<Picture>>() { colours1 };
             animalPages = new List<List<Picture>>() { animals1 };
             feelingPages = new List<List<Picture>>() { feelings1 };
+            carersPages = new List<List<Picture>>() { carers1 };
+            kitchenPages = new List<List<Picture>>() { kitchen1 };
+            personalCarePages = new List<List<Picture>>() { personalCare1 };
+            entertainmentPages = new List<List<Picture>>() { entertainment1 };
+            familyPages = new List<List<Picture>>() { family1 };
+
         }
 
         public void GenerateCategories()
@@ -201,7 +259,11 @@ namespace EyeTalk.Utilities
             {"Colours", colourPages },
             {"Animals", animalPages },
             {"Times", timePages },
-           
+            {"Carers", carersPages },
+            {"Kitchen", kitchenPages },
+            {"Personal Care", personalCarePages },
+            {"Entertainment", entertainmentPages },
+            {"Family", familyPages },
             {"Custom", customPages },
             };
     }

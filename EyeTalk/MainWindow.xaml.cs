@@ -180,7 +180,7 @@ namespace EyeTalk
             var numberOfPictures = mainWindowLogic.CategoryPage.Count;
             SentenceUpdate.Text = " ";
             PageNumber.Text = mainWindowLogic.UpdatePageNumber();
-            CategoryName.Content = mainWindowLogic.GetCategoryName();
+            CategoryName.Text = mainWindowLogic.GetCategoryName();
             NextCategoryText.Text = mainWindowLogic.GetNextCategoryName();
             PreviousCategoryText.Text = mainWindowLogic.GetPreviousCategoryName();
 
@@ -887,5 +887,9 @@ namespace EyeTalk
 
         }
 
+        private void Choose_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            myTabControl.SelectedIndex = 5;
+        }
     }
 }
