@@ -11,7 +11,8 @@ namespace EyeTalk.Objects
         PictureInitialiser pictureInitialiser;
         public List<string> savedSentences = new List<string>();
         List<List<Picture>> mostUsed = new List<List<Picture>>();
-        Options options = new Options(0, 6, 0, 0, false);
+        List<Picture> mostUsedList = new List<Picture>();
+        Options options = new Options(0, 6, 0, 0, 0);
         List<List<Picture>> customPages = new List<List<Picture>>();
 
         public string saveFolder;
@@ -21,7 +22,8 @@ namespace EyeTalk.Objects
         public string customPicturesPath;
         public string optionsPath;
         public string mostUsedPath;
-        
+        public string mostUsedListPath;
+
 
         System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
@@ -36,6 +38,7 @@ namespace EyeTalk.Objects
             customPicturesPath = Path.Combine(saveFolder, "CustomPictures.bin");
             optionsPath = Path.Combine(saveFolder, "Options.bin");
             mostUsedPath = Path.Combine(saveFolder, "MostUsed.bin");
+            mostUsedListPath = Path.Combine(saveFolder, "mostUsedList.bin");
 
             pictureInitialiser = new PictureInitialiser(); 
             CreateInitialFoldersAndFiles();
@@ -75,6 +78,11 @@ namespace EyeTalk.Objects
             {
                 CreateMostUsed();
             }
+
+            if (!File.Exists(mostUsedListPath))
+            {
+                CreateMostUsedList();
+            }
         }
 
         public void CreateCategoryFile()
@@ -85,11 +93,11 @@ namespace EyeTalk.Objects
             }
         }
 
-        public Dictionary<String, List<List<Picture>>> LoadCategories()
+        public List<List<List<Picture>>> LoadCategories()
         {
             using (Stream stream = File.Open(categoryPath, FileMode.Open))
             {
-                return (Dictionary<String, List<List<Picture>>>)bformatter.Deserialize(stream);
+                return (List<List<List<Picture>>>)bformatter.Deserialize(stream);
             }
         }
 
@@ -188,6 +196,31 @@ namespace EyeTalk.Objects
             using (Stream stream = File.Open(mostUsedPath, FileMode.Create))
             {
                 bformatter.Serialize(stream, mostUsed);
+            }
+        }
+
+        public void CreateMostUsedList()
+        {
+            using (Stream stream = File.Open(mostUsedListPath, FileMode.Create))
+            {
+                bformatter.Serialize(stream, mostUsedList);
+            }
+        }
+
+
+        public List<Picture> LoadMostUsedList()
+        {
+            using (Stream stream = File.Open(mostUsedListPath, FileMode.Open))
+            {
+                return (List<Picture>)bformatter.Deserialize(stream);
+            }
+        }
+
+        public void SaveMostUsedList(List<Picture> mostUsedList)
+        {
+            using (Stream stream = File.Open(mostUsedListPath, FileMode.Create))
+            {
+                bformatter.Serialize(stream, mostUsedList);
             }
         }
     }

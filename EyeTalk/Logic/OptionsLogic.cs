@@ -11,6 +11,7 @@ namespace EyeTalk.Logic
        public SaveFileSerialiser save;
        public List<String> VoiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
        public List<String> VoiceTypes = new List<String> {  "Female","Male" };
+        public List<String> Colours = new List<String> {"#FF1493", "#ff6a6a", "#8470ff", "#00fa9a","#ff4500", "#fff8dc", "#cae1ff", "#d8bfd8" };
 
         public OptionsLogic()
         {
@@ -19,6 +20,22 @@ namespace EyeTalk.Logic
 
 
         }
+
+        public string GetCurrentColour()
+        {
+            return Colours.ElementAt(Options.ApplicationColour);
+        }
+
+        public void ChangeColour()
+        {
+            Options.ApplicationColour++;
+
+            if (Options.ApplicationColour > Colours.Count - 1)
+            {
+                Options.ApplicationColour = 0;
+            }
+        }
+
 
         public void IncreaseEyeFixationDuration()
         {

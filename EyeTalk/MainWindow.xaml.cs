@@ -33,7 +33,7 @@ namespace EyeTalk
         SpeechGenerator speech;
         CoordinateTimer timer;
     
-        MainWindowLogic mainWindowLogic;
+        SentenceLogic sentenceLogic;
         OptionsLogic optionsLogic;
         AddPictureLogic addPictureLogic;
         SavedSentencesLogic savedSentencesLogic;
@@ -43,7 +43,7 @@ namespace EyeTalk
         {
             InitializeComponent();
 
-            mainWindowLogic = new MainWindowLogic();
+            sentenceLogic = new SentenceLogic();
             optionsLogic = new OptionsLogic();
             savedSentencesLogic = new SavedSentencesLogic();
             addPictureLogic = new AddPictureLogic();
@@ -62,26 +62,14 @@ namespace EyeTalk
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
-            LoadSaveFiles();
-
-            images = new List<Image> { Image1, Image2, Image3, Image4 };
-            buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
-            textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
-
-            FormatTextBoxes();
-
-            mainWindowLogic.Begin();
-            CreatePage();
-            PageNumber.Text = mainWindowLogic.UpdatePageNumber();
-
-            myTabControl.SelectedIndex = 1;
+            sentenceLogic.ResetCategoryChoice();
+            GoToSentencePage();
 
         }
 
         private void Options_Click(object sender, RoutedEventArgs e)
         {
-            UpdateOptions();
-            
+            UpdateOptions();           
             myTabControl.SelectedIndex = 2;
         }
 
@@ -92,6 +80,7 @@ namespace EyeTalk
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
+            SaveAllFiles();
             eyeTracker.eyeTracking = false;
             timer.coordinateTimer.Stop();
             Application.Current.Dispatcher.BeginInvokeShutdown(System.Windows.Threading.DispatcherPriority.Send);
@@ -103,6 +92,7 @@ namespace EyeTalk
 
         private void Sentences_Button_Click(object sender, RoutedEventArgs e)
         {
+            SaveAllFiles();
             currentSentence.Text = savedSentencesLogic.RetrieveFirstSavedSentenceIfExists();
             myTabControl.SelectedIndex = 4;
         }
@@ -150,15 +140,15 @@ namespace EyeTalk
 
         private void Page_Click(object sender, RoutedEventArgs e)
         {
-            mainWindowLogic.GoToNextPage();
+            sentenceLogic.GoToNextPage();
             CreatePage();
             
         }
 
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
-            mainWindowLogic.CheckIfBackToFirstCategory();
-            mainWindowLogic.UpdateCategoryAndGoToFirstPage();
+            sentenceLogic.CheckIfBackToFirstCategory();
+            sentenceLogic.UpdateCategoryAndGoToFirstPage();
             CreatePage();
             
 
@@ -166,8 +156,8 @@ namespace EyeTalk
 
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
         {
-            mainWindowLogic.CheckIfBackToLastCategory();
-            mainWindowLogic.UpdateCategoryAndGoToFirstPage();
+            sentenceLogic.CheckIfBackToLastCategory();
+            sentenceLogic.UpdateCategoryAndGoToFirstPage();
             CreatePage();
             
         }
@@ -177,12 +167,12 @@ namespace EyeTalk
 
         private void CreatePage()
         {
-            var numberOfPictures = mainWindowLogic.CategoryPage.Count;
+            var numberOfPictures = sentenceLogic.CategoryPage.Count;
             SentenceUpdate.Text = " ";
-            PageNumber.Text = mainWindowLogic.UpdatePageNumber();
-            CategoryName.Text = mainWindowLogic.GetCategoryName();
-            NextCategoryText.Text = mainWindowLogic.GetNextCategoryName();
-            PreviousCategoryText.Text = mainWindowLogic.GetPreviousCategoryName();
+            PageNumber.Text = sentenceLogic.UpdatePageNumber();
+            CategoryName.Text = sentenceLogic.GetCategoryName();
+            NextCategoryText.Text = sentenceLogic.GetNextCategoryName();
+            PreviousCategoryText.Text = sentenceLogic.GetPreviousCategoryName();
 
 
             if (numberOfPictures > 0)
@@ -209,15 +199,15 @@ namespace EyeTalk
 
         private void CreatePicture(int i)
         {
-            textBlocks.ElementAt(i).Text = mainWindowLogic.CategoryPage.ElementAt(i).Name;
+            textBlocks.ElementAt(i).Text = sentenceLogic.CategoryPage.ElementAt(i).Name;
             buttons.ElementAt(i).Visibility = Visibility.Visible;
-            var filepath = mainWindowLogic.CategoryPage.ElementAt(i).FilePath;
-            images.ElementAt(i).Source = mainWindowLogic.GenerateBitmap(filepath);
+            var filepath = sentenceLogic.CategoryPage.ElementAt(i).FilePath;
+            images.ElementAt(i).Source = sentenceLogic.GenerateBitmap(filepath);
         }
 
         private void UpdatePicture(int i)
         {
-            var name = mainWindowLogic.CategoryPage.ElementAt(i).Name;
+            var name = sentenceLogic.CategoryPage.ElementAt(i).Name;
 
             if (!SentenceTextBox.Text.Contains(name))
             {
@@ -253,8 +243,8 @@ namespace EyeTalk
         private void SelectPicture(int i)
         {
             var word = textBlocks.ElementAt(i).Text;
-            var selected = mainWindowLogic.CategoryPage.ElementAt(i).Selected;
-            var name = mainWindowLogic.CategoryPage.ElementAt(i).Name;
+            var selected = sentenceLogic.CategoryPage.ElementAt(i).Selected;
+            var name = sentenceLogic.CategoryPage.ElementAt(i).Name;
 
             if (SentenceTextBox.Text.Contains(name) && selected == false)
             {
@@ -262,15 +252,15 @@ namespace EyeTalk
             }
             else
             {
-                if (mainWindowLogic.AmountOfWordsInSentence < 6 && selected == false)
+                if (sentenceLogic.AmountOfWordsInSentence < 6 && selected == false)
                 {
-                    SentenceTextBox.Text = mainWindowLogic.AddWordToSentence(word, i);
-                    mainWindowLogic.UpdateMostUsedPicture(i, word);
+                    SentenceTextBox.Text = sentenceLogic.AddWordToSentence(word, i);
+                    sentenceLogic.UpdateMostUsedPicture(i, word);
                     HighlightPicture(buttons, i);
                 }
                 else if (selected == true)
                 {
-                    SentenceTextBox.Text = mainWindowLogic.RemoveWordFromSentence(word, i);
+                    SentenceTextBox.Text = sentenceLogic.RemoveWordFromSentence(word, i);
                     UnhighlightPicture(buttons, i);
 
                 }
@@ -312,12 +302,12 @@ namespace EyeTalk
 
         private void ResetMostUsed_Click(object sender, RoutedEventArgs e)
         {
-           ResetMostUsedText.Text = mainWindowLogic.ResetMostUsedIfNotEmpty();
+           ResetMostUsedText.Text = sentenceLogic.ResetMostUsedIfNotEmpty();
         }
 
         private void ResetCustomPicture_Click(object sender, RoutedEventArgs e)
         {
-            ResetCustomText.Text = mainWindowLogic.ResetCustomPictureCategoryIfNotEmpty();
+            ResetCustomText.Text = sentenceLogic.ResetCustomPictureCategoryIfNotEmpty();
         }
 
         private void VoiceType_Click(object sender, RoutedEventArgs e)
@@ -400,8 +390,8 @@ namespace EyeTalk
             else
             {
                 Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
-                var currentPage = mainWindowLogic.customCategory.ElementAt(mainWindowLogic.customCategory.Count - 1);
-                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, mainWindowLogic.customCategory);
+                var currentPage = sentenceLogic.customCategory.ElementAt(sentenceLogic.customCategory.Count - 1);
+                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, sentenceLogic.customCategory);
 
                 if (pictureAlreadyAdded)
                 {
@@ -415,15 +405,15 @@ namespace EyeTalk
                     {
                         addPictureLogic.AddCustomPicture(customPicture, currentPage);
                         Status.Text = "Added picture. " + "Number of pictures in category: " + currentPage.Count;
-                        saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
+                        saveInitialiser.SaveCustomCategory(sentenceLogic.customCategory);
 
                     }
 
                     else if (spaceInCustomCategory == false)
                     {
-                        mainWindowLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
-                        Status.Text = "Created new category. \nNumber of categories is now: " + mainWindowLogic.customCategory.Count;
-                        saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
+                        sentenceLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
+                        Status.Text = "Created new category. \nNumber of categories is now: " + sentenceLogic.customCategory.Count;
+                        saveInitialiser.SaveCustomCategory(sentenceLogic.customCategory);
 
                     }
 
@@ -441,6 +431,10 @@ namespace EyeTalk
                 if(myTabControl.SelectedIndex == 1)
                 {
                     currentPosition = eyeTracker.GetCurrentPositionBeginSpeaking();
+                }
+                else if (myTabControl.SelectedIndex == 5)
+                {
+                    currentPosition = eyeTracker.GetCurrentPositionChooseCategory();
                 }
                 else
                 {
@@ -463,7 +457,6 @@ namespace EyeTalk
                     else if (myTabControl.SelectedIndex == 1)
                     {
                         CheckSpeakingPage(currentPosition);
-
                     }
                     else if (myTabControl.SelectedIndex == 2)
                     {
@@ -476,6 +469,10 @@ namespace EyeTalk
                     else if (myTabControl.SelectedIndex == 4)
                     {
                         CheckSavedSentencePage(currentPosition);
+                    }
+                    else if (myTabControl.SelectedIndex == 5)
+                    {
+                        CheckChooseCategoryPage(currentPosition);
                     }
                 }
                 else
@@ -765,7 +762,7 @@ namespace EyeTalk
                     break;
 
                 case Positions.BottomMiddleRight:
-                    HoverOverButton(VoiceType);
+                    HoverOverButton(ColourType);
 
                     break;
 
@@ -779,9 +776,114 @@ namespace EyeTalk
             }
         }
 
+        private void CheckChooseCategoryPage(string position)
+        {
+            ResetChooseCategoryPage();
+
+            switch (position)
+            {
+                case Positions.TopLeft:
+                    HoverOverButton(Food);
+                    break;
+
+                case Positions.TopLeftAlternate:
+                    HoverOverButton(Actions);
+                    break;
+
+                case Positions.TopMiddleLeft:
+                    HoverOverButton(Greetings);
+                    break;
+
+                case Positions.TopMiddleLeftAlternate:
+                    HoverOverButton(Drink);
+                    break;
+
+                case Positions.TopMiddleRight:
+                    HoverOverButton(Emotions);
+                    break;
+
+                case Positions.TopMiddleRightAlternate:
+                    HoverOverButton(Feelings);
+                    break;
+
+                case Positions.TopRight:
+                    HoverOverButton(Colours);
+                    break;
+
+                case Positions.TopRightAlternate:
+                    HoverOverButton(Animals);
+                    break;
+
+                case Positions.MiddleLeft:
+                    HoverOverButton(Carers);
+                    break;
+
+                case Positions.MiddleLeftAlternate:
+                    HoverOverButton(Times);
+                    break;
+
+                case Positions.MiddleMiddleLeft:
+
+                    break;
+
+                case Positions.MiddleMiddleLeftAlternate:
+                    HoverOverButton(Kitchen);
+                    break;
+
+                case Positions.MiddleMiddleRight:
+                    HoverOverButton(PersonalCare);
+                    break;
+
+                case Positions.MiddleMiddleRightAlternate:
+                   
+                    break;
+
+                case Positions.MiddleRight:
+                    HoverOverButton(Family);
+                    break;
+
+                case Positions.MiddleRightAlternate:
+                    HoverOverButton(Entertainment);
+                    break;
+
+                case Positions.BottomLeft:
+                    HoverOverButton(BackToSpeak);
+                    break;
+
+                case Positions.BottomLeftAlternate:
+                    HoverOverButton(BackToSpeak);
+                    break;
+
+                case Positions.BottomMiddleLeft:
+                    HoverOverButton(MostUsed);
+                    break;
+
+                case Positions.BottomMiddleLeftAlternate:
+                    HoverOverButton(Replies);
+                    break;
+
+                case Positions.BottomMiddleRight:
+                    break;
+
+                case Positions.BottomMiddleRightAlternate:
+                    HoverOverButton(Custom);
+                    break;
+
+                case Positions.BottomRight:
+                    break;
+
+                case Positions.BottomRightAlternate:
+                    break;
+
+                case "":
+                    break;
+
+            }
+        }
+
         private void HoverOverButton(Button button)
         {
-            button.Background = Brushes.LightBlue;
+            button.Background = Brushes.Yellow;
 
             if (optionsLogic.HasDurationBeenReached())
             {
@@ -799,24 +901,41 @@ namespace EyeTalk
             previousPosition = "";
         }
 
+
+        private Brush GetBrush()
+        {
+            var converter = new BrushConverter();
+            string currentColour = optionsLogic.GetCurrentColour();
+            var brush = (Brush)converter.ConvertFromString(currentColour);
+            return brush;
+        }
+
         private void ResetHomePage()
         {
-            BeginSpeaking.Background = Brushes.Red;
-            AddPicture.Background = Brushes.Yellow;
-            Options.Background = Brushes.GreenYellow;
-            Exit.Background = Brushes.BlueViolet;
+            Brush brush = GetBrush();
+
+            BeginSpeaking.Background = brush;
+            AddPicture.Background = brush;
+            Options.Background = brush;
+            Exit.Background = brush;
         }
 
         private void ResetSentencePage()
         {
-            SaveSentence.Background = Brushes.LightSeaGreen;
-            Page.Background = Brushes.DeepPink;
-            SentenceList.Background = Brushes.GreenYellow;
-            Previous.Background = Brushes.Yellow;
-            Next.Background = Brushes.Yellow;
-            Home.Background = Brushes.BlueViolet;
-            PlaySound.Background = Brushes.Red;
-            RemoveAll.Background = Brushes.RoyalBlue;
+            Brush brush = GetBrush();
+            SaveSentence.Background = brush;
+            SentenceList.Background = brush;
+
+            Previous.Background = Brushes.Lavender;
+            Next.Background = Brushes.Lavender;
+
+            Home.Background = brush;
+            ChooseCategory.Background = brush;
+
+            PlaySound.Background = brush;
+            Page.Background = brush;
+
+            RemoveAll.Background = brush;
 
             Image1_Button.Background = Brushes.Transparent;
             Image2_Button.Background = Brushes.Transparent;
@@ -827,32 +946,60 @@ namespace EyeTalk
         private void ResetAddPicturePage()
         {
             CustomName.Background = Brushes.White;
-            Select_Picture.Background = Brushes.Red;
-            BackHome.Background = Brushes.BlueViolet;
-            Save_Custom_Button.Background = Brushes.Yellow;
+            Brush brush = GetBrush();
+            Select_Picture.Background = brush;
+            BackHome.Background = brush;
+            Save_Custom_Button.Background = brush;
         }
 
         private void ResetSaveSentencePage()
         {
-            SpeakSentence.Background = Brushes.Red;
-            NextSentence.Background = Brushes.Yellow;
-            PreviousSentence.Background = Brushes.Yellow;
-            BackToSpeaking.Background = Brushes.Purple;
-            DeleteSentence.Background = Brushes.YellowGreen;
+            Brush brush = GetBrush();
+
+            SpeakSentence.Background = brush;
+            NextSentence.Background = Brushes.Lavender;
+            PreviousSentence.Background = Brushes.Lavender;
+            BackToSpeaking.Background = brush;
+            DeleteSentence.Background = brush;
         }
 
         private void ResetOptionsPage()
         {
+            Brush brush = GetBrush();
 
-            Left_Speed.Background = Brushes.Yellow;
-            Right_Speed.Background = Brushes.Yellow;
-            Left_Delay.Background = Brushes.Red;
-            Right_Delay.Background = Brushes.Red;
-            ResetMostUsed.Background = Brushes.RoyalBlue;
-            ResetCustomPictures.Background = Brushes.Magenta;
-            TestVoice.Background = Brushes.Crimson;
-            VoiceType.Background = Brushes.GreenYellow;
-            Back.Background = Brushes.BlueViolet;
+            Left_Speed.Background = brush;
+            Right_Speed.Background = brush;
+            Left_Delay.Background = brush;
+            Right_Delay.Background = brush;
+            ResetMostUsed.Background = brush;
+            ResetCustomPictures.Background = Brushes.Lavender;
+            TestVoice.Background = Brushes.Lavender;
+            VoiceType.Background = Brushes.Lavender;
+            Back.Background = brush;
+            ColourType.Background = Brushes.Lavender;
+        }
+
+        private void ResetChooseCategoryPage()
+        {
+            Brush brush = GetBrush();
+            BackToSpeak.Background  = brush;
+
+            Actions.Background = Brushes.Lavender;
+            Food.Background = Brushes.Lavender;
+            Drink.Background = Brushes.Lavender;
+            Greetings.Background = Brushes.Lavender;
+            Feelings.Background = Brushes.Lavender;
+            Emotions.Background = Brushes.Lavender;
+            Colours.Background = Brushes.Lavender;
+            Times.Background = Brushes.Lavender;
+            Carers.Background = Brushes.Lavender;
+            Kitchen.Background = Brushes.Lavender;
+            PersonalCare.Background = Brushes.Lavender;
+            Entertainment.Background = Brushes.Lavender;
+            Replies.Background = Brushes.Lavender;
+            MostUsed.Background = Brushes.Lavender;
+            Custom.Background = Brushes.Lavender;
+
         }
 
         private void FormatTextBoxes()
@@ -866,30 +1013,189 @@ namespace EyeTalk
 
         private void LoadSaveFiles()
         {
-            mainWindowLogic.categories = saveInitialiser.LoadCategories();
+            sentenceLogic.categories = saveInitialiser.LoadCategories();
             savedSentencesLogic.savedSentences = saveInitialiser.LoadSentences();
             optionsLogic.Options = saveInitialiser.LoadOptions();
-            mainWindowLogic.customCategory = saveInitialiser.LoadCustomCategory();
+            sentenceLogic.customCategory = saveInitialiser.LoadCustomCategory();
+            sentenceLogic.mostUsedList = saveInitialiser.LoadMostUsedList();
+            sentenceLogic.mostUsed = saveInitialiser.LoadMostUsed();
+
         }
 
         private void SaveAllFiles()
         {
             saveInitialiser.SaveSentencesToFile(savedSentencesLogic.savedSentences);
-            saveInitialiser.SaveCustomCategory(mainWindowLogic.customCategory);
+            saveInitialiser.SaveCustomCategory(sentenceLogic.customCategory);
             saveInitialiser.SaveOptions(optionsLogic.Options);
+            saveInitialiser.SaveMostUsed(sentenceLogic.mostUsed);
+            saveInitialiser.SaveMostUsedList(sentenceLogic.mostUsedList);
         }
 
         private void Remove_All_Click(object sender, RoutedEventArgs e)
         {
             SentenceTextBox.Clear();
-            mainWindowLogic.RemoveAllWordsFromSentence();
+            sentenceLogic.RemoveAllWordsFromSentence();
             CreatePage();
 
         }
 
         private void Choose_Category_Button_Click(object sender, RoutedEventArgs e)
-        {
+        {            
+            SaveAllFiles();
             myTabControl.SelectedIndex = 5;
+        }
+
+
+        private void Actions_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(0);
+            GoToSentencePage();
+        }
+
+
+
+        private void Replies_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(1);
+            GoToSentencePage();
+        }
+
+        private void Food_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(2);
+            GoToSentencePage();
+
+        }
+
+        private void Drinks_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(3);
+            GoToSentencePage();
+        }
+
+        private void Greetings_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(4);
+            GoToSentencePage();
+
+        }
+
+        private void Feelings_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(5);
+
+            GoToSentencePage();
+
+        }
+
+        private void Emotions_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(6);
+
+            GoToSentencePage();
+
+        }
+
+        private void Colours_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(7);
+
+            GoToSentencePage();
+
+        }
+
+        private void Animals_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(8);
+
+            GoToSentencePage();
+
+        }
+
+        private void Times_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(9);
+
+            GoToSentencePage();
+
+        }
+
+        private void Carers_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(10);
+
+            GoToSentencePage();
+
+        }
+
+        private void Kitchen_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(11);
+
+            GoToSentencePage();
+
+        }
+
+        private void PersonalCare_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(12);
+
+            GoToSentencePage();
+
+        }
+
+        private void Entertainment_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(13);
+
+            GoToSentencePage();
+
+        }
+
+        private void Family_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(14);
+
+            GoToSentencePage();
+
+        }
+
+        private void MostUsed_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(16);
+
+            GoToSentencePage();
+
+        }
+
+        private void Custom_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(15);
+
+            GoToSentencePage();
+
+        }
+
+        private void GoToSentencePage()
+        {
+            
+            images = new List<Image> { Image1, Image2, Image3, Image4 };
+            buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
+            textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
+
+            FormatTextBoxes();
+
+            sentenceLogic.GenerateSentencePage();
+            CreatePage();
+            PageNumber.Text = sentenceLogic.UpdatePageNumber();
+
+            myTabControl.SelectedIndex = 1;
+        }
+
+        private void ColourType_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.ChangeColour();
+            
         }
     }
 }

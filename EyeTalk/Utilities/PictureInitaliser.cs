@@ -124,7 +124,8 @@ namespace EyeTalk.Utilities
         public Picture book = new Picture("to read", false, "pack://application:,,,/Images/book.png", 0);
         public Picture games = new Picture("to play games", false, "pack://application:,,,/Images/games.png", 0);
 
-        public Dictionary<String, List<List<Picture>>> categories;
+        public List< List<List<Picture>>> categories;
+        
 
         //pages
         public List<List<Picture>> foodPages;
@@ -247,25 +248,29 @@ namespace EyeTalk.Utilities
 
         public void GenerateCategories()
         {
-            categories = new Dictionary<string, List<List<Picture>>>(){
-            {"Most Used", mostUsedPages },
-            {"Actions", actionPages },
-            {"Replies", replyPages },
-            {"Foods", foodPages },
-            {"Drinks", drinkPages },
-            {"Greetings", greetingsPages },
-            {"Feelings", feelingPages },          
-            {"Emotions", emotionPages },
-            {"Colours", colourPages },
-            {"Animals", animalPages },
-            {"Times", timePages },
-            {"Carers", carersPages },
-            {"Kitchen", kitchenPages },
-            {"Personal Care", personalCarePages },
-            {"Entertainment", entertainmentPages },
-            {"Family", familyPages },
-            {"Custom", customPages },
+            categories = new List<List<List<Picture>>>(){
+            
+            {actionPages }, //0
+            {replyPages }, //1
+            {foodPages }, //2
+            {drinkPages }, //3
+            {greetingsPages }, //4
+            {feelingPages },      //5    
+            {emotionPages }, //6
+            {colourPages }, //7
+            {animalPages }, //8
+            {timePages }, //9
+            {carersPages }, //10
+            {kitchenPages }, //11
+            {personalCarePages }, //12
+            {entertainmentPages }, //13
+            {familyPages }, //14
+            {customPages }, //15
+            {mostUsedPages}, //16
             };
+
+
+
     }
     }
 }

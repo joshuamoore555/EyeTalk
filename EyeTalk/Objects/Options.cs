@@ -13,18 +13,18 @@ namespace EyeTalk.Objects
         public double EyeFixationValue { get; set; }
         public int VoiceSpeedSelection { get; set; }
         public int VoiceTypeSelection { get; set; }
-        public bool AdditionalEyeInformation { get; set; }
+        public int ApplicationColour { get; set; }
 
 
 
-        public Options(double EyeFixationDuration, double EyeFixationValue, int VoiceSpeedSelection, int VoiceTypeSelection, bool AdditionalEyeInformation)
+        public Options(double EyeFixationDuration, double EyeFixationValue, int VoiceSpeedSelection, int VoiceTypeSelection, int ApplicationColour)
         {
 
             this.EyeFixationDuration = EyeFixationDuration;
             this.EyeFixationValue = EyeFixationValue;
             this.VoiceSpeedSelection = VoiceSpeedSelection;
             this.VoiceTypeSelection = VoiceTypeSelection;
-            this.AdditionalEyeInformation = AdditionalEyeInformation;
+            this.ApplicationColour = ApplicationColour;
         }
 
 

@@ -11,13 +11,13 @@ using EyeTalk.Objects;
 
 namespace EyeTalk
 {
-    public class MainWindowLogic
+    public class SentenceLogic
     {
         public int CategoryIndex { get; set; }
         public int PageIndex { get; set; }
         public int AmountOfWordsInSentence { get; set; }
         public OrderedDictionary Sentence { get; set; }
-        public Dictionary<String, List<List<Picture>>> categories;
+        public List<List<List<Picture>>> categories;
         public List<List<Picture>> customCategory;
 
         public List<List<Picture>> mostUsed;
@@ -27,10 +27,11 @@ namespace EyeTalk
 
         public string CategoryName { get; set; }
         public List<Picture> CategoryPage { get; set; }
+        public List<String> categoryNames;
 
 
 
-        public MainWindowLogic()
+        public SentenceLogic()
         {
             save = new SaveFileSerialiser();
             Sentence = new OrderedDictionary();
@@ -38,48 +39,74 @@ namespace EyeTalk
             categories = save.LoadCategories();
             customCategory = save.LoadCustomCategory();
             mostUsed = save.LoadMostUsed();
+            mostUsedList = save.LoadMostUsedList();
 
             CategoryIndex = 0;
             PageIndex = 0;
             AmountOfWordsInSentence = 0;
 
+            categoryNames = new List<String>()
+            {
+                {"Actions"},
+                {"Replies"},
+                {"Foods"},
+                {"Drinks"},
+                {"Greetings"},
+                {"Feelings"},
+                {"Emotions"},
+                {"Colours"},
+                {"Animals"},
+                {"Times"},
+                {"Carers"},
+                {"Kitchen"},
+                {"Personal Care"},
+                {"Entertainment"},
+                {"Family"},
+                {"Custom"},
+                {"Most Used"},
+
+            };
+
 
         }
 
-        public void Begin()
+        public void GenerateSentencePage()
         {
             ResetSentence();
             UpdateCustomCategory();
             UpdateMostUsedCategory();
 
             var categoryPages = categories.ElementAt(CategoryIndex);
-            CategoryName = categories.ElementAt(CategoryIndex).Key;
-            CategoryPage = categoryPages.Value.ElementAt(PageIndex);
+            CategoryName = categoryNames.ElementAt(CategoryIndex);
+            CategoryPage = categoryPages.ElementAt(PageIndex);
 
         }
 
         public void ResetSentence()
         {
-            CategoryIndex = 0;
-            PageIndex = 0;
+           
             AmountOfWordsInSentence = 0;
             Sentence.Clear();
         }
 
+        public void ResetCategoryChoice()
+        {
+            CategoryIndex = 0;
+            PageIndex = 0;
+        }
+
         public void UpdateCustomCategory()
         {
-            categories.Remove("Custom");
             if (customCategory.Count == 0)
             {
                 List<Picture> page = new List<Picture>();
                 customCategory.Add(page);
             }            
-                categories.Add("Custom", customCategory);            
+                categories[15] = customCategory;            
         }
 
         public void UpdateMostUsedCategory()
         {
-            categories.Remove("Most Used");
 
             if (mostUsed != null && mostUsedList != null)
             {
@@ -107,7 +134,9 @@ namespace EyeTalk
 
                 mostUsedCategory.Add(mostUsedPage1);
                 mostUsedCategory.Add(mostUsedPage2);
-                categories.Add("Most Used", mostUsedCategory);
+
+                categories[16] = mostUsedCategory;
+                
 
             }
         }
@@ -143,57 +172,57 @@ namespace EyeTalk
         public void UpdateCategoryAndGoToFirstPage()
         {
             var categoryPages = categories.ElementAt(CategoryIndex);        
-            CategoryPage = categoryPages.Value.ElementAt(0);
-            CategoryName = categories.ElementAt(CategoryIndex).Key;                    
+            CategoryPage = categoryPages.ElementAt(0);
+            CategoryName = GetCategoryName();
         }
 
         public void GoToNextPage()
         {
             var categoryPages = categories.ElementAt(CategoryIndex);
-            var numberOfPages = categoryPages.Value.Count;
+            var numberOfPages = categoryPages.Count;
             PageIndex++;
 
             if (PageIndex >= numberOfPages)
             {
                 PageIndex = 0;
-                CategoryPage = categoryPages.Value.ElementAt(PageIndex);
+                CategoryPage = categoryPages.ElementAt(PageIndex);
 
             }
             else
             {
-                CategoryPage = categoryPages.Value.ElementAt(PageIndex);
+                CategoryPage = categoryPages.ElementAt(PageIndex);
             }
 
-            CategoryPage = categoryPages.Value.ElementAt(PageIndex);
+            CategoryPage = categoryPages.ElementAt(PageIndex);
         }
 
         public string UpdatePageNumber()
         {
             var categoryPages = categories.ElementAt(CategoryIndex);
-            var numberOfPages = categoryPages.Value.Count;
+            var numberOfPages = categoryPages.Count;
             return "Page " + (PageIndex + 1) + "/" + numberOfPages;
 
         }
 
         public string GetCategoryName()
         {
-            return categories.ElementAt(CategoryIndex).Key;
+            return categoryNames.ElementAt(CategoryIndex);
         }
 
         public string GetPreviousCategoryName()
         {
             if (CategoryIndex-1 < 0)
             {
-                return categories.ElementAt(categories.Count-1).Key;
+                return categoryNames.ElementAt(categories.Count-1);
             }
             else if (CategoryIndex - 2 < 0)
             {
-                return categories.ElementAt(categories.Count - 2).Key;
+                return categoryNames.ElementAt(categories.Count - 2);
 
             }
             else
             {
-                return categories.ElementAt(CategoryIndex - 1).Key;
+                return categoryNames.ElementAt(CategoryIndex - 1);
 
             }
 
@@ -203,15 +232,15 @@ namespace EyeTalk
         {
             if (CategoryIndex + 1 > categories.Count)
             {
-                return categories.ElementAt(0).Key;
+                return categoryNames.ElementAt(0);
             }
             else if (CategoryIndex + 2 > categories.Count)
             {
-                return categories.ElementAt(0+1).Key;
+                return categoryNames.ElementAt(1);
             }
             else
             {
-                return categories.ElementAt(CategoryIndex + 1).Key;
+                return categoryNames.ElementAt(CategoryIndex + 1);
 
             }
         }
@@ -365,7 +394,7 @@ namespace EyeTalk
          
             foreach (var category in categories)
             {
-                foreach (List<Picture> page in category.Value)
+                foreach (List<Picture> page in category)
                 {
                     foreach (Picture picture in page)
                     {
@@ -373,6 +402,10 @@ namespace EyeTalk
                     }
                 }
             }
+        }
+        public void ChangeCategory(int newCategoryIndex)
+        {
+            CategoryIndex = newCategoryIndex;
         }
     }
 }
