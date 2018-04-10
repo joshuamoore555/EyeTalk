@@ -438,9 +438,17 @@ namespace EyeTalk
                 {
                     currentPosition = eyeTracker.GetCurrentPositionBeginSpeaking();
                 }
+                else if (myTabControl.SelectedIndex == 0)
+                {
+                    currentPosition = eyeTracker.GetCurrentPositionHomePage();
+                }
                 else if (myTabControl.SelectedIndex == 5)
                 {
                     currentPosition = eyeTracker.GetCurrentPositionChooseCategory();
+                }
+                else if (myTabControl.SelectedIndex == 4)
+                {
+                    currentPosition = eyeTracker.GetCurrentPositionSavedSentence();
                 }
                 else
                 {
@@ -452,8 +460,8 @@ namespace EyeTalk
                     currentPosition = "";
                 }
 
-                SentenceUpdate.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration;
-                displayPos.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration ;
+               // SentenceUpdate.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration;
+                //displayPos.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration ;
 
                 if (currentPosition == previousPosition)
                 {
@@ -504,14 +512,6 @@ namespace EyeTalk
                     HoverOverButton(BeginSpeaking);
                     break;
 
-                case Positions.TopMiddleLeft:
-                    HoverOverButton(BeginSpeaking);
-                    break;
-
-                case Positions.TopMiddleRight:
-                    HoverOverButton(AddPicture);
-                    break;
-
                 case Positions.TopRight:
                     HoverOverButton(AddPicture);
                     break;
@@ -519,25 +519,11 @@ namespace EyeTalk
                 case Positions.MiddleLeft:
                     break;
 
-                case Positions.MiddleMiddleLeft:
-                    break;
-
-                case Positions.MiddleMiddleRight:
-                    break;
-
                 case Positions.MiddleRight:
                     break;
 
                 case Positions.BottomLeft:
                     HoverOverButton(Options);
-                    break;
-
-                case Positions.BottomMiddleLeft:
-                    HoverOverButton(Options);
-                    break;
-
-                case Positions.BottomMiddleRight:
-                    HoverOverButton(Exit);
                     break;
 
                 case Positions.BottomRight:
@@ -864,11 +850,11 @@ namespace EyeTalk
                     break;
 
                 case Positions.MiddleRight:
-                    HoverOverButton(Family);
+                    HoverOverButton(Entertainment);
                     break;
 
                 case Positions.MiddleRightAlternate:
-                    HoverOverButton(Entertainment);
+                    HoverOverButton(Family);
                     break;
 
                 case Positions.BottomLeft:
@@ -988,11 +974,12 @@ namespace EyeTalk
             Right_Speed.Background = brush;
             Left_Delay.Background = brush;
             Right_Delay.Background = brush;
-            ResetMostUsed.Background = brush;
+            Back.Background = brush;
+
+            ResetMostUsed.Background = Brushes.Lavender;
             ResetCustomPictures.Background = Brushes.Lavender;
             TestVoice.Background = Brushes.Lavender;
             VoiceType.Background = Brushes.Lavender;
-            Back.Background = brush;
             ColourType.Background = Brushes.Lavender;
         }
 
@@ -1017,6 +1004,7 @@ namespace EyeTalk
             MostUsed.Background = Brushes.Lavender;
             Custom.Background = Brushes.Lavender;
             Animals.Background = Brushes.Lavender;
+            Family.Background = Brushes.Lavender;
 
         }
 
@@ -1211,8 +1199,7 @@ namespace EyeTalk
         private void ColourType_Click(object sender, RoutedEventArgs e)
         {
             optionsLogic.ChangeColour();
-            Brush brush = GetBrush();
-
+            brush = GetBrush();
         }
 
         public void ResetSentence()

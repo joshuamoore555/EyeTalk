@@ -82,6 +82,55 @@ namespace EyeTalk
             }
         }
 
+        public string CheckXHomePage()
+        {
+            if (coordinates.X > 0 && coordinates.X < 960)
+            {
+                return "Left";
+
+            }
+            else if (coordinates.X > 960 && coordinates.X < 1920)
+            {
+                return "Right";
+            }
+            else
+            {
+                return coordinates.X.ToString();
+            }
+        }
+
+        public string CheckXSavedSentencesPage()
+        {
+            if (coordinates.X < 480)
+            {
+                return "Left";
+            }
+            else if (coordinates.X > 480 && coordinates.X < 960)
+            {
+                return "Middle Left";
+
+            }
+            else if (coordinates.X > 960 && coordinates.X < 1440)
+            {
+                return "Middle Right";
+
+            }
+            else if (coordinates.X > 480 && coordinates.X < 1440 && coordinates.Y > 720)
+            {
+                return "Middle Right";
+
+            }
+            else if (coordinates.X > 1440 && coordinates.X < 1920)
+            {
+                return "Right";
+
+            }
+            else
+            {
+                return coordinates.X.ToString();
+            }
+        }
+
         public string CheckXOfBeginSpeakingPage()
         {
             if (coordinates.X < 240 && coordinates.Y < 360 || coordinates.X < 240 && coordinates.Y > 720)
@@ -211,6 +260,16 @@ namespace EyeTalk
         public string GetCurrentPositionChooseCategory()
         {
             return CheckY() + " " + CheckXOfChooseCategoryPage();
+        }
+
+        public string GetCurrentPositionSavedSentence()
+        {
+            return CheckY() + " " + CheckXSavedSentencesPage();
+        }
+
+        public string GetCurrentPositionHomePage()
+        {
+            return CheckY() + " " + CheckXHomePage();
         }
     }
 }
