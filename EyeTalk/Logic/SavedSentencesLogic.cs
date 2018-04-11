@@ -48,6 +48,10 @@ namespace EyeTalk.Logic
                 return "Please create a sentence before saving";
 
             }
+            else if (sentence == " ") 
+            {
+                return "Please create a sentence before saving";
+            }
             else if (savedSentences.Count > 0 && savedSentences.Contains(sentence))
             {
                return "Sentence has already been saved";

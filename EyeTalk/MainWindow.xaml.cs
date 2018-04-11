@@ -12,6 +12,7 @@ using EyeTalk.Objects;
 using EyeTalk.Logic;
 using EyeTalk.Utilities;
 using EyeTalk.Constants;
+using System.Media;
 
 namespace EyeTalk
 {
@@ -38,6 +39,7 @@ namespace EyeTalk
         AddPictureLogic addPictureLogic;
         SavedSentencesLogic savedSentencesLogic;
         Brush brush;
+        bool isSpeaking;
 
 
         public MainWindow()
@@ -54,19 +56,32 @@ namespace EyeTalk
             saveInitialiser = new SaveFileSerialiser();
             timer = new CoordinateTimer();
             brush = GetBrush();
+            isSpeaking = false;
 
             timer.coordinateTimer.Elapsed += CheckCoordinates;
             LoadSaveFiles();
-            UpdateOptions();
+            UpdateOptionsPageText();
+            UpdateGUI();
+        }
+
+        private void UpdateGUI()
+        {
+            ResetHomePage();
+            ResetSentencePage();
+            ResetOptionsPage();
+            ResetSaveSentencePage();
+            ResetChooseCategoryPage();
+            ResetSaveSentencePage();
         }
 
         //Home Page Buttons
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
+            LoadSaveFiles();
             sentenceLogic.ResetCategoryChoice();
-            ResetSentence();
-            FormatTextBoxes();
+            sentenceLogic.ResetSentence();
+            ResetSentencePageText();
             GoToSentencePage();
 
 
@@ -74,7 +89,7 @@ namespace EyeTalk
 
         private void Options_Click(object sender, RoutedEventArgs e)
         {
-            UpdateOptions();           
+            UpdateOptionsPageText();           
             myTabControl.SelectedIndex = 2;
         }
 
@@ -93,7 +108,7 @@ namespace EyeTalk
 
 
 
-        //Begin Speaking Buttons
+        //Begin Speaking Button Clicks
 
         private void Sentences_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -116,32 +131,51 @@ namespace EyeTalk
 
         private async void PlaySound_Button_Click(object sender, RoutedEventArgs e)
         {
+
             var sentence = SentenceTextBox.Text;
-            await Task.Run(() => speech.Speak(sentence));
+            if (isSpeaking == false)
+            {
+                isSpeaking = true;
+                await Task.Run(() => speech.Speak(sentence));
+                isSpeaking = false;
+            }
+     
         }
 
         private void Image1_Button_Click(object sender, RoutedEventArgs e)
         {
             int index = 0;
-            SelectPicture(index);
+            if (sentenceLogic.GetNumberOfPicturesInCurrentCategory() >= 1)
+            {
+                SelectPicture(index);
+            }
         }
 
         private void Image2_Button_Click(object sender, RoutedEventArgs e)
         {
             int index = 1;
-            SelectPicture(index);
+            if (sentenceLogic.GetNumberOfPicturesInCurrentCategory() >= 2)
+            {
+                SelectPicture(index);
+            }
         }
 
         private void Image3_Button_Click(object sender, RoutedEventArgs e)
         {
             int index = 2;
-            SelectPicture(index);
+            if (sentenceLogic.GetNumberOfPicturesInCurrentCategory() >= 3)
+            {
+                SelectPicture(index);
+            }
         }
 
         private void Image4_Button_Click(object sender, RoutedEventArgs e)
         {
             int index = 3;
-            SelectPicture(index);
+            if(sentenceLogic.GetNumberOfPicturesInCurrentCategory() >= 4)
+            {
+                SelectPicture(index);
+            }
         }
 
         private void Page_Click(object sender, RoutedEventArgs e)
@@ -168,6 +202,13 @@ namespace EyeTalk
             
         }
 
+        private void Remove_All_Click(object sender, RoutedEventArgs e)
+        {
+            SentenceTextBox.Clear();
+            sentenceLogic.RemoveAllWordsFromSentence();
+            CreatePage();
+
+        }
 
         //Begin Speaking Methods
 
@@ -263,25 +304,42 @@ namespace EyeTalk
                     SentenceTextBox.Text = sentenceLogic.AddWordToSentence(word, i);
                     sentenceLogic.UpdateMostUsedPicture(i, word);
                     HighlightPicture(buttons, i);
+                    ClickOn();
                 }
                 else if (selected == true)
                 {
                     SentenceTextBox.Text = sentenceLogic.RemoveWordFromSentence(word, i);
                     UnhighlightPicture(buttons, i);
+                    ClickOff();
 
                 }
             }
         
-    }
+         }
+
+        private void ClickOn()
+        {
+            new SoundPlayer(Properties.Resources.ClickOn).Play();
+        }
+
+        private void ClickOff()
+        {
+            new SoundPlayer(Properties.Resources.ClickOff).Play();
+        }
 
 
 
-        //Saved Sentences Buttons
+        //Saved Sentences Page Button Clicks
 
         private async void Play_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
             var sentence = currentSentence.Text;
-            await Task.Run(() => speech.Speak(sentence));
+            if (isSpeaking == false)
+            {
+                isSpeaking = true;
+                await Task.Run(() => speech.Speak(sentence));
+                isSpeaking = false;
+            }
         }
 
         private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
@@ -304,7 +362,7 @@ namespace EyeTalk
 
 
 
-        //Options Buttons
+        //Options Page Button Clicks
 
         private void ResetMostUsed_Click(object sender, RoutedEventArgs e)
         {
@@ -323,8 +381,6 @@ namespace EyeTalk
 
             speech.ChooseVoice(type);
         }
-
-
 
         private void Right_Delay_Click(object sender, RoutedEventArgs e)
         {
@@ -356,18 +412,38 @@ namespace EyeTalk
 
         private async void TestVoice_Click(object sender, RoutedEventArgs e)
         {
-            await Task.Run(() => speech.Speak("Test Voice"));
+            if (isSpeaking == false)
+            {
+                isSpeaking = true;
+                await Task.Run(() => speech.Speak("This is testing my voice"));
+                isSpeaking = false;
+            }
+        }
+
+        private void ColourType_Click(object sender, RoutedEventArgs e)
+        {
+            optionsLogic.ChangeColour();
+            brush = GetBrush();
+            UpdateGUI();
+
         }
 
         //Options Methods
 
-        private void UpdateOptions()
+        private void UpdateOptionsPageText()
         {
             VoiceType.Content = "Voice Type: " + optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
             SpeedStatus.Text = "Voice Speed: " + optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
             EyeSelectionSpeedStatus.Text = "Eye Fixation Value: " + optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
         }
 
+        private Brush GetBrush()
+        {
+            var converter = new BrushConverter();
+            string currentColour = optionsLogic.GetCurrentColour();
+            var brush = (Brush)converter.ConvertFromString(currentColour);
+            return brush;
+        }
 
 
         //Add Custom Picture Buttons
@@ -540,11 +616,11 @@ namespace EyeTalk
             switch (position)
             {
                 case Positions.TopLeftAlternate:
-                    HoverOverButton(Page);
+                    HoverOverButton(SaveSentence);
                     break;
 
                 case Positions.TopLeft:
-                    HoverOverButton(PlaySound);
+                    HoverOverButton(SentenceList);
                     break;
 
                 case Positions.TopMiddleLeft:
@@ -602,11 +678,11 @@ namespace EyeTalk
                     break;
 
                 case Positions.BottomRight:
-                    HoverOverButton(SaveSentence);
+                    HoverOverButton(Page);
                     break;
 
                 case Positions.BottomRightAlternate:
-                    HoverOverButton(SentenceList);
+                    HoverOverButton(SpeakSentence);
                     break;
 
                 case "":
@@ -912,15 +988,6 @@ namespace EyeTalk
             previousPosition = "";
         }
 
-
-        private Brush GetBrush()
-        {
-            var converter = new BrushConverter();
-            string currentColour = optionsLogic.GetCurrentColour();
-            var brush = (Brush)converter.ConvertFromString(currentColour);
-            return brush;
-        }
-
         private void ResetHomePage()
         {
             BeginSpeaking.Background = brush;
@@ -1008,7 +1075,7 @@ namespace EyeTalk
 
         }
 
-        private void FormatTextBoxes()
+        private void ResetSentencePageText()
         {
             SentenceTextBox.Text = "";
             SentenceUpdate.Text = "";
@@ -1037,13 +1104,8 @@ namespace EyeTalk
             saveInitialiser.SaveMostUsedList(sentenceLogic.mostUsedList);
         }
 
-        private void Remove_All_Click(object sender, RoutedEventArgs e)
-        {
-            SentenceTextBox.Clear();
-            sentenceLogic.RemoveAllWordsFromSentence();
-            CreatePage();
 
-        }
+        //Choose Category Page Methods
 
         private void Choose_Category_Button_Click(object sender, RoutedEventArgs e)
         {            
@@ -1051,14 +1113,11 @@ namespace EyeTalk
             myTabControl.SelectedIndex = 5;
         }
 
-
         private void Actions_Category_Button_Click(object sender, RoutedEventArgs e)
         {
             sentenceLogic.ChangeCategory(0);
             GoToSentencePage();
         }
-
-
 
         private void Replies_Category_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -1194,19 +1253,6 @@ namespace EyeTalk
             PageNumber.Text = sentenceLogic.UpdatePageNumber();
 
             myTabControl.SelectedIndex = 1;
-        }
-
-        private void ColourType_Click(object sender, RoutedEventArgs e)
-        {
-            optionsLogic.ChangeColour();
-            brush = GetBrush();
-        }
-
-        public void ResetSentence()
-        {
-
-            sentenceLogic.AmountOfWordsInSentence = 0;
-            sentenceLogic.Sentence.Clear();
         }
 
     }

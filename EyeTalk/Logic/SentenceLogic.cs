@@ -204,6 +204,11 @@ namespace EyeTalk
             return categoryNames.ElementAt(CategoryIndex);
         }
 
+        public int GetNumberOfPicturesInCurrentCategory()
+        {
+            return categories.ElementAt(CategoryIndex).ElementAt(0).Count;
+        }
+
         public string GetPreviousCategoryName()
         {
             if (CategoryIndex-1 < 0)
@@ -240,17 +245,23 @@ namespace EyeTalk
             }
         }
 
-
         public string ResetMostUsedIfNotEmpty()
         {
-            if (mostUsed.Count > 0)
+            if (mostUsed.Count > 0 && mostUsedList.Count > 0)
             {
                 mostUsed.Clear();
+                mostUsedList.Clear();
+
+                List<Picture> emptyPage = new List<Picture>();
+                mostUsed.Add(emptyPage);
+
                 save.SaveMostUsed(mostUsed);
+                save.SaveMostUsedList(mostUsedList);
                 return "Most Used category has been reset.";
             }
             else
             {
+          
                 return "Most Used category is already empty.";
                 
             }
@@ -259,12 +270,13 @@ namespace EyeTalk
 
         public string ResetCustomPictureCategoryIfNotEmpty()
         {
-
             if (customCategory.Count > 0)
             {
                 customCategory.Clear();
-                List<Picture> x = new List<Picture>();
-                customCategory.Add(x);
+
+                List<Picture> emptyPage = new List<Picture>();
+                customCategory.Add(emptyPage);
+
                 save.SaveCustomCategory(customCategory);
                 return "Custom category has been reset.";
             }
@@ -398,9 +410,17 @@ namespace EyeTalk
                 }
             }
         }
+
         public void ChangeCategory(int newCategoryIndex)
         {
             CategoryIndex = newCategoryIndex;
         }
+
+        public void ResetSentence()
+        {
+            AmountOfWordsInSentence = 0;
+            Sentence.Clear();
+        }
     }
+
 }

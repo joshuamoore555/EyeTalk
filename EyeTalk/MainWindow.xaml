@@ -32,7 +32,7 @@
                         <TextBlock x:Name="addCustomPictureText" HorizontalAlignment="Left" Margin="1668,319,0,0" TextWrapping="Wrap" Text="Add Custom Picture" VerticalAlignment="Top" FontSize="24" Width="232" Height="41"/>
                         <TextBlock x:Name="OptionsText" HorizontalAlignment="Left" Margin="825,1039,0,0" TextWrapping="Wrap" Text="Options" VerticalAlignment="Top" FontSize="24" Width="115" Height="41"/>
                         <TextBlock x:Name="ExitText" HorizontalAlignment="Left" Margin="1836,1039,0,0" TextWrapping="Wrap" Text="Exit" VerticalAlignment="Top" FontSize="24" Width="64" Height="41"/>
-                        <TextBlock x:Name="displayPos" HorizontalAlignment="Left" Margin="369,511,0,0" TextWrapping="Wrap" Text="Display" VerticalAlignment="Top" FontSize="24" Width="1284" Height="41"/>
+                        <TextBlock x:Name="displayPos" HorizontalAlignment="Left" Margin="369,511,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="1284" Height="41"/>
 
 
                     </Grid>
@@ -46,11 +46,11 @@
                             <RowDefinition Height="457*"/>
                         </Grid.RowDefinitions>
 
-                        <Button x:Name="PlaySound" HorizontalAlignment="Left" Margin="240,0,0,0" VerticalAlignment="Top" Width="240" FontSize="20" Click="PlaySound_Button_Click" Height="360" Background="Transparent" Grid.RowSpan="3" >
+                        <Button x:Name="PlaySound" HorizontalAlignment="Left" Margin="1679,544,0,0" VerticalAlignment="Top" Width="240" FontSize="20" Click="PlaySound_Button_Click" Height="360" Background="Transparent" Grid.Row="2" >
                             <Image Source="Images\sound.png" Height="120"></Image>
                         </Button>
 
-                        <Button x:Name="SentenceList" HorizontalAlignment="Left" Margin="1675,544,0,0" VerticalAlignment="Top" Width="240" FontSize="20" Click="Sentences_Button_Click" Height="360" Background="Transparent" Grid.Row="1" Grid.RowSpan="2" >
+                        <Button x:Name="SentenceList" HorizontalAlignment="Left" Margin="240,-9,0,0" VerticalAlignment="Top" Width="240" FontSize="20" Click="Sentences_Button_Click" Height="360" Background="Transparent" Grid.RowSpan="3" >
                             <Image Source="Images\list.png" Height="120"></Image>
                         </Button>
 
@@ -64,7 +64,7 @@
 
                         <TextBox x:Name="SentenceTextBox" HorizontalAlignment="Left" Margin="508,331,0,0" TextWrapping="Wrap" Text="&#xD;&#xA;" VerticalAlignment="Top" Height="114" Width="902" FontSize="36" FontWeight="Bold" IsReadOnly="True" Grid.Row="1" Grid.RowSpan="2"/>
 
-                        <Button x:Name="SaveSentence" HorizontalAlignment="Left" Margin="1439,544,0,0" VerticalAlignment="Top" Width="240" FontSize="20" Click="Save_Button_Click" Height="360" Background="Transparent" Grid.Row="2" >
+                        <Button x:Name="SaveSentence" HorizontalAlignment="Left" Margin="0,-9,0,0" VerticalAlignment="Top" Width="240" FontSize="20" Click="Save_Button_Click" Height="360" Background="Transparent" Grid.RowSpan="3" >
                             <Image Source="Images\save.png" Height="120"></Image>
                         </Button>
 
@@ -100,7 +100,7 @@
                         <TextBlock x:Name="Text3" HorizontalAlignment="Left" Margin="508,872,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="452" Height="32" Grid.Row="1" Grid.RowSpan="2"><Run Text="Text3"/><LineBreak/><Run/></TextBlock>
                         <TextBlock x:Name="Text4" HorizontalAlignment="Left" Margin="982,872,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="452" Height="32" Grid.Row="1" Grid.RowSpan="2"><Run Text="Text4"/><LineBreak/><Run/></TextBlock>
 
-                        <Button x:Name="Page" HorizontalAlignment="Left" VerticalAlignment="Top" Width="240" FontSize="36"  Height="350" Background="Transparent" Click="Page_Click" Grid.RowSpan="3">
+                        <Button x:Name="Page" HorizontalAlignment="Left" VerticalAlignment="Top" Width="240" FontSize="36"  Height="360" Background="Transparent" Click="Page_Click" Margin="1439,544,0,0" Grid.Row="2">
                             <Image Source="Images\page.png" Height="100"></Image>
                         </Button>
                         <Button x:Name="RemoveAll"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="479" FontSize="36"  Height="360" Background="Transparent" Click="Remove_All_Click" Grid.RowSpan="3" Margin="1436,-10,0,0" >
@@ -113,13 +113,13 @@
 
                         <TextBox x:Name="CategoryName" BorderThickness="0" TextAlignment="Center" TextWrapping="WrapWithOverflow" IsReadOnly="true" Text ="Category Name" HorizontalAlignment="Stretch" Margin="660,184,659,0"  Padding="1" VerticalAlignment="Top" FontSize="48" Height="110" Grid.Row="1" Grid.RowSpan="2" VerticalContentAlignment="Center"/>
 
-                        <TextBlock x:Name="PageNumber" HorizontalAlignment="Left" Margin="63,96,0,0" TextWrapping="Wrap" Text="Page 1/1" VerticalAlignment="Top" FontSize="24" Width="152" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        <TextBlock x:Name="PageNumber" HorizontalAlignment="Left" Margin="1487,837,0,0" TextWrapping="Wrap" Text="Page 1/1" VerticalAlignment="Top" FontSize="24" Width="152" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
                         <TextBlock x:Name="NextCategoryText" HorizontalAlignment="Left" Margin="1457,495,0,0" TextWrapping="Wrap" Text="Next Category: " VerticalAlignment="Top" FontSize="24" Width="348" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
                         <TextBlock x:Name="PreviousCategoryText" HorizontalAlignment="Left" Margin="10,495,0,0" TextWrapping="Wrap" Text="Previous Category: " VerticalAlignment="Top" FontSize="24" Width="348" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
                         <TextBlock x:Name="RemoveText" HorizontalAlignment="Left" Margin="1617,96,0,0" TextWrapping="Wrap" Text="Remove All" VerticalAlignment="Top" FontSize="24" Width="150" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
-                        <TextBlock x:Name="SpeakText" HorizontalAlignment="Left" Margin="320,114,0,0" TextWrapping="Wrap" Text="Speak" VerticalAlignment="Top" FontSize="24" Width="90" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
-                        <TextBlock x:Name="SaveText" HorizontalAlignment="Left" Margin="1457,819,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="176" Height="44" Grid.Row="1" Grid.RowSpan="2"><Run Text="  "/><Run Text="Save Sentence"/></TextBlock>
-                        <TextBlock x:Name="SavedListText" HorizontalAlignment="Left" Margin="1712,819,0,0" TextWrapping="Wrap" Text="Saved Sentences" VerticalAlignment="Top" FontSize="24" Width="197" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        <TextBlock x:Name="SpeakText" HorizontalAlignment="Left" Margin="1754,819,0,0" TextWrapping="Wrap" Text="Speak" VerticalAlignment="Top" FontSize="24" Width="90" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        <TextBlock x:Name="SaveText" HorizontalAlignment="Left" Margin="32,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="176" Height="44" Grid.Row="1" Grid.RowSpan="2"><Run Text="  "/><Run Text="Save Sentence"/></TextBlock>
+                        <TextBlock x:Name="SavedListText" HorizontalAlignment="Left" Margin="263,114,0,0" TextWrapping="Wrap" Text="Saved Sentences" VerticalAlignment="Top" FontSize="24" Width="197" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
 
                         <TextBlock x:Name="HomeText" HorizontalAlignment="Left" Margin="90,819,0,0" TextWrapping="Wrap" Text="Home" VerticalAlignment="Top" FontSize="24" Width="90" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
                         <TextBlock x:Name="ChooseCategoryText" HorizontalAlignment="Left" Margin="263,819,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="217" Height="44" Grid.Row="1" Grid.RowSpan="2"><Run Text="  "/><Run Text="Choose Category"/></TextBlock>
@@ -171,7 +171,7 @@
                         <TextBlock x:Name="ResetCustomText_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="232" Height="59" Margin="1578,1006,0,0" Text="Test Current Voice"/>
                         <TextBlock x:Name="HomeText2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="74" Height="59" Margin="206,1006,0,0" Text="Home"/>
                         <Button x:Name="ColourType"  BorderBrush ="Transparent" Content="Change Colour" HorizontalAlignment="Left" Margin="960,730,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Lavender" Click="ColourType_Click" />
-                        <TextBlock x:Name="display" HorizontalAlignment="Left" Margin="539,511,0,0" TextWrapping="Wrap" Text="Display" VerticalAlignment="Top" FontSize="24" Width="896" Height="41"/>
+                        <TextBlock x:Name="display" HorizontalAlignment="Left" Margin="539,511,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="896" Height="41"/>
 
 
 

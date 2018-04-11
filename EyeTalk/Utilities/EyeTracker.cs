@@ -105,6 +105,11 @@ namespace EyeTalk
             {
                 return "Left";
             }
+            else if (coordinates.X > 480 && coordinates.X < 1440 && coordinates.Y > 720)
+            {
+                return "Middle Right";
+
+            }
             else if (coordinates.X > 480 && coordinates.X < 960)
             {
                 return "Middle Left";
@@ -115,11 +120,7 @@ namespace EyeTalk
                 return "Middle Right";
 
             }
-            else if (coordinates.X > 480 && coordinates.X < 1440 && coordinates.Y > 720)
-            {
-                return "Middle Right";
 
-            }
             else if (coordinates.X > 1440 && coordinates.X < 1920)
             {
                 return "Right";
@@ -158,17 +159,17 @@ namespace EyeTalk
                 return "Middle Right";
 
             }
-            else if (coordinates.X > 1440 && coordinates.X < 1680)
+            else if (coordinates.X > 1440 && coordinates.X < 1600)
             {
                 return "Right";
 
             }
-            else if (coordinates.X > 1680 && coordinates.X < 1920 && coordinates.Y > 720)
+            else if (coordinates.X > 1600  && coordinates.Y > 720)
             {
                 return "Right Alternate";
 
             }
-            else if (coordinates.X > 1680 && coordinates.X < 1920 && coordinates.Y < 720)
+            else if (coordinates.X > 1600 && coordinates.Y < 720)
             {
                 return "Right";
 
