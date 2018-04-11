@@ -536,8 +536,8 @@ namespace EyeTalk
                     currentPosition = "";
                 }
 
-               // SentenceUpdate.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration;
-                //displayPos.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration ;
+               SentenceUpdate.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration;
+                displayPos.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration ;
 
                 if (currentPosition == previousPosition)
                 {
@@ -682,7 +682,7 @@ namespace EyeTalk
                     break;
 
                 case Positions.BottomRightAlternate:
-                    HoverOverButton(SpeakSentence);
+                    HoverOverButton(PlaySound);
                     break;
 
                 case "":
