@@ -13,13 +13,10 @@ namespace EyeTalk.Logic
         public int SentenceIndex { get; set; }
         public SaveFileSerialiser save;
 
-
         public SavedSentencesLogic()
         {
             save = new SaveFileSerialiser();
             savedSentences = save.LoadSentences();
-
-
         }
 
         public void SaveSentences()

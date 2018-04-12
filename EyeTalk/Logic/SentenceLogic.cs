@@ -29,8 +29,6 @@ namespace EyeTalk
         public List<Picture> CategoryPage { get; set; }
         public List<String> categoryNames;
 
-
-
         public SentenceLogic()
         {
             save = new SaveFileSerialiser();
@@ -66,13 +64,10 @@ namespace EyeTalk
                 {"Most Used"},
 
             };
-
-
         }
 
         public void GenerateSentencePage()
-        {
-            
+        {           
             UpdateCustomCategory();
             UpdateMostUsedCategory();
 
@@ -82,64 +77,29 @@ namespace EyeTalk
 
         }
 
-
-        public void ResetCategoryChoice()
+        public BitmapImage GenerateBitmap(string filepath)
         {
-            CategoryIndex = 0;
-            PageIndex = 0;
-
-        }
-
-        public void UpdateCustomCategory()
-        {
-            if (customCategory.Count == 0)
+            BitmapImage bmp = new BitmapImage();
+            try
             {
-                List<Picture> page = new List<Picture>();
-                customCategory.Add(page);
-            }            
-                categories[15] = customCategory;            
-        }
-
-        public void UpdateMostUsedCategory()
-        {
-
-            if (mostUsed != null && mostUsedList != null)
-            {
-
-                var orderedMostUsed = OrderMostUsedByCount();
-                var topFour = orderedMostUsed.Take(4);
-                var nextFour = orderedMostUsed.Skip(4).Take(4);
-
-
-                List<List<Picture>> mostUsedCategory = new List<List<Picture>>();
-                List<Picture> mostUsedPage1 = new List<Picture>();
-                List<Picture> mostUsedPage2 = new List<Picture>();
-
-                for (int i = 0; i < topFour.Count(); i++)
-                {
-                    mostUsedPage1.Add(topFour.ElementAt(i));
-                    mostUsedPage1.ElementAt(i).Selected = false;
-                }
-
-                for (int i = 0; i < nextFour.Count(); i++)
-                {
-                    mostUsedPage2.Add(nextFour.ElementAt(i));
-                    mostUsedPage2.ElementAt(i).Selected = false;
-                }
-
-                mostUsedCategory.Add(mostUsedPage1);
-                mostUsedCategory.Add(mostUsedPage2);
-
-                categories[16] = mostUsedCategory;
-                
-
+                bmp.BeginInit();
+                bmp.UriSource = new Uri(filepath);
+                bmp.DecodePixelWidth = 400;
+                bmp.EndInit();
             }
+            catch
+            {
+                //if file path has been changed, give a file not found image
+                bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = new Uri("pack://application:,,,/Images/filenotfound.png");
+                bmp.DecodePixelWidth = 400;
+                bmp.EndInit();
+            }
+            return bmp;
         }
 
-        public List<Picture> OrderMostUsedByCount()
-        {
-            return mostUsedList.OrderByDescending(entry => entry.Count).ToList();
-        }
+        //Category methods
 
         public void CheckIfBackToLastCategory()
         {
@@ -166,37 +126,14 @@ namespace EyeTalk
 
         public void UpdateCategoryAndGoToFirstPage()
         {
-            var categoryPages = categories.ElementAt(CategoryIndex);        
+            var categoryPages = categories.ElementAt(CategoryIndex);
             CategoryPage = categoryPages.ElementAt(0);
             CategoryName = GetCategoryName();
         }
 
-        public void GoToNextPage()
+        public void ChangeCategory(int newCategoryIndex)
         {
-            var categoryPages = categories.ElementAt(CategoryIndex);
-            var numberOfPages = categoryPages.Count;
-            PageIndex++;
-
-            if (PageIndex >= numberOfPages)
-            {
-                PageIndex = 0;
-                CategoryPage = categoryPages.ElementAt(PageIndex);
-
-            }
-            else
-            {
-                CategoryPage = categoryPages.ElementAt(PageIndex);
-            }
-
-            CategoryPage = categoryPages.ElementAt(PageIndex);
-        }
-
-        public string UpdatePageNumber()
-        {
-            var categoryPages = categories.ElementAt(CategoryIndex);
-            var numberOfPages = categoryPages.Count;
-            return "Page " + (PageIndex + 1) + "/" + numberOfPages;
-
+            CategoryIndex = newCategoryIndex;
         }
 
         public string GetCategoryName()
@@ -211,9 +148,9 @@ namespace EyeTalk
 
         public string GetPreviousCategoryName()
         {
-            if (CategoryIndex-1 < 0)
+            if (CategoryIndex - 1 < 0)
             {
-                return categoryNames.ElementAt(categories.Count-1);
+                return categoryNames.ElementAt(categories.Count - 1);
             }
             else if (CategoryIndex - 2 < 0)
             {
@@ -245,6 +182,79 @@ namespace EyeTalk
             }
         }
 
+        public void ResetCategoryChoice()
+        {
+            CategoryIndex = 0;
+            PageIndex = 0;
+
+        }
+
+
+        //Custom Picture Category methods
+
+        public void UpdateCustomCategory()
+        {
+            if (customCategory.Count == 0)
+            {
+                List<Picture> page = new List<Picture>();
+                customCategory.Add(page);
+            }            
+                categories[15] = customCategory;            
+        }
+
+        public string ResetCustomPictureCategoryIfNotEmpty()
+        {
+            if (customCategory.Count > 0)
+            {
+                customCategory.Clear();
+
+                List<Picture> emptyPage = new List<Picture>();
+                customCategory.Add(emptyPage);
+
+                save.SaveCustomCategory(customCategory);
+                return "Custom category has been reset.";
+            }
+            else
+            {
+                return "Custom category is already empty.";
+            }
+
+        }
+
+
+        //Page methods
+
+        public void GoToNextPage()
+        {
+            var categoryPages = categories.ElementAt(CategoryIndex);
+            var numberOfPages = categoryPages.Count;
+            PageIndex++;
+
+            if (PageIndex >= numberOfPages)
+            {
+                PageIndex = 0;
+                CategoryPage = categoryPages.ElementAt(PageIndex);
+
+            }
+            else
+            {
+                CategoryPage = categoryPages.ElementAt(PageIndex);
+            }
+
+            CategoryPage = categoryPages.ElementAt(PageIndex);
+        }
+
+        public string UpdatePageNumber()
+        {
+            var categoryPages = categories.ElementAt(CategoryIndex);
+            var numberOfPages = categoryPages.Count;
+            return "Page " + (PageIndex + 1) + "/" + numberOfPages;
+
+        }
+
+
+        //Most Used methods
+
         public string ResetMostUsedIfNotEmpty()
         {
             if (mostUsed.Count > 0 && mostUsedList.Count > 0)
@@ -266,25 +276,6 @@ namespace EyeTalk
                 
             }
            
-        }
-
-        public string ResetCustomPictureCategoryIfNotEmpty()
-        {
-            if (customCategory.Count > 0)
-            {
-                customCategory.Clear();
-
-                List<Picture> emptyPage = new List<Picture>();
-                customCategory.Add(emptyPage);
-
-                save.SaveCustomCategory(customCategory);
-                return "Custom category has been reset.";
-            }
-            else
-            {
-                return "Custom category is already empty.";
-            }
-
         }
 
         public void UpdateMostUsedPicture(int i, string word)
@@ -331,9 +322,53 @@ namespace EyeTalk
             return false;
         }
 
+        public void UpdateMostUsedCategory()
+        {
+
+            if (mostUsed != null && mostUsedList != null)
+            {
+
+                var orderedMostUsed = OrderMostUsedByCount();
+                var topFour = orderedMostUsed.Take(4);
+                var nextFour = orderedMostUsed.Skip(4).Take(4);
+
+
+                List<List<Picture>> mostUsedCategory = new List<List<Picture>>();
+                List<Picture> mostUsedPage1 = new List<Picture>();
+                List<Picture> mostUsedPage2 = new List<Picture>();
+
+                for (int i = 0; i < topFour.Count(); i++)
+                {
+                    mostUsedPage1.Add(topFour.ElementAt(i));
+                    mostUsedPage1.ElementAt(i).Selected = false;
+                }
+
+                for (int i = 0; i < nextFour.Count(); i++)
+                {
+                    mostUsedPage2.Add(nextFour.ElementAt(i));
+                    mostUsedPage2.ElementAt(i).Selected = false;
+                }
+
+                mostUsedCategory.Add(mostUsedPage1);
+                mostUsedCategory.Add(mostUsedPage2);
+
+                categories[16] = mostUsedCategory;
+
+
+            }
+        }
+
+        public List<Picture> OrderMostUsedByCount()
+        {
+            return mostUsedList.OrderByDescending(entry => entry.Count).ToList();
+        }
+
+
+        //Sentence methods
+
         public string AddWordToSentence(string word, int i)
         {
-            var name = " " +  CategoryPage.ElementAt(i).Name + " ";
+            var name = " " + CategoryPage.ElementAt(i).Name + " ";
             if (!Sentence.Contains(name))
             {
                 Sentence.Add(word, word);
@@ -367,32 +402,8 @@ namespace EyeTalk
             CategoryPage.ElementAt(i).Selected = false;
 
             return sb.ToString();
-         
+
         }
-
-
-        public BitmapImage GenerateBitmap(string filepath)
-        {
-            BitmapImage bmp = new BitmapImage();
-            try
-            {
-                bmp.BeginInit();
-                bmp.UriSource = new Uri(filepath);
-                bmp.DecodePixelWidth = 400;
-                bmp.EndInit();
-            }
-            catch 
-            {
-                //if file path has been changed, give a file not found image
-                bmp = new BitmapImage();
-                bmp.BeginInit();
-                bmp.UriSource = new Uri("pack://application:,,,/Images/filenotfound.png");
-                bmp.DecodePixelWidth = 400;
-                bmp.EndInit();
-            }
-            return bmp;   
-        }
-
 
         public void RemoveAllWordsFromSentence()
         {
@@ -411,16 +422,14 @@ namespace EyeTalk
             }
         }
 
-        public void ChangeCategory(int newCategoryIndex)
-        {
-            CategoryIndex = newCategoryIndex;
-        }
-
         public void ResetSentence()
         {
             AmountOfWordsInSentence = 0;
             Sentence.Clear();
         }
-    }
 
+
+
+
+    }
 }

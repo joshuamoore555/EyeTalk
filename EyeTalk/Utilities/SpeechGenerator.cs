@@ -67,7 +67,10 @@ namespace EyeTalk.Utilities
 
         public void SelectMaleVoice()
         {
-            synthesizer.SelectVoice(voices.ElementAt(1).VoiceInfo.Name);
+            if(voices.Count > 1)
+            {
+                synthesizer.SelectVoice(voices.ElementAt(1).VoiceInfo.Name);
+            }
         }
 
         public void SelectFastVoice()

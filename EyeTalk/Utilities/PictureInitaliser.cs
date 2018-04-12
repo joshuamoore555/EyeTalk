@@ -9,6 +9,57 @@ namespace EyeTalk.Utilities
 {
     class PictureInitialiser
     {
+        //Categories list
+        public List< List<List<Picture>>> categories;
+        
+
+        //Categories
+        public List<List<Picture>> foodPages;
+        public List<List<Picture>> drinkPages;
+        public List<List<Picture>> emotionPages;
+        public List<List<Picture>> actionPages;
+        public List<List<Picture>> greetingsPages;
+        public List<List<Picture>> replyPages;
+        public List<List<Picture>> customPages;
+        public List<List<Picture>> mostUsedPages;
+        public List<List<Picture>> timePages;
+        public List<List<Picture>> colourPages;
+        public List<List<Picture>> animalPages;
+        public List<List<Picture>> feelingPages;
+        public List<List<Picture>> entertainmentPages;
+        public List<List<Picture>> kitchenPages;
+        public List<List<Picture>> carersPages;
+        public List<List<Picture>> personalCarePages;
+        public List<List<Picture>> familyPages;
+
+        //Pages
+        public List<Picture> family1;
+        public List<Picture> personalCare1;
+        public List<Picture> carers1;
+        public List<Picture> kitchen1;
+        public List<Picture> entertainment1;
+
+        public List<Picture> food1;
+        public List<Picture> food2;
+
+        public List<Picture> drink1;
+        public List<Picture> drink2;
+
+        public List<Picture> emotions1;
+        public List<Picture> feelings1;
+        public List<Picture> replies1;
+        public List<Picture> actionwords1;
+        public List<Picture> greetings1;
+
+        public List<Picture> animals1;
+        public List<Picture> colours1;
+
+        public List<Picture> time1;
+        public List<Picture> time2;
+
+        public List<Picture> custom1;
+        public List<Picture> mostused;
+
         //Food
         public Picture pizza = new Picture("a pizza", false, "pack://application:,,,/Images/pizza.png", 0);
         public Picture hotdog = new Picture("a hotdog", false, "pack://application:,,,/Images/hotdog.png", 0);
@@ -43,7 +94,7 @@ namespace EyeTalk.Utilities
         public Picture uncomfortable = new Picture("I feel uncomfortable", false, "pack://application:,,,/Images/uncomfortable.png", 0);
         public Picture pain = new Picture("I am in pain", false, "pack://application:,,,/Images/sick.png", 0);
 
-    
+
         //Greetings
         public Picture hello = new Picture("hello", false, "pack://application:,,,/Images/hello.png", 0);
         public Picture goodbye = new Picture("goodbye", false, "pack://application:,,,/Images/goodbye.png", 0);
@@ -102,7 +153,7 @@ namespace EyeTalk.Utilities
 
         //Personal Care
         public Picture bath = new Picture("a bath", false, "pack://application:,,,/Images/bath.png", 0);
-        public Picture washHands  = new Picture("to wash my hands", false, "pack://application:,,,/Images/washHands.png", 0);
+        public Picture washHands = new Picture("to wash my hands", false, "pack://application:,,,/Images/washHands.png", 0);
         public Picture shower = new Picture("a shower", false, "pack://application:,,,/Images/shower.png", 0);
         public Picture toilet = new Picture("to go to the toilet", false, "pack://application:,,,/Images/toilet.png", 0);
 
@@ -124,60 +175,7 @@ namespace EyeTalk.Utilities
         public Picture book = new Picture("to read", false, "pack://application:,,,/Images/book.png", 0);
         public Picture games = new Picture("to play games", false, "pack://application:,,,/Images/games.png", 0);
 
-        public List< List<List<Picture>>> categories;
-        
 
-        //pages
-        public List<List<Picture>> foodPages;
-        public List<List<Picture>> drinkPages;
-        public List<List<Picture>> emotionPages;
-        public List<List<Picture>> actionPages;
-        public List<List<Picture>> greetingsPages;
-        public List<List<Picture>> replyPages;
-        public List<List<Picture>> customPages;
-        public List<List<Picture>> mostUsedPages;
-        public List<List<Picture>> timePages;
-        public List<List<Picture>> colourPages;
-        public List<List<Picture>> animalPages;
-        public List<List<Picture>> feelingPages;
-        public List<List<Picture>> entertainmentPages;
-        public List<List<Picture>> kitchenPages;
-        public List<List<Picture>> carersPages;
-        public List<List<Picture>> personalCarePages;
-        public List<List<Picture>> familyPages;
-
-
-        public List<Picture> family1;
-        public List<Picture> personalCare1;
-        public List<Picture> carers1;
-        public List<Picture> kitchen1;
-        public List<Picture> entertainment1;
-
-
-        public List<Picture> food1;
-        public List<Picture> food2;
-
-        public List<Picture> drink1;
-        public List<Picture> drink2;
-
-
-        public List<Picture> emotions1;
-        public List<Picture> feelings1;
-        public List<Picture> replies1;
-        public List<Picture> actionwords1;
-        public List<Picture> greetings1;
-
-        public List<Picture> animals1;
-        public List<Picture> time2;
-
-        public List<Picture> colours1;
-
-        public List<Picture> time1;
-
-
-        public List<Picture> custom1;
-        public List<Picture> mostused;
-   
 
         public PictureInitialiser()
         {
@@ -268,9 +266,6 @@ namespace EyeTalk.Utilities
             {customPages }, //15
             {mostUsedPages}, //16
             };
-
-
-
-    }
-    }
+        }
+     }
 }

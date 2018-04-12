@@ -17,8 +17,6 @@ namespace EyeTalk.Logic
         {
             save = new SaveFileSerialiser();
             Options = save.LoadOptions();
-
-
         }
 
         public string GetCurrentColour()
@@ -35,7 +33,6 @@ namespace EyeTalk.Logic
                 Options.ApplicationColour = 0;
             }
         }
-
 
         public void IncreaseEyeFixationDuration()
         {

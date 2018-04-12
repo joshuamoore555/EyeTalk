@@ -14,19 +14,19 @@
 
                     <Grid Margin="10,-6,-76,5" Background="White" RenderTransformOrigin="0.5,0.5" Width="1980" Height="1080">
 
-                        <Button x:Name="BeginSpeaking" HorizontalAlignment="Left" VerticalAlignment="Top" Width="940" Click="Begin_Click" Height="360" FontSize="36" Background="Transparent" >
+                        <Button x:Name="BeginSpeaking" HorizontalAlignment="Left" VerticalAlignment="Top" Width="940" Click="Begin_Click" Height="360" FontSize="36" Background="Transparent" Margin="-12,0,0,0" >
                             <Image Height ="240" Source="Images\speaking.png"></Image>
                         </Button>
 
                         <TextBlock x:Name="BeginSpeakingText" HorizontalAlignment="Left" Margin="735,319,0,0" TextWrapping="Wrap" Text="Begin Speaking!" VerticalAlignment="Top" FontSize="24" Width="180" Height="41"/>
 
-                        <Button x:Name="AddPicture" HorizontalAlignment="Left" Margin="960,0,0,0" VerticalAlignment="Top" Width="940" Click="Add_PictureCategory_Click" Height="360" FontSize="36" Background="Transparent" >
+                        <Button x:Name="AddPicture" HorizontalAlignment="Left" Margin="974,0,0,0" VerticalAlignment="Top" Width="940" Click="Add_PictureCategory_Click" Height="360" FontSize="36" Background="Transparent" >
                             <Image Height ="240" Source="Images\add.png"></Image>
                         </Button>
-                        <Button x:Name="Options" HorizontalAlignment="Left" Margin="0,720,0,0" VerticalAlignment="Stretch" Width="940" Click="Options_Click" Height="360" FontSize="36" Background="Transparent" >
+                        <Button x:Name="Options" HorizontalAlignment="Left" Margin="-12,720,0,0" VerticalAlignment="Stretch" Width="940" Click="Options_Click" Height="360" FontSize="36" Background="Transparent" >
                             <Image Height ="240" Source="Images\options.png"></Image>
                         </Button>
-                        <Button x:Name="Exit" HorizontalAlignment="Left" Margin="960,720,0,0" VerticalAlignment="Top" Width="940" Click="Exit_Click" Height="360" FontSize="36" Background="Transparent" >
+                        <Button x:Name="Exit" HorizontalAlignment="Left" Margin="974,720,0,0" VerticalAlignment="Top" Width="940" Click="Exit_Click" Height="360" FontSize="36" Background="Transparent" >
                             <Image Height ="240" Source="Images\shutdown.png"></Image>
                         </Button>
                         <TextBlock x:Name="addCustomPictureText" HorizontalAlignment="Left" Margin="1668,319,0,0" TextWrapping="Wrap" Text="Add Custom Picture" VerticalAlignment="Top" FontSize="24" Width="232" Height="41"/>

@@ -206,6 +206,7 @@ namespace EyeTalk
         {
             SentenceTextBox.Clear();
             sentenceLogic.RemoveAllWordsFromSentence();
+            ClickOff();
             CreatePage();
 
         }
@@ -428,6 +429,7 @@ namespace EyeTalk
 
         }
 
+
         //Options Methods
 
         private void UpdateOptionsPageText()
@@ -536,8 +538,8 @@ namespace EyeTalk
                     currentPosition = "";
                 }
 
-               SentenceUpdate.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration;
-                displayPos.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration ;
+               //SentenceUpdate.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration;
+                //displayPos.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration ;
 
                 if (currentPosition == previousPosition)
                 {
@@ -1042,10 +1044,10 @@ namespace EyeTalk
             Left_Delay.Background = brush;
             Right_Delay.Background = brush;
             Back.Background = brush;
+            TestVoice.Background = brush;
 
             ResetMostUsed.Background = Brushes.Lavender;
             ResetCustomPictures.Background = Brushes.Lavender;
-            TestVoice.Background = Brushes.Lavender;
             VoiceType.Background = Brushes.Lavender;
             ColourType.Background = Brushes.Lavender;
         }
