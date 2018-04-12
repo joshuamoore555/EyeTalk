@@ -9,32 +9,32 @@ namespace EyeTalk.Logic
 {
     public class SavedSentencesLogic
     {
-        public List<String> savedSentences { get; set; }
+        public List<String> SavedSentences { get; set; }
         public int SentenceIndex { get; set; }
         public SaveFileSerialiser save;
 
         public SavedSentencesLogic()
         {
             save = new SaveFileSerialiser();
-            savedSentences = save.LoadSentences();
+            SavedSentences = save.LoadSentences();
         }
 
         public void SaveSentences()
         {
-            save.SaveSentencesToFile(savedSentences);
+            save.SaveSentencesToFile(SavedSentences);
 
         }
 
         public string RetrieveFirstSavedSentenceIfExists()
         {
 
-            if (savedSentences.Count <= 0)
+            if (SavedSentences.Count <= 0)
             {
                 return "No sentences saved";
             }
             else
             {
-                return savedSentences.First();
+                return SavedSentences.First();
             }
         }
 
@@ -49,14 +49,14 @@ namespace EyeTalk.Logic
             {
                 return "Please create a sentence before saving";
             }
-            else if (savedSentences.Count > 0 && savedSentences.Contains(sentence))
+            else if (SavedSentences.Count > 0 && SavedSentences.Contains(sentence))
             {
                return "Sentence has already been saved";
             }
             else
             {
-                savedSentences.Add(sentence);
-                save.SaveSentencesToFile(savedSentences);
+                SavedSentences.Add(sentence);
+                save.SaveSentencesToFile(SavedSentences);
                 return "Sentence Saved";
             }
         }
@@ -65,57 +65,57 @@ namespace EyeTalk.Logic
         {
             SentenceIndex++;
 
-            if(savedSentences.Count <= 0)
+            if(SavedSentences.Count <= 0)
             {
                 return "No Sentences Saved";
             }
-            else if(SentenceIndex <= savedSentences.Count - 1)
+            else if(SentenceIndex <= SavedSentences.Count - 1)
             {
-                return savedSentences.ElementAt(SentenceIndex);
+                return SavedSentences.ElementAt(SentenceIndex);
             }
             else
             {
                 SentenceIndex = 0;
-                return savedSentences.ElementAt(SentenceIndex);
+                return SavedSentences.ElementAt(SentenceIndex);
             }
         }
 
         public string PreviousSentence()
         {
             SentenceIndex--;
-            if (savedSentences.Count <= 0)
+            if (SavedSentences.Count <= 0)
             {
                 return "No Sentences Saved";
             }
             else if (SentenceIndex >= 0)
             {
-                return savedSentences.ElementAt(SentenceIndex);
+                return SavedSentences.ElementAt(SentenceIndex);
             }
             else
             {
-                SentenceIndex = savedSentences.Count - 1;
-                return savedSentences.ElementAt(SentenceIndex);
+                SentenceIndex = SavedSentences.Count - 1;
+                return SavedSentences.ElementAt(SentenceIndex);
             }
         }
 
         public string DeleteSavedSentence()
         {
-            if (savedSentences.Count <= 0)
+            if (SavedSentences.Count <= 0)
             {
                 return "No Sentences Saved";
             }
             else
             {
-                savedSentences.RemoveAt(SentenceIndex);
+                SavedSentences.RemoveAt(SentenceIndex);
                 SentenceIndex = 0;
-                if (savedSentences.Count <= 0)
+                if (SavedSentences.Count <= 0)
                 {
                     return "No Sentences Saved";
                 }
                 else
                 {
                     SaveSentences();
-                    return savedSentences.ElementAt(SentenceIndex);
+                    return SavedSentences.ElementAt(SentenceIndex);
                 }
 
             }

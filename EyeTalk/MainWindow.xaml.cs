@@ -29,8 +29,8 @@ namespace EyeTalk
         List<Button> buttons;
         List<TextBlock> textBlocks;
 
-        SaveFileSerialiser saveInitialiser;
         EyeTracker eyeTracker;
+        SaveFileSerialiser saveInitialiser;
         SpeechGenerator speech;
         CoordinateTimer timer;
     
@@ -39,29 +39,29 @@ namespace EyeTalk
         AddPictureLogic addPictureLogic;
         SavedSentencesLogic savedSentencesLogic;
         Brush brush;
-        bool isSpeaking;
+        bool isSpeaking = false;
 
 
         public MainWindow()
         {
             InitializeComponent();
 
+            eyeTracker = new EyeTracker();
+            speech = new SpeechGenerator();
+
+            timer = new CoordinateTimer();
             sentenceLogic = new SentenceLogic();
             optionsLogic = new OptionsLogic();
             savedSentencesLogic = new SavedSentencesLogic();
             addPictureLogic = new AddPictureLogic();
-
-            speech = new SpeechGenerator();
-            eyeTracker = new EyeTracker();
             saveInitialiser = new SaveFileSerialiser();
-            timer = new CoordinateTimer();
-            brush = GetBrush();
-            isSpeaking = false;
 
+            brush = GetBrush();
             timer.coordinateTimer.Elapsed += CheckCoordinates;
             LoadSaveFiles();
-            UpdateOptionsPageText();
+            UpdateOptionsPage();
             UpdateGUI();
+            
         }
 
         private void UpdateGUI()
@@ -83,13 +83,11 @@ namespace EyeTalk
             sentenceLogic.ResetSentence();
             ResetSentencePageText();
             GoToSentencePage();
-
-
         }
 
         private void Options_Click(object sender, RoutedEventArgs e)
         {
-            UpdateOptionsPageText();           
+            UpdateOptionsPage();           
             myTabControl.SelectedIndex = 2;
         }
 
@@ -432,8 +430,11 @@ namespace EyeTalk
 
         //Options Methods
 
-        private void UpdateOptionsPageText()
+        private void UpdateOptionsPage()
         {
+            speech.ChooseVoice(optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection));
+            speech.ChooseSpeedOfVoice(optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection));
+
             VoiceType.Content = "Voice Type: " + optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection);
             SpeedStatus.Text = "Voice Speed: " + optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection);
             EyeSelectionSpeedStatus.Text = "Eye Fixation Value: " + optionsLogic.Options.EyeFixationValue / 4 + " Seconds";
@@ -537,9 +538,7 @@ namespace EyeTalk
                 {
                     currentPosition = "";
                 }
-
-               //SentenceUpdate.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration;
-                //displayPos.Text = currentPosition + " " + optionsLogic.Options.EyeFixationDuration ;
+                              
 
                 if (currentPosition == previousPosition)
                 {
@@ -1089,7 +1088,7 @@ namespace EyeTalk
         private void LoadSaveFiles()
         {
             sentenceLogic.categories = saveInitialiser.LoadCategories();
-            savedSentencesLogic.savedSentences = saveInitialiser.LoadSentences();
+            savedSentencesLogic.SavedSentences = saveInitialiser.LoadSentences();
             optionsLogic.Options = saveInitialiser.LoadOptions();
             sentenceLogic.customCategory = saveInitialiser.LoadCustomCategory();
             sentenceLogic.mostUsedList = saveInitialiser.LoadMostUsedList();
@@ -1099,7 +1098,7 @@ namespace EyeTalk
 
         private void SaveAllFiles()
         {
-            saveInitialiser.SaveSentencesToFile(savedSentencesLogic.savedSentences);
+            saveInitialiser.SaveSentencesToFile(savedSentencesLogic.SavedSentences);
             saveInitialiser.SaveCustomCategory(sentenceLogic.customCategory);
             saveInitialiser.SaveOptions(optionsLogic.Options);
             saveInitialiser.SaveMostUsed(sentenceLogic.mostUsed);
@@ -1249,8 +1248,10 @@ namespace EyeTalk
             images = new List<Image> { Image1, Image2, Image3, Image4 };
             buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
             textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
-
-            sentenceLogic.GenerateSentencePage();
+            sentenceLogic.UpdateCustomCategory();
+            sentenceLogic.UpdateMostUsedCategory();
+            
+            sentenceLogic.UpdateCategoryAndGoToFirstPage();
             CreatePage();
             PageNumber.Text = sentenceLogic.UpdatePageNumber();
 

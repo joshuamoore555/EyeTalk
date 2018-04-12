@@ -22,11 +22,15 @@ namespace EyeTalk
     {
         public XYCoordinate coordinates;
         public volatile bool eyeTracking;
+        public EyeXHost eyeXHost;
 
 
         public EyeTracker()
         {
             coordinates = new XYCoordinate(0,0);
+            eyeXHost = new EyeXHost();
+            eyeXHost.Start();
+
             StartEyeTracking();
         }
 
@@ -34,14 +38,16 @@ namespace EyeTalk
         public void StartEyeTracking()
         {
             eyeTracking = true;
-            var eyeXHost = new EyeXHost();
-            eyeXHost.Start();
+            
+            
             var stream = eyeXHost.CreateGazePointDataStream(GazePointDataMode.LightlyFiltered);
+            
 
             Task.Run(async () =>
             {
                 while (eyeTracking)
                 {
+                    
                     stream.Next += (s, t) => SetXY(t.X, t.Y);
                     await Task.Delay(200);
                 }
@@ -57,29 +63,38 @@ namespace EyeTalk
 
         public string CheckX()
         {
-            if (coordinates.X < 480)
-            {
-                return "Left";
-            }
-            else if (coordinates.X > 480 && coordinates.X < 960)
-            {
-                return "Middle Left";
+            var presence = CheckPresenceOfUser();
 
-            }
-            else if (coordinates.X > 960 && coordinates.X < 1440)
+            if (presence == true)
             {
-                return "Middle Right";
+                if (coordinates.X < 480)
+                {
+                    return "Left";
+                }
+                else if (coordinates.X > 480 && coordinates.X < 960)
+                {
+                    return "Middle Left";
 
-            }
-            else if (coordinates.X > 1440 && coordinates.X < 1920)
-            {
-                return "Right";
+                }
+                else if (coordinates.X > 960 && coordinates.X < 1440)
+                {
+                    return "Middle Right";
 
+                }
+                else if (coordinates.X > 1440 && coordinates.X < 1920)
+                {
+                    return "Right";
+
+                }
+                else
+                {
+                    return coordinates.X.ToString();
+                }
             }
             else
             {
-                return coordinates.X.ToString();
-            }
+                return "";
+            }        
         }
 
         public string CheckXHomePage()
@@ -230,21 +245,30 @@ namespace EyeTalk
 
         public string CheckY()
         {
-            if (coordinates.Y < 360)
+            var presence = CheckPresenceOfUser();
+
+            if (presence == true)
             {
-                return "Top";
-            }
-            else if (coordinates.Y > 360 && coordinates.Y < 720)
-            {
-                return "Middle";
-            }
-            else if (coordinates.Y > 720 && coordinates.Y < 1080)
-            {
-                return "Bottom";
+                if (coordinates.Y < 360)
+                {
+                    return "Top";
+                }
+                else if (coordinates.Y > 360 && coordinates.Y < 720)
+                {
+                    return "Middle";
+                }
+                else if (coordinates.Y > 720 && coordinates.Y < 1080)
+                {
+                    return "Bottom";
+                }
+                else
+                {
+                    return coordinates.Y.ToString();
+                }
             }
             else
             {
-                return coordinates.Y.ToString();
+                return "";
             }
         }
 
@@ -272,5 +296,23 @@ namespace EyeTalk
         {
             return CheckY() + " " + CheckXHomePage();
         }
+
+        public bool CheckPresenceOfUser()
+        {
+            if (eyeXHost.UserPresence.ToString() == "Present")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public string GetUserProfileName()
+        {
+            return eyeXHost.UserProfileName.Value.ToString();
+        }
+
     }
 }

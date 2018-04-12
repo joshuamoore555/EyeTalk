@@ -21,7 +21,7 @@ namespace EyeTalk.Tests
         [Test]
         public void RetrieveFirstSentenceThatExists()
         {
-            logic.savedSentences.Add("Hello World");
+            logic.SavedSentences.Add("Hello World");
             var same = logic.RetrieveFirstSavedSentenceIfExists();
             Assert.AreEqual("Hello World", same);
           
@@ -30,7 +30,7 @@ namespace EyeTalk.Tests
         [Test]
         public void RetrieveFirstSentenceIfNotExisting()
         {
-            logic.savedSentences.Clear();
+            logic.SavedSentences.Clear();
             var same = logic.RetrieveFirstSavedSentenceIfExists();
             Assert.AreEqual("No sentences saved", same);
 
@@ -64,7 +64,7 @@ namespace EyeTalk.Tests
         [Test]
         public void ChangeSentences()
         {
-            logic.savedSentences.Clear();
+            logic.SavedSentences.Clear();
             logic.SaveSentenceIfNotPreviouslySaved("1");
             logic.SaveSentenceIfNotPreviouslySaved("2");
             var index = logic.SentenceIndex;
@@ -83,7 +83,7 @@ namespace EyeTalk.Tests
         [Test]
         public void NoSentenceSavedWhenChangingSentences()
         {
-            logic.savedSentences.Clear();
+            logic.SavedSentences.Clear();
 
             Assert.AreEqual("No Sentences Saved", logic.NextSentence());
             Assert.AreEqual("No Sentences Saved", logic.PreviousSentence());
@@ -94,7 +94,7 @@ namespace EyeTalk.Tests
         [Test]
         public void DeleteSentenceWhenNoneSaved()
         {
-            logic.savedSentences.Clear();
+            logic.SavedSentences.Clear();
             var same = logic.DeleteSavedSentence();
             Assert.AreEqual("No Sentences Saved", same);
 
@@ -103,7 +103,7 @@ namespace EyeTalk.Tests
         [Test]
         public void DeleteSentence()
         {
-            logic.savedSentences.Clear();
+            logic.SavedSentences.Clear();
             logic.SaveSentenceIfNotPreviouslySaved("1");
             logic.SaveSentenceIfNotPreviouslySaved("2");
             logic.SentenceIndex = 0;

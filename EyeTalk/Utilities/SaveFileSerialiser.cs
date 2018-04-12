@@ -14,7 +14,7 @@ namespace EyeTalk.Objects
         List<Picture> mostUsedList = new List<Picture>();
         Options options = new Options(0, 6, 0, 0, 0);
         List<List<Picture>> customPages = new List<List<Picture>>();
-
+       
         public string saveFolder;
 
         public string categoryPath;
@@ -22,8 +22,7 @@ namespace EyeTalk.Objects
         public string customPicturesPath;
         public string optionsPath;
         public string mostUsedPath;
-        public string mostUsedListPath;
-
+        public string mostUsedListPath;      
 
         System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
 
@@ -34,15 +33,15 @@ namespace EyeTalk.Objects
             saveFolder = Path.Combine(path, "Saves");
 
             categoryPath = Path.Combine(saveFolder, "Categories.bin");
-            savedSentencesPath = Path.Combine(saveFolder, "SavedSentences.bin");
+            savedSentencesPath = Path.Combine(saveFolder,"SavedSentences.bin");
             customPicturesPath = Path.Combine(saveFolder, "CustomPictures.bin");
             optionsPath = Path.Combine(saveFolder, "Options.bin");
             mostUsedPath = Path.Combine(saveFolder, "MostUsed.bin");
             mostUsedListPath = Path.Combine(saveFolder, "mostUsedList.bin");
-
+            
             pictureInitialiser = new PictureInitialiser(); 
             CreateInitialFoldersAndFiles();
-
+            
         }
 
         //load category from a file
@@ -87,6 +86,7 @@ namespace EyeTalk.Objects
 
         public void CreateCategoryFile()
         {
+
             using (Stream stream = File.Open(categoryPath, FileMode.Create))
             {
                 bformatter.Serialize(stream, pictureInitialiser.categories);

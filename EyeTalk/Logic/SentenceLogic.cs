@@ -99,6 +99,7 @@ namespace EyeTalk
             return bmp;
         }
 
+
         //Category methods
 
         public void CheckIfBackToLastCategory()
@@ -127,7 +128,8 @@ namespace EyeTalk
         public void UpdateCategoryAndGoToFirstPage()
         {
             var categoryPages = categories.ElementAt(CategoryIndex);
-            CategoryPage = categoryPages.ElementAt(0);
+            PageIndex = 0;
+            CategoryPage = categoryPages.ElementAt(PageIndex);
             CategoryName = GetCategoryName();
         }
 
