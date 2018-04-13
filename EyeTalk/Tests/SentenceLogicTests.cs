@@ -118,7 +118,7 @@ namespace EyeTalk.Tests
         public void GetPreviousCategoryNameTest()
         {
             logic = new SentenceLogic();
-            Assert.AreEqual("Most Used", logic.GetPreviousCategoryName());
+            Assert.AreEqual("Punctuation", logic.GetPreviousCategoryName());
 
         }
 
@@ -192,7 +192,7 @@ namespace EyeTalk.Tests
             logic = new SentenceLogic();
             logic.GenerateSentencePage();
             var test = "Page " + (logic.PageIndex + 1) + "/" + logic.categories.ElementAt(logic.CategoryIndex).Count;
-            Assert.AreEqual(test, logic.UpdatePageNumber());
+            Assert.AreEqual(test, logic.GetPageNumber());
 
 
         }
@@ -299,7 +299,7 @@ namespace EyeTalk.Tests
             logic.OrderMostUsedByCount();
 
 
-            Assert.IsTrue(logic.mostUsedList.ElementAt(0).Count > logic.mostUsedList.ElementAt(1).Count);
+            Assert.IsTrue(logic.mostUsedList.ElementAt(0).AmountOfTimesClicked > logic.mostUsedList.ElementAt(1).AmountOfTimesClicked);
 
 
         }
@@ -308,8 +308,6 @@ namespace EyeTalk.Tests
         public void UpdateCategoryAndGoToFirstPage()
         {
             logic = new SentenceLogic();
-            logic.GenerateSentencePage();
-            AddTwoPictures();
 
             logic.GenerateSentencePageAndGoToFirstPage();
 
@@ -399,6 +397,23 @@ namespace EyeTalk.Tests
 
             Assert.AreEqual(false, logic.Sentence.Contains(""));
             Assert.AreEqual(0, logic.AmountOfWordsInSentence);
+
+
+        }
+
+        [Test]
+        public void RegexTest()
+        {
+            logic = new SentenceLogic();
+            logic.GenerateSentencePage();
+            logic.Sentence.Clear();
+
+            logic.AddWordToSentence("hello", 0);
+            
+
+            string sentence = logic.AddWordToSentence("world", 1);
+
+            Assert.AreEqual(true, logic.CheckThatWordIsMatched(sentence, "world"));
 
 
         }

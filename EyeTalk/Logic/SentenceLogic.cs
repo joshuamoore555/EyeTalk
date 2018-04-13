@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using EyeTalk.Objects;
@@ -64,27 +65,26 @@ namespace EyeTalk
                 {"Family"},
                 {"Custom"},
                 {"Most Used"},
-
+                {"Connecting Words"},
+                {"Punctuation"},
             };
         }
 
         //Generators
 
         public void GenerateSentencePage()
-        {           
+        {
             UpdateCustomCategory();
             UpdateMostUsedCategory();
 
             CategoryName = GetCurrentCategoryName();
             CategoryPage = GetCurrentCategoryPage();
-
         }
 
         public void GenerateSentencePageAndGoToFirstPage()
         {
             PageIndex = 0;
-            CategoryName = GetCurrentCategoryName();
-            CategoryPage = GetCurrentCategoryPage();
+            GenerateSentencePage();
         }
 
 
@@ -92,6 +92,8 @@ namespace EyeTalk
 
         public void CheckIfBackToLastCategory()
         {
+            //reduces category index by 1. Checks if category is before the first category. If so, sets index to the last category.
+
             CategoryIndex--;
             PageIndex = 0;
 
@@ -104,6 +106,8 @@ namespace EyeTalk
 
         public void CheckIfBackToFirstCategory()
         {
+            //increases category index by 1. Checks if category is back to the first category. If so, sets index to that.
+
             CategoryIndex++;
             PageIndex = 0;
             if (CategoryIndex >= categories.Count)
@@ -136,6 +140,8 @@ namespace EyeTalk
 
         public string GetPreviousCategoryName()
         {
+            //returns the name of the category before the current one
+
             if (CategoryIndex - 1 < 0)
             {
                 return categoryNames.ElementAt(categories.Count - 1);
@@ -155,6 +161,8 @@ namespace EyeTalk
 
         public string GetNextCategoryName()
         {
+            //returns the name of the category after the current one
+
             if (CategoryIndex + 1 > categories.Count)
             {
                 return categoryNames.ElementAt(0);
@@ -172,9 +180,10 @@ namespace EyeTalk
 
         public void ResetCategoryChoice()
         {
+            //changes the category back to the first one and first page.
+
             CategoryIndex = 0;
             PageIndex = 0;
-
         }
 
 
@@ -182,6 +191,9 @@ namespace EyeTalk
 
         public void UpdateCustomCategory()
         {
+            //if the custom category is empty, add an empty page.
+            //then updates the custom category with the latest one loaded
+
             if (customCategory.Count == 0)
             {
                 List<Picture> page = new List<Picture>();
@@ -192,6 +204,9 @@ namespace EyeTalk
 
         public string ResetCustomPictureCategoryIfNotEmpty()
         {
+            //if custom category is not empty, reset and return an update on status.
+            //if custom category is empty, return status saying it is empty
+
             if (customCategory.Count > 0 && customCategory.ElementAt(0).Count > 0)
             {
                 customCategory.Clear();
@@ -214,6 +229,7 @@ namespace EyeTalk
 
         public void GoToNextPage()
         {
+            //increases the page index. If beyond the amount of pages, go back to first page. 
             var categoryPages = categories.ElementAt(CategoryIndex);
             var numberOfPages = categoryPages.Count;
             PageIndex++;
@@ -232,8 +248,9 @@ namespace EyeTalk
             CategoryPage = categoryPages.ElementAt(PageIndex);
         }
 
-        public string UpdatePageNumber()
+        public string GetPageNumber()
         {
+            //returns the current page index and the total number of pages in the current category
             var categoryPages = categories.ElementAt(CategoryIndex);
             var numberOfPages = categoryPages.Count;
             return "Page " + (PageIndex + 1) + "/" + numberOfPages;
@@ -245,6 +262,9 @@ namespace EyeTalk
 
         public string ResetMostUsedIfNotEmpty()
         {
+            //if empty, returns status update stating so
+            //if not empty, clears the most used list and most used category and saves a new category with a blank page.
+
             if (mostUsed.Count > 0 && mostUsedList.Count > 0)
             {
                 mostUsed.Clear();
@@ -268,6 +288,8 @@ namespace EyeTalk
 
         public void UpdateMostUsedPicture(int i, string word)
         {
+            //updates the most used picture list. If it is null, creates a new one. 
+
             if (mostUsed == null)
             {
                 mostUsed = new List<List<Picture>>();
@@ -278,18 +300,19 @@ namespace EyeTalk
                 mostUsedList = new List<Picture>();
             }
 
-            CategoryPage.ElementAt(i).Count++;
+            //increases the times clicked variable by one
+        
+            CategoryPage.ElementAt(i).AmountOfTimesClicked++;
   
-
+            //if the list contains the word, removes the previous save of the word with the old count and adds a new one with the updated count.
             if (CheckMostUsedContainsWord(word))
             {
                 mostUsedList.RemoveAll(u=> u.Name.StartsWith(word));
                 mostUsedList.Add(CategoryPage.ElementAt(i));
-                //if contains word, remove it and then re-add
             }
             else
             {
-                //if not contained, add
+                //if not contained, add to the list
                 mostUsedList.Add(CategoryPage.ElementAt(i));
 
             }
@@ -299,6 +322,8 @@ namespace EyeTalk
 
         public bool CheckMostUsedContainsWord(string word)
         {
+            //check each picture in list to see if it contains word
+
             foreach (Picture picture in mostUsedList)
             {
                 if (picture.Name == word)
@@ -312,33 +337,48 @@ namespace EyeTalk
 
         public void UpdateMostUsedCategory()
         {
-
+            //check if most used list and most used category are null
             if (mostUsed != null && mostUsedList != null)
             {
-
-                var orderedMostUsed = OrderMostUsedByCount();
-                var topFour = orderedMostUsed.Take(4);
-                var nextFour = orderedMostUsed.Skip(4).Take(4);
-
-
                 List<List<Picture>> mostUsedCategory = new List<List<Picture>>();
                 List<Picture> mostUsedPage1 = new List<Picture>();
                 List<Picture> mostUsedPage2 = new List<Picture>();
+                List<Picture> mostUsedPage3 = new List<Picture>();
 
-                for (int i = 0; i < topFour.Count(); i++)
+
+                //if not, get the top 4 and next 4 most used pictures and put them into two pages.
+                var orderedMostUsed = OrderMostUsedByCount();
+                var pictures1To4 = orderedMostUsed.Take(4);
+                var pictures5To8 = orderedMostUsed.Skip(4).Take(4);
+                var pictures9To12= orderedMostUsed.Skip(8).Take(4);
+
+
+
+                //page 1
+                for (int i = 0; i < pictures1To4.Count(); i++)
                 {
-                    mostUsedPage1.Add(topFour.ElementAt(i));
+                    mostUsedPage1.Add(pictures1To4.ElementAt(i));
                     mostUsedPage1.ElementAt(i).Selected = false;
                 }
 
-                for (int i = 0; i < nextFour.Count(); i++)
+                //page 2
+                for (int i = 0; i < pictures5To8.Count(); i++)
                 {
-                    mostUsedPage2.Add(nextFour.ElementAt(i));
+                    mostUsedPage2.Add(pictures5To8.ElementAt(i));
                     mostUsedPage2.ElementAt(i).Selected = false;
                 }
 
+                //page 3
+                for (int i = 0; i < pictures9To12.Count(); i++)
+                {
+                    mostUsedPage3.Add(pictures9To12.ElementAt(i));
+                    mostUsedPage3.ElementAt(i).Selected = false;
+                }
+
+                //add the pages to the most used category and add it to the categories list.
                 mostUsedCategory.Add(mostUsedPage1);
                 mostUsedCategory.Add(mostUsedPage2);
+                mostUsedCategory.Add(mostUsedPage3);
 
                 categories[16] = mostUsedCategory;
 
@@ -348,7 +388,8 @@ namespace EyeTalk
 
         public List<Picture> OrderMostUsedByCount()
         {
-            return mostUsedList.OrderByDescending(entry => entry.Count).ToList();
+            //orders the pictures in the list by the amount of times they have been clicked. more clicks = top of list
+            return mostUsedList.OrderByDescending(entry => entry.AmountOfTimesClicked).ToList();
         }
 
 
@@ -356,47 +397,75 @@ namespace EyeTalk
 
         public string AddWordToSentence(string word, int i)
         {
-            var name = " " + CategoryPage.ElementAt(i).Name + " ";
-            if (!Sentence.Contains(name))
+            //takes the word and adds spaces
+            var name = CategoryPage.ElementAt(i).Name;
+
+            string sentence = getSentence();
+
+            //if sentence does not contain the word
+            if (!CheckThatWordIsMatched(sentence, word))
             {
+                //add the word to ordered dictionary, which remembers the order it was added.
                 Sentence.Add(word, word);
-                StringBuilder sb = new StringBuilder();
-                sb.Append(" ");
-                foreach (DictionaryEntry s in Sentence)
-                {
-                    sb.Append(s.Value + " ");
-                }
+
+                //string builder then recreates the entire sentence with the new word added, and returns the string.
+                string newSentence = getSentence();
+
+                //increments amount of words in sentence value and makes the selected variable of the word true.
                 AmountOfWordsInSentence++;
                 CategoryPage.ElementAt(i).Selected = true;
-                return sb.ToString();
+
+                return newSentence;
             }
             else
             {
+                //if already used, return nothing.
                 return "";
             }
         }
 
-        public string RemoveWordFromSentence(string word, int i)
+        private string getSentence()
         {
-            Sentence.Remove(word);
-            StringBuilder sb = new StringBuilder();
-            sb.Append(" ");
+            StringBuilder sentence = new StringBuilder();
             foreach (DictionaryEntry s in Sentence)
             {
-                sb.Append(s.Value + " ");
+                sentence.Append(s.Value + " ");
             }
-            AmountOfWordsInSentence--;
 
+            return sentence.ToString();
+        }
+
+        public bool CheckThatWordIsMatched(string sentence, string word)
+        {
+            if (Regex.IsMatch(sentence, string.Format(@"\b{0}\b", Regex.Escape(word))))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+                
+        }
+
+        public string RemoveWordFromSentence(string word, int i)
+        {
+            //removes the word from the sentence, recreates the sentence without it, and returns the string. 
+            Sentence.Remove(word);
+            string newSentence = getSentence();
+
+            //decrements amount of words in sentence value and makes the selected variable of the word false.
+            AmountOfWordsInSentence--;
             CategoryPage.ElementAt(i).Selected = false;
 
-            return sb.ToString();
+            return newSentence;
 
         }
 
         public void RemoveAllWordsFromSentence()
         {
-            AmountOfWordsInSentence = 0;
-            Sentence.Clear();
+            //clears the sentence and makes every selected picture = false
+            ResetSentence();
          
             foreach (var category in categories)
             {
@@ -421,6 +490,7 @@ namespace EyeTalk
 
         public BitmapImage GenerateBitmap(string filepath)
         {
+            //gets a file path and attempts to create a bitmap with reduced resolution, to preserve memory and speed
             BitmapImage bmp = new BitmapImage();
             try
             {
@@ -431,13 +501,15 @@ namespace EyeTalk
             }
             catch
             {
-                //if file path has been changed, give a file not found image
+                //if file path has been changed or lost, then use a placeholder image instead.
                 bmp = new BitmapImage();
                 bmp.BeginInit();
                 bmp.UriSource = new Uri("pack://application:,,,/Images/filenotfound.png");
                 bmp.DecodePixelWidth = 400;
                 bmp.EndInit();
             }
+
+            //return the bitmap image.
             return bmp;
         }
 

@@ -127,7 +127,7 @@ namespace EyeTalk.Tests
             picture3.Click();
             playsound.Click();
             var sentence = window.Get<TextBox>("SentenceTextBox");
-            Assert.IsTrue(sentence.Text == " I want I don't want  and ");
+            Assert.IsTrue(sentence.Text == "I want I don't want and ");
 
             app.Close();
         }

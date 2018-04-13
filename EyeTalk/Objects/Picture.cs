@@ -11,16 +11,16 @@ namespace EyeTalk.Objects
     {
         public string Name { get; set; }
         public bool Selected { get; set; }
-        public string FilePath { get; set; }
-        public ulong Count { get; set; }
+        public string Filepath { get; set; }
+        public ulong AmountOfTimesClicked { get; set; }
 
 
-        public Picture(string Name, bool Selected, String FilePath, ulong Count)
+        public Picture(string Name, bool Selected, String Filepath, ulong AmountOfTimesClicked)
         {
             this.Name = Name;
             this.Selected = Selected;
-            this.FilePath = FilePath;
-            this.Count = Count;
+            this.Filepath = Filepath;
+            this.AmountOfTimesClicked = AmountOfTimesClicked;
         }
     }
 }

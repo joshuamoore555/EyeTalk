@@ -215,7 +215,7 @@ namespace EyeTalk
         {
             var numberOfPictures = sentenceLogic.CategoryPage.Count;
             SentenceUpdate.Text = " ";
-            PageNumber.Text = sentenceLogic.UpdatePageNumber();
+            PageNumber.Text = sentenceLogic.GetPageNumber();
             CategoryName.Text = sentenceLogic.GetCurrentCategoryName();
             NextCategoryText.Text = sentenceLogic.GetNextCategoryName();
             PreviousCategoryText.Text = sentenceLogic.GetPreviousCategoryName();
@@ -247,19 +247,19 @@ namespace EyeTalk
         {
             textBlocks.ElementAt(i).Text = sentenceLogic.CategoryPage.ElementAt(i).Name;
             buttons.ElementAt(i).Visibility = Visibility.Visible;
-            var filepath = sentenceLogic.CategoryPage.ElementAt(i).FilePath;
+            var filepath = sentenceLogic.CategoryPage.ElementAt(i).Filepath;
             images.ElementAt(i).Source = sentenceLogic.GenerateBitmap(filepath);
         }
 
         private void UpdatePicture(int i)
         {
             var name = sentenceLogic.CategoryPage.ElementAt(i).Name;
-
-            if (!SentenceTextBox.Text.Contains(name))
+            
+            if (!sentenceLogic.CheckThatWordIsMatched(SentenceTextBox.Text, name))
             {
                 UnhighlightPicture(buttons, i);
             }
-            else if(SentenceTextBox.Text.Contains(name))
+            else if(sentenceLogic.CheckThatWordIsMatched(SentenceTextBox.Text, name))
             {
                 HighlightPicture(buttons, i);
             }
@@ -292,13 +292,13 @@ namespace EyeTalk
             var selected = sentenceLogic.CategoryPage.ElementAt(i).Selected;
             var name = sentenceLogic.CategoryPage.ElementAt(i).Name;
 
-            if (SentenceTextBox.Text.Contains(name) && selected == false)
+            if (sentenceLogic.CheckThatWordIsMatched(SentenceTextBox.Text, name) && selected == false)
             {
                 SentenceUpdate.Text = "This word has already been added.";
             }
             else
             {
-                if (sentenceLogic.AmountOfWordsInSentence < 6 && selected == false)
+                if (sentenceLogic.AmountOfWordsInSentence < 8 && selected == false)
                 {
                     SentenceTextBox.Text = sentenceLogic.AddWordToSentence(word, i);
                     sentenceLogic.UpdateMostUsedPicture(i, word);
@@ -1253,7 +1253,7 @@ namespace EyeTalk
             
             sentenceLogic.GenerateSentencePageAndGoToFirstPage();
             CreatePage();
-            PageNumber.Text = sentenceLogic.UpdatePageNumber();
+            PageNumber.Text = sentenceLogic.GetPageNumber();
 
             myTabControl.SelectedIndex = 1;
         }

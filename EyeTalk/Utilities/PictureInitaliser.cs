@@ -31,6 +31,9 @@ namespace EyeTalk.Utilities
         public List<List<Picture>> carersPages;
         public List<List<Picture>> personalCarePages;
         public List<List<Picture>> familyPages;
+        public List<List<Picture>> connectingWordsPages;
+        public List<List<Picture>> punctuationPages;
+
 
         //Pages
         public List<Picture> family1;
@@ -38,6 +41,8 @@ namespace EyeTalk.Utilities
         public List<Picture> carers1;
         public List<Picture> kitchen1;
         public List<Picture> entertainment1;
+
+        public List<Picture> connectingWords1;
 
         public List<Picture> food1;
         public List<Picture> food2;
@@ -56,6 +61,8 @@ namespace EyeTalk.Utilities
 
         public List<Picture> time1;
         public List<Picture> time2;
+
+        public List<Picture> punctuation1;
 
         public List<Picture> custom1;
         public List<Picture> mostused;
@@ -100,20 +107,19 @@ namespace EyeTalk.Utilities
         public Picture goodbye = new Picture("goodbye", false, "pack://application:,,,/Images/goodbye.png", 0);
 
         // replies
-        public Picture yes = new Picture("Yes", false, "pack://application:,,,/Images/yes.png", 0);
-        public Picture no = new Picture("No", false, "pack://application:,,,/Images/no.png", 0);
+        public Picture yes = new Picture("yes", false, "pack://application:,,,/Images/yes.png", 0);
+        public Picture no = new Picture("no", false, "pack://application:,,,/Images/no.png", 0);
         public Picture idontknow = new Picture("I don't know", false, "pack://application:,,,/Images/idontknow.png", 0);
 
         //Action Words
         public Picture iwant = new Picture("I want", false, "pack://application:,,,/Images/iwant.png", 0);
         public Picture idontwant = new Picture("I don't want", false, "pack://application:,,,/Images/dontwant.png", 0);
-        public Picture and = new Picture(" and", false, "pack://application:,,,/Images/want.png", 0);
 
 
         //Social
-        public Picture thankyou = new Picture("Thank you", false, "pack://application:,,,/Images/thankyou.png", 0);
-        public Picture please = new Picture("Please", false, "pack://application:,,,/Images/please.png", 0);
-        public Picture excuseme = new Picture("Excuse me", false, "pack://application:,,,/Images/excuseme.png", 0);
+        public Picture thankyou = new Picture("thank you", false, "pack://application:,,,/Images/thankyou.png", 0);
+        public Picture please = new Picture("please", false, "pack://application:,,,/Images/please.png", 0);
+        public Picture excuseme = new Picture("excuse me", false, "pack://application:,,,/Images/excuseme.png", 0);
 
         //Time
         public Picture fivemins = new Picture("in 5 minutes", false, "pack://application:,,,/Images/hour.png", 0);
@@ -122,16 +128,16 @@ namespace EyeTalk.Utilities
         public Picture fewhours = new Picture("in a few hours", false, "pack://application:,,,/Images/hour.png", 0);
 
         //When?
-        public Picture now = new Picture("Now", false, "pack://application:,,,/Images/hour.png", 0);
-        public Picture later = new Picture("Later", false, "pack://application:,,,/Images/hour.png", 0);
-        public Picture today = new Picture("Today", false, "pack://application:,,,/Images/hour.png", 0);
-        public Picture tomorrow = new Picture("Tomorrow", false, "pack://application:,,,/Images/hour.png", 0);
+        public Picture now = new Picture("now", false, "pack://application:,,,/Images/hour.png", 0);
+        public Picture later = new Picture("later", false, "pack://application:,,,/Images/hour.png", 0);
+        public Picture today = new Picture("today", false, "pack://application:,,,/Images/hour.png", 0);
+        public Picture tomorrow = new Picture("tomorrow", false, "pack://application:,,,/Images/hour.png", 0);
 
         //Colours
-        public Picture red = new Picture("Red", false, "pack://application:,,,/Images/red.png", 0);
-        public Picture blue = new Picture("Blue", false, "pack://application:,,,/Images/blue.png", 0);
-        public Picture green = new Picture("Green", false, "pack://application:,,,/Images/green.png", 0);
-        public Picture yellow = new Picture("Yellow", false, "pack://application:,,,/Images/yellow.png", 0);
+        public Picture red = new Picture("red", false, "pack://application:,,,/Images/red.png", 0);
+        public Picture blue = new Picture("blue", false, "pack://application:,,,/Images/blue.png", 0);
+        public Picture green = new Picture("green", false, "pack://application:,,,/Images/green.png", 0);
+        public Picture yellow = new Picture("yellow", false, "pack://application:,,,/Images/yellow.png", 0);
 
         //Animals
         public Picture own = new Picture("I own a", false, "pack://application:,,,/Images/want.png", 0);
@@ -175,6 +181,16 @@ namespace EyeTalk.Utilities
         public Picture book = new Picture("to read", false, "pack://application:,,,/Images/book.png", 0);
         public Picture games = new Picture("to play games", false, "pack://application:,,,/Images/games.png", 0);
 
+        //connecting Items
+        public Picture and = new Picture("and", false, "pack://application:,,,/Images/iwant.png", 0);
+        public Picture or = new Picture("or", false, "pack://application:,,,/Images/hello.png", 0);
+        public Picture with = new Picture("with", false, "pack://application:,,,/Images/iwant.png", 0);
+        public Picture in_ = new Picture("in", false, "pack://application:,,,/Images/iwant.png", 0);
+
+        //punctuation Items
+        public Picture comma = new Picture(",", false, "pack://application:,,,/Images/iwant.png", 0);
+        public Picture fullstop = new Picture(".", false, "pack://application:,,,/Images/hello.png", 0);
+
 
 
         public PictureInitialiser()
@@ -213,9 +229,8 @@ namespace EyeTalk.Utilities
             personalCare1 = new List<Picture>() { shower, bath, washHands, toilet };
             entertainment1 = new List<Picture>() { television, book, radio, games };
             family1 = new List<Picture>() { mum, dad, brother, sister };
-
-
-
+            connectingWords1 = new List<Picture>() { and, or, with,in_};
+            punctuation1 = new List<Picture>() { fullstop, comma };
 
             custom1 = new List<Picture>() { };
             mostused = new List<Picture>() { };
@@ -241,6 +256,9 @@ namespace EyeTalk.Utilities
             personalCarePages = new List<List<Picture>>() { personalCare1 };
             entertainmentPages = new List<List<Picture>>() { entertainment1 };
             familyPages = new List<List<Picture>>() { family1 };
+            connectingWordsPages = new List<List<Picture>>() { connectingWords1 };
+            punctuationPages = new List<List<Picture>>() { punctuation1 };
+
 
         }
 
@@ -265,6 +283,8 @@ namespace EyeTalk.Utilities
             {familyPages }, //14
             {customPages }, //15
             {mostUsedPages}, //16
+            {connectingWordsPages}, //17
+            {punctuationPages}, //18
             };
         }
      }
