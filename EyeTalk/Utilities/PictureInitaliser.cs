@@ -32,7 +32,6 @@ namespace EyeTalk.Utilities
         public List<List<Picture>> personalCarePages;
         public List<List<Picture>> familyPages;
         public List<List<Picture>> connectingWordsPages;
-        public List<List<Picture>> punctuationPages;
 
 
         //Pages
@@ -61,8 +60,6 @@ namespace EyeTalk.Utilities
 
         public List<Picture> time1;
         public List<Picture> time2;
-
-        public List<Picture> punctuation1;
 
         public List<Picture> custom1;
         public List<Picture> mostused;
@@ -187,9 +184,6 @@ namespace EyeTalk.Utilities
         public Picture with = new Picture("with", false, "pack://application:,,,/Images/iwant.png", 0);
         public Picture in_ = new Picture("in", false, "pack://application:,,,/Images/iwant.png", 0);
 
-        //punctuation Items
-        public Picture comma = new Picture(",", false, "pack://application:,,,/Images/iwant.png", 0);
-        public Picture fullstop = new Picture(".", false, "pack://application:,,,/Images/hello.png", 0);
 
 
 
@@ -230,7 +224,6 @@ namespace EyeTalk.Utilities
             entertainment1 = new List<Picture>() { television, book, radio, games };
             family1 = new List<Picture>() { mum, dad, brother, sister };
             connectingWords1 = new List<Picture>() { and, or, with,in_};
-            punctuation1 = new List<Picture>() { fullstop, comma };
 
             custom1 = new List<Picture>() { };
             mostused = new List<Picture>() { };
@@ -257,7 +250,6 @@ namespace EyeTalk.Utilities
             entertainmentPages = new List<List<Picture>>() { entertainment1 };
             familyPages = new List<List<Picture>>() { family1 };
             connectingWordsPages = new List<List<Picture>>() { connectingWords1 };
-            punctuationPages = new List<List<Picture>>() { punctuation1 };
 
 
         }
@@ -284,7 +276,7 @@ namespace EyeTalk.Utilities
             {customPages }, //15
             {mostUsedPages}, //16
             {connectingWordsPages}, //17
-            {punctuationPages}, //18
+
             };
         }
      }
