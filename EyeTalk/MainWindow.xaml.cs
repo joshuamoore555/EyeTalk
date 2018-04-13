@@ -1258,5 +1258,9 @@ namespace EyeTalk
             myTabControl.SelectedIndex = 1;
         }
 
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            GoToSentencePage();
+        }
     }
 }

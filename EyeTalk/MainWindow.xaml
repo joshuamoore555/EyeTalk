@@ -216,7 +216,7 @@
                             <Image Height ="120" Source="Images\arrowleft.png"></Image>
                         </Button>
 
-                        <Button x:Name="BackToSpeaking" HorizontalAlignment="Left" Margin="-6,740,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Begin_Click" Height="360" Background="Transparent" >
+                        <Button x:Name="BackToSpeaking" HorizontalAlignment="Left" Margin="-6,740,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Back_Click" Height="360" Background="Transparent" >
                             <Image Height ="120" Source="Images\back.png"></Image>
                         </Button>
 
@@ -243,7 +243,7 @@
                         </Button>
 
 
-                        <Button x:Name="BackToSpeak" HorizontalAlignment="Left" Margin="0,730,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Begin_Click" Height="360" Background="Transparent" >
+                        <Button x:Name="BackToSpeak" HorizontalAlignment="Left" Margin="0,730,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Back_Click" Height="360" Background="Transparent" >
                             <Image Height ="120" Source="Images\back.png"></Image>
                         </Button>
                         <Button x:Name="Food" HorizontalAlignment="Left" Margin="240,10,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Food_Category_Button_Click" Height="360" Background="Lavender" >
