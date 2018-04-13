@@ -951,6 +951,7 @@ namespace EyeTalk
                     break;
 
                 case Positions.BottomMiddleRight:
+                    HoverOverButton(ConnectingWords);
                     break;
 
                 case Positions.BottomMiddleRightAlternate:
@@ -1226,13 +1227,6 @@ namespace EyeTalk
 
         }
 
-        private void MostUsed_Category_Button_Click(object sender, RoutedEventArgs e)
-        {
-            sentenceLogic.ChangeCategory(16);
-
-            GoToSentencePage();
-
-        }
 
         private void Custom_Category_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -1241,6 +1235,22 @@ namespace EyeTalk
             GoToSentencePage();
 
         }
+
+        private void MostUsed_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(16);
+
+            GoToSentencePage();
+
+        }
+
+        private void ConnectingWords_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(17);
+
+            GoToSentencePage();
+        }
+
 
         private void GoToSentencePage()
         {
@@ -1262,5 +1272,7 @@ namespace EyeTalk
         {
             GoToSentencePage();
         }
+
+
     }
 }

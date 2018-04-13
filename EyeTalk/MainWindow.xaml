@@ -291,6 +291,9 @@
                         <Button x:Name="MostUsed" HorizontalAlignment="Left" Margin="720,730,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="MostUsed_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/list.png"/>
                         </Button>
+                        <Button x:Name="ConnectingWords" HorizontalAlignment="Left" Margin="1200,730,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="ConnectingWords_Category_Button_Click" Height="360" Background="Lavender" >
+                            <Image Height ="120" Source="Images/plus.png"/>
+                        </Button>
 
                         <TextBlock x:Name="ActionsText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="82,268,0,0" Text="Actions"/>
                         <TextBlock x:Name="ActionsText_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="336,268,0,0" Text="Food" RenderTransformOrigin="1.859,0.661"/>
@@ -313,6 +316,7 @@
                             <Image Height ="120" Source="Images/speaking.png"/>
                         </Button>
                         <TextBlock x:Name="ActionsText_Copy16" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="94" Height="59" Margin="554,996,0,0" Text="Replies"/>
+                        <TextBlock x:Name="ActionsText_Copy17" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="224" Height="59" Margin="1216,996,0,0" Text="Connecting Words"/>
 
                     </Grid>
 

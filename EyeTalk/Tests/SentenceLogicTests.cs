@@ -118,7 +118,7 @@ namespace EyeTalk.Tests
         public void GetPreviousCategoryNameTest()
         {
             logic = new SentenceLogic();
-            Assert.AreEqual("Punctuation", logic.GetPreviousCategoryName());
+            Assert.AreEqual("Connecting Words", logic.GetPreviousCategoryName());
 
         }
 
