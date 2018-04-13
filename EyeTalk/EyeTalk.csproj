@@ -17,23 +17,25 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>C:\Users\User\Desktop\EyeTalk\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>http://localhost:8080/</InstallUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>EyeTalk</ProductName>
     <PublisherName>Joshua Moore</PublisherName>
     <SuiteName>EyeTalk</SuiteName>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>2</ApplicationRevision>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -119,7 +121,7 @@
     <Compile Include="Logic\OptionsLogic.cs" />
     <Compile Include="Logic\SavedSentencesLogic.cs" />
     <Compile Include="Tests\AddPictureLogicTests.cs" />
-    <Compile Include="Tests\MainWindowLogicTests.cs" />
+    <Compile Include="Tests\SentenceLogicTests.cs" />
     <Compile Include="Tests\OptionLogicTests.cs" />
     <Compile Include="Tests\SavedSentencesLogicTests.cs" />
     <Compile Include="Utilities\PictureInitaliser.cs" />

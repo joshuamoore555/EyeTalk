@@ -186,7 +186,7 @@ namespace EyeTalk
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
             sentenceLogic.CheckIfBackToFirstCategory();
-            sentenceLogic.UpdateCategoryAndGoToFirstPage();
+            sentenceLogic.GenerateSentencePageAndGoToFirstPage();
             CreatePage();
             
 
@@ -195,7 +195,7 @@ namespace EyeTalk
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
         {
             sentenceLogic.CheckIfBackToLastCategory();
-            sentenceLogic.UpdateCategoryAndGoToFirstPage();
+            sentenceLogic.GenerateSentencePageAndGoToFirstPage();
             CreatePage();
             
         }
@@ -216,7 +216,7 @@ namespace EyeTalk
             var numberOfPictures = sentenceLogic.CategoryPage.Count;
             SentenceUpdate.Text = " ";
             PageNumber.Text = sentenceLogic.UpdatePageNumber();
-            CategoryName.Text = sentenceLogic.GetCategoryName();
+            CategoryName.Text = sentenceLogic.GetCurrentCategoryName();
             NextCategoryText.Text = sentenceLogic.GetNextCategoryName();
             PreviousCategoryText.Text = sentenceLogic.GetPreviousCategoryName();
 
@@ -1251,7 +1251,7 @@ namespace EyeTalk
             sentenceLogic.UpdateCustomCategory();
             sentenceLogic.UpdateMostUsedCategory();
             
-            sentenceLogic.UpdateCategoryAndGoToFirstPage();
+            sentenceLogic.GenerateSentencePageAndGoToFirstPage();
             CreatePage();
             PageNumber.Text = sentenceLogic.UpdatePageNumber();
 

@@ -19,28 +19,10 @@ namespace EyeTalk.Tests
         }
 
         [Test]
-        public void RetrieveFirstSentenceThatExists()
-        {
-            logic.SavedSentences.Add("Hello World");
-            var same = logic.RetrieveFirstSavedSentenceIfExists();
-            Assert.AreEqual("Hello World", same);
-          
-        }
-
-        [Test]
-        public void RetrieveFirstSentenceIfNotExisting()
-        {
-            logic.SavedSentences.Clear();
-            var same = logic.RetrieveFirstSavedSentenceIfExists();
-            Assert.AreEqual("No sentences saved", same);
-
-        }
-
-        [Test]
         public void SaveSentenceThatIsNull()
-        {      
+        {
             var same = logic.SaveSentenceIfNotPreviouslySaved("");
-            Assert.AreEqual("Please create a sentence before saving",same);
+            Assert.AreEqual("Please create a sentence before saving", same);
 
         }
 
@@ -57,7 +39,25 @@ namespace EyeTalk.Tests
         public void SaveSentenceUnique()
         {
             var same = logic.SaveSentenceIfNotPreviouslySaved("Test");
-            Assert.AreEqual( "Sentence Saved", same);
+            Assert.AreEqual("Sentence Saved", same);
+
+        }
+
+        [Test]
+        public void RetrieveFirstSentenceThatExists()
+        {
+            logic.SavedSentences.Add("Hello World");
+            var same = logic.RetrieveFirstSavedSentenceIfExists();
+            Assert.AreEqual("Hello World", same);
+          
+        }
+
+        [Test]
+        public void RetrieveFirstSentenceIfNotExisting()
+        {
+            logic.SavedSentences.Clear();
+            var same = logic.RetrieveFirstSavedSentenceIfExists();
+            Assert.AreEqual("No sentences saved", same);
 
         }
 

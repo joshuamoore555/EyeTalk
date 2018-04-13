@@ -19,6 +19,8 @@ namespace EyeTalk.Logic
             Options = save.LoadOptions();
         }
 
+        //Colour methods
+
         public string GetCurrentColour()
         {
             return Colours.ElementAt(Options.ApplicationColour);
@@ -34,6 +36,8 @@ namespace EyeTalk.Logic
             }
         }
 
+        //Eye Duration methods
+
         public void IncreaseEyeFixationDuration()
         {
             Options.EyeFixationDuration++;
@@ -46,7 +50,7 @@ namespace EyeTalk.Logic
 
         public bool HasDurationBeenReached()
         {
-            if (Options.EyeFixationDuration > Options.EyeFixationValue)
+            if (Options.EyeFixationDuration >= Options.EyeFixationValue)
             {
                 return true;
             }
@@ -55,6 +59,8 @@ namespace EyeTalk.Logic
                 return false;
             }
         }
+
+        //Voice methods
 
         public string ChangeVoiceType()
         {
@@ -98,6 +104,8 @@ namespace EyeTalk.Logic
             return VoiceSpeeds.ElementAt(Options.VoiceSpeedSelection);
 
         }
+
+        //Eye Fixation methods
 
         public string IncreaseSelectionDelay()
         {

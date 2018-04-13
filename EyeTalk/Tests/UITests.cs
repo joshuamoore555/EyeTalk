@@ -81,6 +81,8 @@ namespace EyeTalk.Tests
             var resetCustomPictures = window.Get<Button>("ResetCustomPictures");
             resetCustomPictures.Click();
 
+            var colour = window.Get<Button>("ColourType");
+            colour.Click();
 
             var leftdelay = window.Get<Button>("Left_Delay");
             leftdelay.Click();
@@ -287,8 +289,35 @@ namespace EyeTalk.Tests
             previous.Click();
             previous.Click();
 
+            app.Close();
+        }
+
+        [TestMethod]
+        public void OpenAppAndChooseACategoryFromCategoryPage()
+        {
+            var app = Application.Launch("EyeTalk");
+            var window = app.GetWindow("MainWindow", InitializeOption.NoCache);
+
+            //Test Home Buttons
+            var beginButton = window.Get<Button>("BeginSpeaking");
+            var addPictureButton = window.Get<Button>("AddPicture");
+            var optionsButton = window.Get<Button>("Options");
+            var exitButton = window.Get<Button>("Exit");
+            beginButton.Click();
+
+            var chooseCategory = window.Get<Button>("ChooseCategory");
+            chooseCategory.Click();
+
+            var food = window.Get<Button>("Food");
+            food.Click();
+
+            var Image1_Button = window.Get<Button>("Image1_Button");
+            Image1_Button.Click();
+
+            var playsound = window.Get<Button>("PlaySound");
 
 
+            playsound.Click();
 
             app.Close();
         }

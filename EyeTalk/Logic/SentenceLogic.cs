@@ -16,7 +16,9 @@ namespace EyeTalk
         public int CategoryIndex { get; set; }
         public int PageIndex { get; set; }
         public int AmountOfWordsInSentence { get; set; }
+
         public OrderedDictionary Sentence { get; set; }
+
         public List<List<List<Picture>>> categories;
         public List<List<Picture>> customCategory;
 
@@ -66,37 +68,23 @@ namespace EyeTalk
             };
         }
 
+        //Generators
+
         public void GenerateSentencePage()
         {           
             UpdateCustomCategory();
             UpdateMostUsedCategory();
 
-            var categoryPages = categories.ElementAt(CategoryIndex);
-            CategoryName = categoryNames.ElementAt(CategoryIndex);
-            CategoryPage = categoryPages.ElementAt(PageIndex);
+            CategoryName = GetCurrentCategoryName();
+            CategoryPage = GetCurrentCategoryPage();
 
         }
 
-        public BitmapImage GenerateBitmap(string filepath)
+        public void GenerateSentencePageAndGoToFirstPage()
         {
-            BitmapImage bmp = new BitmapImage();
-            try
-            {
-                bmp.BeginInit();
-                bmp.UriSource = new Uri(filepath);
-                bmp.DecodePixelWidth = 400;
-                bmp.EndInit();
-            }
-            catch
-            {
-                //if file path has been changed, give a file not found image
-                bmp = new BitmapImage();
-                bmp.BeginInit();
-                bmp.UriSource = new Uri("pack://application:,,,/Images/filenotfound.png");
-                bmp.DecodePixelWidth = 400;
-                bmp.EndInit();
-            }
-            return bmp;
+            PageIndex = 0;
+            CategoryName = GetCurrentCategoryName();
+            CategoryPage = GetCurrentCategoryPage();
         }
 
 
@@ -125,27 +113,25 @@ namespace EyeTalk
             }
         }
 
-        public void UpdateCategoryAndGoToFirstPage()
-        {
-            var categoryPages = categories.ElementAt(CategoryIndex);
-            PageIndex = 0;
-            CategoryPage = categoryPages.ElementAt(PageIndex);
-            CategoryName = GetCategoryName();
-        }
-
         public void ChangeCategory(int newCategoryIndex)
         {
             CategoryIndex = newCategoryIndex;
         }
 
-        public string GetCategoryName()
+        public string GetCurrentCategoryName()
         {
             return categoryNames.ElementAt(CategoryIndex);
         }
 
+        public List<Picture> GetCurrentCategoryPage()
+        {
+            var categoryPages = categories.ElementAt(CategoryIndex);
+            return categoryPages.ElementAt(PageIndex); 
+        }
+
         public int GetNumberOfPicturesInCurrentCategory()
         {
-            return categories.ElementAt(CategoryIndex).ElementAt(0).Count;
+            return categories.ElementAt(CategoryIndex).ElementAt(PageIndex).Count;
         }
 
         public string GetPreviousCategoryName()
@@ -431,7 +417,29 @@ namespace EyeTalk
         }
 
 
+        //Image methods
 
+        public BitmapImage GenerateBitmap(string filepath)
+        {
+            BitmapImage bmp = new BitmapImage();
+            try
+            {
+                bmp.BeginInit();
+                bmp.UriSource = new Uri(filepath);
+                bmp.DecodePixelWidth = 400;
+                bmp.EndInit();
+            }
+            catch
+            {
+                //if file path has been changed, give a file not found image
+                bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = new Uri("pack://application:,,,/Images/filenotfound.png");
+                bmp.DecodePixelWidth = 400;
+                bmp.EndInit();
+            }
+            return bmp;
+        }
 
     }
 }

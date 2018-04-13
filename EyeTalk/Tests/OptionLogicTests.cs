@@ -18,6 +18,22 @@ namespace EyeTalk.Tests
         }
 
         [Test]
+        public void GetCurrentColourTest()
+        {
+            logic.Options.ApplicationColour = 0;
+            Assert.AreEqual("#FF1493", logic.GetCurrentColour());
+        }
+
+        [Test]
+        public void ChangeColourTest()
+        {
+            logic.Options.ApplicationColour = 0;
+            Assert.AreEqual("#FF1493", logic.GetCurrentColour());
+            logic.ChangeColour();
+            Assert.AreEqual("#ff6a6a", logic.GetCurrentColour());
+        }
+
+        [Test]
         public void IncreaseEyeFixationDuration()
         {
             logic.ResetEyeFixationDuration();
@@ -35,19 +51,22 @@ namespace EyeTalk.Tests
         }
 
         [Test]
-        public void IncreaseSelectionDelay()
-        {
-            logic.Options.EyeFixationValue = 0;
-            logic.IncreaseSelectionDelay();
-            Assert.AreEqual("0.5 Seconds", logic.IncreaseSelectionDelay());
+        public void HasDurationBeenReachedTest()
+        {          
+            logic.ResetEyeFixationDuration();
+            Assert.AreEqual(false, logic.HasDurationBeenReached());
+            logic.Options.EyeFixationValue = 1;
+            logic.IncreaseEyeFixationDuration();
+            Assert.AreEqual(true, logic.HasDurationBeenReached());
+
         }
 
         [Test]
-        public void DecreaseSelectionDelay()
+        public void ChangeVoiceType()
         {
-            logic.Options.EyeFixationValue = 2;
-            
-            Assert.AreEqual("0.5 Seconds", logic.DecreaseSelectionDelay());
+            logic.Options.VoiceTypeSelection = 0;
+            Assert.AreEqual("Male", logic.ChangeVoiceType());
+            Assert.AreEqual("Female", logic.ChangeVoiceType());
         }
 
         [Test]
@@ -69,13 +88,21 @@ namespace EyeTalk.Tests
 
         }
 
+        [Test]
+        public void IncreaseSelectionDelay()
+        {
+            logic.Options.EyeFixationValue = 0;
+            logic.IncreaseSelectionDelay();
+            Assert.AreEqual("0.5 Seconds", logic.IncreaseSelectionDelay());
+        }
 
         [Test]
-        public void ChangeVoiceType()
+        public void DecreaseSelectionDelay()
         {
-            logic.Options.VoiceTypeSelection = 0;
-            Assert.AreEqual("Male", logic.ChangeVoiceType());
-            Assert.AreEqual("Female", logic.ChangeVoiceType());
+            logic.Options.EyeFixationValue = 2;
+
+            Assert.AreEqual("0.5 Seconds", logic.DecreaseSelectionDelay());
         }
+
     }
 }
