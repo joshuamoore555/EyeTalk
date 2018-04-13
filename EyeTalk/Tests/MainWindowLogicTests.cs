@@ -14,13 +14,13 @@ namespace EyeTalk.Tests
 
         public MainWindowLogicTests()
         {
-            logic = new SentenceLogic();
+            
         }
 
         [Test]
         public void BeginMainWindow()
         {
-
+            logic = new SentenceLogic();
             logic.GenerateSentencePage();
             Assert.AreEqual(0, logic.CategoryIndex);
             Assert.AreEqual(0, logic.PageIndex);
@@ -32,6 +32,7 @@ namespace EyeTalk.Tests
         [Test]
         public void OrderByMostUsedByCount()
         {
+            logic = new SentenceLogic();
             //tests update most used category, and custom cateofyr,
             logic.GenerateSentencePage();
             Picture hello = new Picture("test", false, "test", 99999);
@@ -49,6 +50,7 @@ namespace EyeTalk.Tests
         [Test]
         public void CheckIfBackToLastCategory()
         {
+            logic = new SentenceLogic();
             //tests update most used category, and custom cateofyr,
             logic.GenerateSentencePage();
 
@@ -65,6 +67,7 @@ namespace EyeTalk.Tests
         [Test]
         public void CheckIfBackToFirstCategory()
         {
+            logic = new SentenceLogic();
             //tests update most used category, and custom cateofyr,
             logic.GenerateSentencePage();
 
@@ -80,6 +83,7 @@ namespace EyeTalk.Tests
         [Test]
         public void UpdateCategoryAndGoToFirstPage()
         {
+            logic = new SentenceLogic();
             logic.GenerateSentencePage();
             AddTwoPictures();
 
@@ -96,6 +100,7 @@ namespace EyeTalk.Tests
 
         private void AddTwoPictures()
         {
+            logic = new SentenceLogic();
             var s = new Picture("a", false, "dd", 1);
             var ss = new Picture("b", false, "ddd", 1);
 
@@ -113,19 +118,21 @@ namespace EyeTalk.Tests
         [Test]
         public void GoToNextPage()
         {
-            logic.GenerateSentencePage();
-            AddTwoPictures();
-
+            logic = new SentenceLogic();
+            logic.CategoryIndex = 3;
+            logic.UpdateCategoryAndGoToFirstPage();           
             logic.GoToNextPage();
-            Assert.AreEqual("b", logic.categories.ElementAt(logic.CategoryIndex).ElementAt(1).ElementAt(0).Name);
+
+            Assert.AreEqual(1, logic.PageIndex);
 
         }
 
         [Test]
         public void UpdatePageNumber()
         {
+            logic = new SentenceLogic();
             logic.GenerateSentencePage();
-            var test = logic.CategoryName + " \nPage " + (logic.PageIndex + 1) + "/" + logic.categories.ElementAt(logic.CategoryIndex).Count;
+            var test = "Page " + (logic.PageIndex + 1) + "/" + logic.categories.ElementAt(logic.CategoryIndex).Count;
             Assert.AreEqual(test, logic.UpdatePageNumber());
 
 
@@ -134,11 +141,14 @@ namespace EyeTalk.Tests
         [Test]
         public void ResetMostUsed()
         {
+            logic = new SentenceLogic();
             logic.GenerateSentencePage();
-            logic.mostUsed.Clear();
+
+            logic.UpdateMostUsedPicture(0,"hello world");
             List<Picture> f = new List<Picture>();
             f.Add(new Picture("dd", false, "s", 1));
             logic.mostUsed.Add(f);
+            
 
             Assert.AreEqual("Most Used category has been reset.", logic.ResetMostUsedIfNotEmpty());
             Assert.AreEqual("Most Used category is already empty.", logic.ResetMostUsedIfNotEmpty());
@@ -149,6 +159,7 @@ namespace EyeTalk.Tests
         [Test]
         public void ResetCustomPictureCategoryIfNotEmpty()
         {
+            logic = new SentenceLogic();
             logic.GenerateSentencePage();
             logic.customCategory.Clear();
             List<Picture> page = new List<Picture>();
@@ -165,16 +176,18 @@ namespace EyeTalk.Tests
         [Test]
         public void UpdateMostUsedPicture()
         {
+            logic = new SentenceLogic();
             logic.GenerateSentencePage();
-            logic.CategoryIndex = 2;
           
-
-            for (int i = 0; i < 1000000; i++)
+            for (int i = 0; i < 1000; i++)
             {
-                logic.UpdateMostUsedPicture(0, "my");
+                logic.UpdateMostUsedPicture(0, "I want");
 
             }
-            Assert.AreEqual("my", logic.mostUsedList.ElementAt(0).Name);
+
+            var ordered = logic.OrderMostUsedByCount();
+
+            Assert.AreEqual("I want", ordered.ElementAt(0).Name);
 
 
         }
@@ -184,11 +197,20 @@ namespace EyeTalk.Tests
         [Test]
         public void CheckMostUsedContainsWord()
         {
+            logic = new SentenceLogic();
             logic.GenerateSentencePage();
-            logic.mostUsedList = new List<Picture>();
+
+            
             Assert.False(logic.CheckMostUsedContainsWord("not in the list"));
-            logic.UpdateMostUsedPicture(0, "my");
-            Assert.True(logic.CheckMostUsedContainsWord("my"));
+
+            for (int i = 0; i < 1000; i++)
+            {
+                logic.UpdateMostUsedPicture(0, "I want");
+
+            }
+
+            var ordered = logic.OrderMostUsedByCount();
+            Assert.True(logic.CheckMostUsedContainsWord("I want"));
 
 
 
@@ -197,6 +219,7 @@ namespace EyeTalk.Tests
         [Test]
         public void AddWordToSentence()
         {
+            logic = new SentenceLogic();
             logic.GenerateSentencePage();
             logic.AddWordToSentence("hello", 0);
             Assert.AreEqual(true, logic.Sentence.Contains("hello"));
@@ -206,6 +229,7 @@ namespace EyeTalk.Tests
         [Test]
         public void RemoveWordFromSentence()
         {
+            logic = new SentenceLogic();
             logic.GenerateSentencePage();
             logic.Sentence.Clear();
             logic.CategoryIndex = 0;

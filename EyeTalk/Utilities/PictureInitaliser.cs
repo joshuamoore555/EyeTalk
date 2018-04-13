@@ -105,9 +105,9 @@ namespace EyeTalk.Utilities
         public Picture idontknow = new Picture("I don't know", false, "pack://application:,,,/Images/idontknow.png", 0);
 
         //Action Words
-        public Picture iwant = new Picture("Thank you", false, "pack://application:,,,/Images/iwant.png", 0);
-        public Picture idontwant = new Picture("for watching", false, "pack://application:,,,/Images/dontwant.png", 0);
-        public Picture and = new Picture("this presentation!", false, "pack://application:,,,/Images/want.png", 0);
+        public Picture iwant = new Picture("I want", false, "pack://application:,,,/Images/iwant.png", 0);
+        public Picture idontwant = new Picture("I don't want", false, "pack://application:,,,/Images/dontwant.png", 0);
+        public Picture and = new Picture(" and", false, "pack://application:,,,/Images/want.png", 0);
 
 
         //Social

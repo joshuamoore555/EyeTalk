@@ -206,7 +206,7 @@ namespace EyeTalk
 
         public string ResetCustomPictureCategoryIfNotEmpty()
         {
-            if (customCategory.Count > 0)
+            if (customCategory.Count > 0 && customCategory.ElementAt(0).Count > 0)
             {
                 customCategory.Clear();
 
