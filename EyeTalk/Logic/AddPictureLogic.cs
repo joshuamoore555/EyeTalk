@@ -46,21 +46,41 @@ namespace EyeTalk.Logic
 
         }
 
-        public bool CheckCustomPictureIsNotDuplicate(Picture customPicture,  List<List<Picture>> customCategory)
+        public bool CheckCustomPictureIsNotDuplicate(Picture customPicture,  List<List<List<Picture>>> categories)
         {
-            foreach (var page in customCategory)
+            foreach (var category in categories)
             {
-                foreach (var picture in page)
+                foreach (var page in category)
                 {
-                    if (picture.Name == customPicture.Name)
+                    foreach (var picture in page)
                     {
-                        return true;
+                        if (picture.Name == customPicture.Name)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
             return false;
         }
-        
+
+        public bool CheckCustomPictureIsNotDuplicateInCustomCategory(Picture customPicture, List<List<Picture>> customCategory)
+        {
+         
+                foreach (var page in customCategory)
+                {
+                    foreach (var picture in page)
+                    {
+                        if (picture.Name == customPicture.Name)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            
+            return false;
+        }
+
         public bool CheckNumberOfCustomImagesInPage(List<Picture> currentPage)
         {
             if(currentPage.Count < 4)

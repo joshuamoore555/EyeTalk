@@ -12,6 +12,7 @@ namespace EyeTalk.Tests
     public class AddPictureLogicTests
     {
         AddPictureLogic logic;
+        List<List<List<Picture>>> categories;
         List<List<Picture>> customCategory;
         List<Picture> currentPage;
         Picture customPicture;
@@ -31,9 +32,11 @@ namespace EyeTalk.Tests
         {
             customPicture = new Picture("Test", false, "fakepath", 0);
             currentPage = new List<Picture>();
+            categories = new List<List<List<Picture>>>();
             customCategory = new List<List<Picture>>();
             currentPage.Add(customPicture);
             customCategory.Add(currentPage);
+            categories.Add(customCategory);
             customPicture2 = new Picture("Test2", false, "fakepath2", 0);
             customPicture3 = new Picture("Test3", false, "fakepath3", 0);
             customPicture4 = new Picture("Test4", false, "fakepath4", 0);
@@ -47,8 +50,8 @@ namespace EyeTalk.Tests
         {
             Setup();
 
-            Assert.AreEqual(true, logic.CheckCustomPictureIsNotDuplicate(customPicture, customCategory));
-            Assert.AreEqual(false, logic.CheckCustomPictureIsNotDuplicate(customPicture2, customCategory));
+            Assert.AreEqual(true, logic.CheckCustomPictureIsNotDuplicate(customPicture, categories));
+            Assert.AreEqual(false, logic.CheckCustomPictureIsNotDuplicate(customPicture2, categories));
 
         }
 

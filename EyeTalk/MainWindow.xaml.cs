@@ -489,9 +489,12 @@ namespace EyeTalk
             {
                 Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
                 var currentPage = sentenceLogic.customCategory.ElementAt(sentenceLogic.customCategory.Count - 1);
-                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, sentenceLogic.customCategory);
+                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, sentenceLogic.categories);
+                var pictureAlreadyAddedInCustom = addPictureLogic.CheckCustomPictureIsNotDuplicateInCustomCategory(customPicture, sentenceLogic.customCategory);
 
-                if (pictureAlreadyAdded)
+
+
+                if (pictureAlreadyAdded || pictureAlreadyAddedInCustom)
                 {
                     Status.Text = "This image has already been added.";
                 }
@@ -569,9 +572,6 @@ namespace EyeTalk
                 {
                     currentPosition = "";
                 }
-
-                debug.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyComputer);
-
 
                 if (currentPosition == previousPosition)
                 {
