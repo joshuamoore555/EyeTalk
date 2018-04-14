@@ -180,29 +180,32 @@
 
                 <TabItem Header="Add" Visibility="Visible">
                     <Grid Background="White">
-                        <Button x:Name="BackHome" HorizontalAlignment="Left" Margin="0,740,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Back_Button_Click" Height="360" Background="Transparent"  >
+                        <Button x:Name="BackHome" HorizontalAlignment="Left" Margin="0,723,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Back_Button_Click" Height="360" Background="Transparent"  >
                             <Image Height ="120" Source="Images\home.png"></Image>
                         </Button>
                         <TextBlock x:Name="HomeText3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="74" Height="59" Margin="206,1006,0,0" Text="Home"/>
 
-                        <Image x:Name="CustomPicture" HorizontalAlignment="Left" Height="480" Margin="260,132,0,0" VerticalAlignment="Top" Width="525" OpacityMask="#FFBDBBBB"/>
+                        <Image x:Name="CustomPicture" HorizontalAlignment="Left" Height="480" Margin="522,166,0,0" VerticalAlignment="Top" Width="525" OpacityMask="#FFBDBBBB"/>
 
-                        <Button x:Name="Select_Picture" HorizontalAlignment="Left" Margin="961,740,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Load_Custom_Picture_Button_Click" Height="360" Background="Transparent"  >
+                        <Button x:Name="Select_Picture" HorizontalAlignment="Left" Margin="961,723,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Load_Custom_Picture_Button_Click" Height="360" Background="Transparent"  >
                             <Image Height ="120" Source="Images\plus.png"></Image>
                         </Button>
                         <TextBlock x:Name="AddPictureText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="274" Height="59" Margin="1098,1006,0,0" Text="Add Custom Picture"/>
 
 
-                        <Button x:Name="Save_Custom_Button"  HorizontalAlignment="Left" Margin="1441,740,-7,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Save_Custom_Picture_Button_Click" Height="360" Background="Transparent" >
+                        <Button x:Name="Save_Custom_Button"  HorizontalAlignment="Left" Margin="1441,723,-7,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Save_Custom_Picture_Button_Click" Height="360" Background="Transparent" >
                             <Image Height ="120" Source="Images\save.png"></Image>
                         </Button>
 
-                        <TextBlock x:Name="CustomFilePath" HorizontalAlignment="Left" Margin="1078,357,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="720"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <TextBlock x:Name="CustomFilePath" HorizontalAlignment="Left" Margin="1098,383,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="750"><Run Text=""/><LineBreak/><Run/></TextBlock>
 
-                        <TextBlock x:Name="Status" HorizontalAlignment="Left" Margin="1078,531,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="720"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <TextBlock x:Name="Status" HorizontalAlignment="Left" Margin="1098,582,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="750"><Run Text=""/><LineBreak/><Run/></TextBlock>
 
-                        <TextBox x:Name ="CustomName" FontSize="24" HorizontalAlignment="Left" Height="68" Margin="961,168,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="943" MaxLength="20"  />
+                        <TextBox x:Name ="CustomName" FontSize="24" HorizontalAlignment="Left" Height="68" Margin="1098,166,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="750" MaxLength="20"  />
                         <TextBlock x:Name="SavePictureText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="274" Height="59" Margin="1574,1006,0,0" Text="Save Custom Picture"/>
+                        <Button x:Name="KeyboardPage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="480" FontSize="48" Click="Keyboard_Button_Click" Height="360" Background="Transparent" Margin="0,10,0,0"  >
+                            <Image Height ="120" Source="Images/keyboard.png"/>
+                        </Button>
                     </Grid>
                 </TabItem>
 
@@ -321,6 +324,48 @@
                     </Grid>
 
                 </TabItem>
+
+                <TabItem Header="Keyboard" Visibility="Visible" >
+                    <Grid Background="White">
+                        <Button x:Name="Q" Content="Q" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="Q_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="W" Content="W" HorizontalAlignment="Left" Margin="185,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="W_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="E" Content="E" HorizontalAlignment="Left" Margin="370,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="E_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="R" Content="R" HorizontalAlignment="Left" Margin="555,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="R_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="T" Content="T" HorizontalAlignment="Left" Margin="740,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="T_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="Y" Content="Y" HorizontalAlignment="Left" Margin="925,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="Y_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="U" Content="U" HorizontalAlignment="Left" Margin="1110,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="U_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="I" Content="I" HorizontalAlignment="Left" Margin="1295,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="I_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="A" Content="A" HorizontalAlignment="Left" Margin="0,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="A_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="S" Content="S" HorizontalAlignment="Left" Margin="185,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="S_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="D" Content="D" HorizontalAlignment="Left" Margin="370,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="D_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="F" Content="F" HorizontalAlignment="Left" Margin="555,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="F_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="G" Content="G" HorizontalAlignment="Left" Margin="740,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="G_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="H" Content="H" HorizontalAlignment="Left" Margin="925,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="H_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="J" Content="J" HorizontalAlignment="Left" Margin="1110,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="J_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="K" Content="K" HorizontalAlignment="Left" Margin="1295,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="K_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="Z" Content="Z" HorizontalAlignment="Left" Margin="0,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="Z_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="X" Content="X" HorizontalAlignment="Left" Margin="185,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="X_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="C" Content="C" HorizontalAlignment="Left" Margin="370,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="C_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="V" Content="V" HorizontalAlignment="Left" Margin="555,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="V_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="B" Content="B" HorizontalAlignment="Left" Margin="740,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="B_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="N" Content="N" HorizontalAlignment="Left" Margin="925,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="N_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="M" Content="M" HorizontalAlignment="Left" Margin="1110,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="M_Button_Click" Height="240" Background="Lavender" />
+
+                        <Button x:Name="BackSave" Content="Back" HorizontalAlignment="Left" Margin="0,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="BackToSave_Button_Click" Height="180" Background="Lavender" />
+                        <Button x:Name="Delete" Content="Delete" HorizontalAlignment="Left" Margin="925,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="Delete_Button_Click" Height="180" Background="Lavender" />
+                        <Button x:Name="Enter" Content="Choose Word" HorizontalAlignment="Left" Margin="1412,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="Enter_Button_Click" Height="180" Background="Lavender" />
+                        <Button x:Name="O" Content="O" HorizontalAlignment="Left" Margin="1480,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="O_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="P" Content="P" HorizontalAlignment="Left" Margin="1665,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="P_Button_Click" Height="240" Background="Lavender" />
+                        <Button x:Name="L" Content="L" HorizontalAlignment="Left" Margin="1480,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="L_Button_Click" Height="240" Background="Lavender" />
+                        <TextBox x:Name="Word" HorizontalAlignment="Left" Margin="1332,688,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="114" Width="550" FontSize="28" FontWeight="Bold" MaxLength="20"/>
+                        <Button x:Name="Space" Content="Space" HorizontalAlignment="Left" Margin="462,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="Space_Button_Click" Height="180" Background="Lavender" />
+
+
+
+
+                    </Grid>
+
+                </TabItem> T
             </TabControl.Items>
         </TabControl>
 

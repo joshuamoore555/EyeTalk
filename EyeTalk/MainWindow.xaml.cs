@@ -33,6 +33,7 @@ namespace EyeTalk
         SaveFileSerialiser saveInitialiser;
         SpeechGenerator speech;
         CoordinateTimer timer;
+        Keyboard keyboard;
     
         SentenceLogic sentenceLogic;
         OptionsLogic optionsLogic;
@@ -55,6 +56,8 @@ namespace EyeTalk
             savedSentencesLogic = new SavedSentencesLogic();
             addPictureLogic = new AddPictureLogic();
             saveInitialiser = new SaveFileSerialiser();
+            keyboard = new Keyboard();
+
 
             brush = GetBrush();
             timer.coordinateTimer.Elapsed += CheckCoordinates;
@@ -72,6 +75,7 @@ namespace EyeTalk
             ResetSaveSentencePage();
             ResetChooseCategoryPage();
             ResetSaveSentencePage();
+            ResetKeyboardPage();
         }
 
         //Home Page Buttons
@@ -467,7 +471,7 @@ namespace EyeTalk
 
         private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(CustomFilePath.Text) && String.IsNullOrEmpty(CustomName.Text))
+            if (String.IsNullOrEmpty(CustomFilePath.Text) || String.IsNullOrEmpty(CustomName.Text))
             {
                 Status.Text = "Please select a picture and name before saving";
 
@@ -529,6 +533,11 @@ namespace EyeTalk
                 {
                     currentPosition = eyeTracker.GetCurrentPositionSavedSentence();
                 }
+                else if (myTabControl.SelectedIndex == 6) 
+                {
+                    currentPosition = eyeTracker.GetCurrentPositionKeyboard();
+
+                }
                 else
                 {
                     currentPosition = eyeTracker.GetCurrentPosition();
@@ -567,6 +576,10 @@ namespace EyeTalk
                     else if (myTabControl.SelectedIndex == 5)
                     {
                         CheckChooseCategoryPage(currentPosition);
+                    }
+                    else if (myTabControl.SelectedIndex == 6)
+                    {
+                        CheckKeyboardPage(currentPosition);
                     }
                 }
                 else
@@ -698,23 +711,20 @@ namespace EyeTalk
             ResetAddPicturePage();
             switch (position)
             {
-
                 case Positions.TopLeft:
+                    HoverOverButton(KeyboardPage);
                     break;
 
                 case Positions.TopMiddleLeft:
+                    HoverOverButton(KeyboardPage);
                     break;
 
                 case Positions.TopMiddleRight:
-                    CustomName.Background = Brushes.LightBlue;
-                    CustomName.Focus();
-                    ResetPosition();
+                    
                     break;
 
                 case Positions.TopRight:
-                    CustomName.Focus();
-                    CustomName.Background = Brushes.LightBlue;
-                    ResetPosition();
+
                     break;
 
                 case Positions.MiddleLeft:
@@ -970,6 +980,139 @@ namespace EyeTalk
             }
         }
 
+        private void CheckKeyboardPage(string position)
+        {
+            ResetKeyboardPage();
+
+            switch (position)
+            {
+
+                case "Q":
+                    HoverOverButton(Q);
+                    break;
+
+                case "W":
+                    HoverOverButton(W);
+                    break;
+
+                case "E":
+                    HoverOverButton(E);
+                    break;
+
+                case "R":
+                    HoverOverButton(R);
+                    break;
+
+                case "T":
+                    HoverOverButton(T);
+                    break;
+
+                case "Y":
+                    HoverOverButton(Y);
+                    break;
+
+                case "U":
+                    HoverOverButton(U);
+                    break;
+
+                case "I":
+                    HoverOverButton(I);
+                    break;
+
+                case "O":
+                    HoverOverButton(O);
+                    break;
+
+                case "P":
+                    HoverOverButton(P);
+                    break;
+
+                case "A":
+                    HoverOverButton(A);
+                    break;
+
+                case "S":
+                    HoverOverButton(S);
+                    break;
+
+                case "D":
+                    HoverOverButton(D);
+                    break;
+
+                case "F":
+                    HoverOverButton(F);
+                    break;
+
+                case "G":
+                    HoverOverButton(G);
+                    break;
+
+                case "H":
+                    HoverOverButton(H);
+                    break;
+
+                case "J":
+                    HoverOverButton(J);
+                    break;
+
+                case "K":
+                    HoverOverButton(K);
+                    break;
+
+                case "L":
+                    HoverOverButton(L);
+                    break;
+
+                case "Z":
+                    HoverOverButton(Z);
+                    break;
+
+                case "X":
+                    HoverOverButton(X);
+                    break;
+
+                case "C":
+                    HoverOverButton(C);
+                    break;
+
+                case "V":
+                    HoverOverButton(V);
+                    break;
+
+                case "B":
+                    HoverOverButton(B);
+                    break;
+
+                case "N":
+                    HoverOverButton(N);
+                    break;
+
+                case "M":
+                    HoverOverButton(M);
+                    break;
+
+                case "Space":
+                    HoverOverButton(Space);
+                    break;
+
+                case "Enter":
+                    HoverOverButton(Enter);
+                    break;
+
+                case "Back":
+                    HoverOverButton(BackSave);
+                    break;
+
+                case "Delete":
+                    HoverOverButton(Delete);
+                    break;
+
+                case "":
+                    break;
+
+            }
+        }
+
         private void HoverOverButton(Button button)
         {
             button.Background = Brushes.Yellow;
@@ -1026,6 +1169,7 @@ namespace EyeTalk
             Select_Picture.Background = brush;
             BackHome.Background = brush;
             Save_Custom_Button.Background = brush;
+            KeyboardPage.Background = brush;
         }
 
         private void ResetSaveSentencePage()
@@ -1045,11 +1189,13 @@ namespace EyeTalk
             Right_Delay.Background = brush;
             Back.Background = brush;
             TestVoice.Background = brush;
+            KeyboardPage.Background = brush;
 
             ResetMostUsed.Background = Brushes.Lavender;
             ResetCustomPictures.Background = Brushes.Lavender;
             VoiceType.Background = Brushes.Lavender;
             ColourType.Background = Brushes.Lavender;
+
         }
 
         private void ResetChooseCategoryPage()
@@ -1074,6 +1220,46 @@ namespace EyeTalk
             Custom.Background = Brushes.Lavender;
             Animals.Background = Brushes.Lavender;
             Family.Background = Brushes.Lavender;
+
+        }
+
+        private void ResetKeyboardPage()
+        {
+
+            Enter.Background = brush;
+            Delete.Background = brush;
+            BackSave.Background = brush;
+            Space.Background = Brushes.Lavender;
+
+            Q.Background = Brushes.Lavender;
+            W.Background = Brushes.Lavender;
+            E.Background = Brushes.Lavender;
+            R.Background = Brushes.Lavender;
+            T.Background = Brushes.Lavender;
+            Y.Background = Brushes.Lavender;
+            U.Background = Brushes.Lavender;
+            I.Background = Brushes.Lavender;
+            O.Background = Brushes.Lavender;
+            P.Background = Brushes.Lavender;
+            A.Background = Brushes.Lavender;
+            S.Background = Brushes.Lavender;
+            D.Background = Brushes.Lavender;
+            F.Background = Brushes.Lavender;
+            G.Background = Brushes.Lavender;
+            H.Background = Brushes.Lavender;
+            J.Background = Brushes.Lavender;
+            K.Background = Brushes.Lavender;
+            L.Background = Brushes.Lavender;
+            Z.Background = Brushes.Lavender;
+            X.Background = Brushes.Lavender;
+            C.Background = Brushes.Lavender;
+            V.Background = Brushes.Lavender;
+            B.Background = Brushes.Lavender;
+            N.Background = Brushes.Lavender;
+            M.Background = Brushes.Lavender;
+
+
+
 
         }
 
@@ -1273,6 +1459,164 @@ namespace EyeTalk
             GoToSentencePage();
         }
 
+        //Keyboard clicks
 
+        private void Q_Button_Click(object sender, RoutedEventArgs e)
+        {   
+            Word.Text = keyboard.AddLetter(Word.Text, 'q');       
+        }
+
+        private void W_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'w');
+        }
+
+        private void E_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'e');
+        }
+
+        private void R_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'r');
+        }
+
+        private void T_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 't');
+        }
+
+        private void Y_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'y');
+        }
+
+        private void U_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'u');
+        }
+
+        private void I_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'i');
+        }
+
+        private void O_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'o');
+        }
+
+        private void P_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'p');
+        }
+
+        private void A_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'a');
+        }
+
+        private void S_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 's');
+        }
+
+        private void D_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'd');
+        }
+
+        private void F_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'f');
+        }
+
+        private void G_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'g');
+        }
+
+        private void H_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'h');
+        }
+
+        private void J_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'j');
+        }
+
+        private void K_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'k');
+        }
+
+        private void L_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'l');
+        }
+
+        private void Z_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'z');
+        }
+
+        private void X_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'x');
+        }
+
+        private void C_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'c');
+        }
+
+        private void V_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'v');
+        }
+
+        private void B_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'b');
+        }
+
+        private void N_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'n');
+        }
+
+        private void M_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, 'm');
+        }
+
+        private void Enter_Button_Click(object sender, RoutedEventArgs e)
+        {
+            CustomName.Text = Word.Text;
+            myTabControl.SelectedIndex = 3;
+        }
+
+        private void Delete_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.DeleteLastLetter(Word.Text);
+        }
+
+        private void BackToSave_Button_Click(object sender, RoutedEventArgs e)
+        {
+            myTabControl.SelectedIndex = 3;
+        }
+
+        private void Keyboard_Button_Click(object sender, RoutedEventArgs e)
+        {
+            myTabControl.SelectedIndex = 6;
+
+        }
+
+        private void Space_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Word.Text = keyboard.AddLetter(Word.Text, ' ');
+
+        }
     }
 }
