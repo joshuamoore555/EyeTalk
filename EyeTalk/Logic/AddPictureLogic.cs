@@ -1,4 +1,5 @@
 ﻿using EyeTalk.Objects;
+using EyeTalk.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,14 @@ namespace EyeTalk.Logic
 {
     class AddPictureLogic
     {
+        ImageFinder imageFinder;
+        List<string> imageList;
+        int imageIndex;
+
         public AddPictureLogic()
         {
-            
+            imageFinder = new ImageFinder();
+            imageIndex = 0;
         }
 
         public string LoadCustomPicture()
@@ -79,5 +85,57 @@ namespace EyeTalk.Logic
             newCustomCategory.Add(customPicture);
             return newCustomCategory;
         }
+
+        public string GetFirstImageFromPicturesFolder()
+        {
+            imageList = imageFinder.RetrieveAllImagesInFolder();
+            if (imageList.Count > 0)
+            {
+                return imageList.ElementAt(0);
+            }
+            else
+            {
+                return "No pictures found in Pictures Folder";
+            }
+        }
+
+        public string GetNextPictureFromPicturesFolder()
+        {
+            if (imageList.Count > 0)
+            {
+                imageIndex++;
+
+                if(imageIndex > imageList.Count - 1)
+                {
+                    imageIndex = 0;
+                }
+
+                return imageList.ElementAt(imageIndex);
+            }
+            else
+            {
+                return "No pictures found in Pictures Folder";
+            }
+        }
+
+
+        public string GetPreviousPictureFromPicturesFolder()
+        {
+            if (imageList.Count > 0)
+            {
+                imageIndex--;
+
+                if (imageIndex < 0)
+                {
+                    imageIndex = imageList.Count - 1;
+                }
+                return imageList.ElementAt(imageIndex);
+            }
+            else
+            {
+                return "No pictures found in Pictures Folder";
+            }
+        }
+
     }
 }

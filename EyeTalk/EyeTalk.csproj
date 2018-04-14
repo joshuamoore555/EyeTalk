@@ -124,6 +124,7 @@
     <Compile Include="Tests\SentenceLogicTests.cs" />
     <Compile Include="Tests\OptionLogicTests.cs" />
     <Compile Include="Tests\SavedSentencesLogicTests.cs" />
+    <Compile Include="Utilities\ImageFinder.cs" />
     <Compile Include="Utilities\Keyboard.cs" />
     <Compile Include="Utilities\PictureInitaliser.cs" />
     <Compile Include="Utilities\CoordinateTimer.cs" />

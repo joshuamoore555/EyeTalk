@@ -13,6 +13,8 @@ using EyeTalk.Logic;
 using EyeTalk.Utilities;
 using EyeTalk.Constants;
 using System.Media;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace EyeTalk
 {
@@ -97,6 +99,8 @@ namespace EyeTalk
 
         private void Add_PictureCategory_Click(object sender, RoutedEventArgs e)
         {
+            CustomFilePath.Text = addPictureLogic.GetFirstImageFromPicturesFolder();
+            ConvertFilepathIntoImage(CustomFilePath.Text);
             myTabControl.SelectedIndex = 3;
         }
 
@@ -459,12 +463,17 @@ namespace EyeTalk
         {
             var picturePath = addPictureLogic.LoadCustomPicture();
             CustomFilePath.Text = picturePath;
-            CustomName.Text = System.IO.Path.GetFileNameWithoutExtension(picturePath);
-            if (picturePath != null && picturePath != "")
+            ConvertFilepathIntoImage(picturePath);
+        }
+
+        private void ConvertFilepathIntoImage(string filepath)
+        {
+            CustomName.Text = Path.GetFileNameWithoutExtension(filepath);
+            if (filepath != null && filepath != "")
             {
-                var uri = new Uri(picturePath);
+                var uri = new Uri(filepath);
                 var bitmap = new BitmapImage(uri);
-                      
+
                 CustomPicture.Source = bitmap;
             }
         }
@@ -510,6 +519,19 @@ namespace EyeTalk
             }
         }
 
+        private void NextPicture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            CustomFilePath.Text = addPictureLogic.GetNextPictureFromPicturesFolder();
+            ConvertFilepathIntoImage(CustomFilePath.Text);
+        }
+
+        private void PreviousPicture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            CustomFilePath.Text = addPictureLogic.GetPreviousPictureFromPicturesFolder();
+            ConvertFilepathIntoImage(CustomFilePath.Text);
+
+        }
+
 
         //Coordinate Checking Methods
 
@@ -517,7 +539,7 @@ namespace EyeTalk
         {
             Dispatcher.Invoke((Action)(() =>
             {
-                if(myTabControl.SelectedIndex == 1)
+                if (myTabControl.SelectedIndex == 1)
                 {
                     currentPosition = eyeTracker.GetCurrentPositionBeginSpeaking();
                 }
@@ -533,7 +555,7 @@ namespace EyeTalk
                 {
                     currentPosition = eyeTracker.GetCurrentPositionSavedSentence();
                 }
-                else if (myTabControl.SelectedIndex == 6) 
+                else if (myTabControl.SelectedIndex == 6)
                 {
                     currentPosition = eyeTracker.GetCurrentPositionKeyboard();
 
@@ -547,7 +569,9 @@ namespace EyeTalk
                 {
                     currentPosition = "";
                 }
-                              
+
+                debug.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyComputer);
+
 
                 if (currentPosition == previousPosition)
                 {
@@ -1618,5 +1642,7 @@ namespace EyeTalk
             Word.Text = keyboard.AddLetter(Word.Text, ' ');
 
         }
+
+
     }
 }

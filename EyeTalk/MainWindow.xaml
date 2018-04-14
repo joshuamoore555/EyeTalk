@@ -32,7 +32,7 @@
                         <TextBlock x:Name="addCustomPictureText" HorizontalAlignment="Left" Margin="1668,319,0,0" TextWrapping="Wrap" Text="Add Custom Picture" VerticalAlignment="Top" FontSize="24" Width="232" Height="41"/>
                         <TextBlock x:Name="OptionsText" HorizontalAlignment="Left" Margin="825,1039,0,0" TextWrapping="Wrap" Text="Options" VerticalAlignment="Top" FontSize="24" Width="115" Height="41"/>
                         <TextBlock x:Name="ExitText" HorizontalAlignment="Left" Margin="1836,1039,0,0" TextWrapping="Wrap" Text="Exit" VerticalAlignment="Top" FontSize="24" Width="64" Height="41"/>
-                        <TextBlock x:Name="displayPos" HorizontalAlignment="Left" Margin="369,511,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="1284" Height="41"/>
+                        <TextBlock x:Name="debug" HorizontalAlignment="Left" Margin="369,511,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="1284" Height="41"/>
 
 
                     </Grid>
@@ -185,27 +185,38 @@
                         </Button>
                         <TextBlock x:Name="HomeText3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="74" Height="59" Margin="206,1006,0,0" Text="Home"/>
 
-                        <Image x:Name="CustomPicture" HorizontalAlignment="Left" Height="480" Margin="522,166,0,0" VerticalAlignment="Top" Width="525" OpacityMask="#FFBDBBBB"/>
+                        <Image x:Name="CustomPicture" HorizontalAlignment="Left" Height="360" Margin="738,358,0,0" VerticalAlignment="Top" Width="480" OpacityMask="#FFBDBBBB"/>
 
-                        <Button x:Name="Select_Picture" HorizontalAlignment="Left" Margin="961,723,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Load_Custom_Picture_Button_Click" Height="360" Background="Transparent"  >
+                        <Button x:Name="Select_Picture" HorizontalAlignment="Left" Margin="738,723,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Load_Custom_Picture_Button_Click" Height="360" Background="Transparent"  >
                             <Image Height ="120" Source="Images\plus.png"></Image>
                         </Button>
-                        <TextBlock x:Name="AddPictureText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="274" Height="59" Margin="1098,1006,0,0" Text="Add Custom Picture"/>
+                        <TextBlock x:Name="AddPictureText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="274" Height="59" Margin="852,1006,0,0" Text="Add Custom Picture"/>
 
 
                         <Button x:Name="Save_Custom_Button"  HorizontalAlignment="Left" Margin="1441,723,-7,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Save_Custom_Picture_Button_Click" Height="360" Background="Transparent" >
                             <Image Height ="120" Source="Images\save.png"></Image>
                         </Button>
 
-                        <TextBlock x:Name="CustomFilePath" HorizontalAlignment="Left" Margin="1098,383,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="750"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <TextBlock x:Name="CustomFilePath" HorizontalAlignment="Left" Margin="622,187,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="750"><Run Text=""/><LineBreak/><Run/></TextBlock>
 
-                        <TextBlock x:Name="Status" HorizontalAlignment="Left" Margin="1098,582,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="750"><Run Text=""/><LineBreak/><Run/></TextBlock>
+                        <TextBlock x:Name="Status" HorizontalAlignment="Left" Margin="622,256,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="750"><Run Text=""/><LineBreak/><Run/></TextBlock>
 
-                        <TextBox x:Name ="CustomName" FontSize="24" HorizontalAlignment="Left" Height="68" Margin="1098,166,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="750" MaxLength="20"  />
+                        <TextBox x:Name ="CustomName" FontSize="24" HorizontalAlignment="Left" Height="68" Margin="622,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="750" MaxLength="20"  />
+
                         <TextBlock x:Name="SavePictureText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="274" Height="59" Margin="1574,1006,0,0" Text="Save Custom Picture"/>
+
                         <Button x:Name="KeyboardPage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="480" FontSize="48" Click="Keyboard_Button_Click" Height="360" Background="Transparent" Margin="0,10,0,0"  >
                             <Image Height ="120" Source="Images/keyboard.png"/>
                         </Button>
+
+                        <Button x:Name="nextPicture" HorizontalAlignment="Left" Margin="1441,363,-7,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="NextPicture_Button_Click" Height="360" Background="Lavender" >
+                            <Image Source="Images\arrowright.png" Height="120"></Image>
+                        </Button>
+                        <Button x:Name="PreviousPicture" HorizontalAlignment="Left" Margin="0,358,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="PreviousPicture_Button_Click" Height="360" Background="Lavender" >
+                            <Image Source="Images/arrowleft.png" Height="120"/>
+                        </Button>
+
+
                     </Grid>
                 </TabItem>
 
