@@ -297,7 +297,7 @@ namespace EyeTalk
             var selected = sentenceLogic.CategoryPage.ElementAt(i).Selected;
             var name = sentenceLogic.CategoryPage.ElementAt(i).Name;
 
-            if (sentenceLogic.CheckThatWordIsMatched(SentenceTextBox.Text, name) || selected == false)
+            if (sentenceLogic.CheckThatWordIsMatched(SentenceTextBox.Text, name) && selected == false)
             {
                 SentenceUpdate.Text = "This word has already been added.";
             }
