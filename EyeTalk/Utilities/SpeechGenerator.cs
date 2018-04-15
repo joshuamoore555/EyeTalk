@@ -1,10 +1,7 @@
-﻿using EyeTalk.Logic;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Synthesis;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace EyeTalk.Utilities
 {
@@ -15,7 +12,6 @@ namespace EyeTalk.Utilities
 
         public SpeechGenerator()
         {
-
             synthesizer = new SpeechSynthesizer();
             synthesizer.Volume = 100;
             synthesizer.Rate = 0;

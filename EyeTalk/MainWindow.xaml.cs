@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Collections;
 using EyeTalk.Objects;
 using EyeTalk.Logic;
 using EyeTalk.Utilities;
 using EyeTalk.Constants;
 using System.Media;
-using System.IO;
-using System.Text.RegularExpressions;
+
 
 namespace EyeTalk
 {
@@ -467,13 +464,13 @@ namespace EyeTalk
         }
 
         private void ConvertFilepathIntoImage(string filepath)
-        {
-            CustomName.Text = Path.GetFileNameWithoutExtension(filepath);
-            if (filepath != null && filepath != "")
-            {
-                var uri = new Uri(filepath);
-                var bitmap = new BitmapImage(uri);
 
+        {       
+            CustomName.Text = addPictureLogic.GeneratePictureName(filepath);
+            BitmapImage bitmap = addPictureLogic.GeneratePicture(filepath);
+
+            if(bitmap != null)
+            {
                 CustomPicture.Source = bitmap;
             }
         }
@@ -748,19 +745,25 @@ namespace EyeTalk
                     break;
 
                 case Positions.TopRight:
-
+                    position = "";
+                    HoverOverButton(Select_Picture);
                     break;
 
                 case Positions.MiddleLeft:
+                   
+                    HoverOverButton(PreviousPicture);
                     break;
 
                 case Positions.MiddleMiddleLeft:
+
                     break;
 
                 case Positions.MiddleMiddleRight:
                     break;
 
                 case Positions.MiddleRight:
+                    HoverOverButton(NextPicture);
+
                     break;
 
                 case Positions.BottomLeft:
@@ -771,8 +774,7 @@ namespace EyeTalk
                     break;
 
                 case Positions.BottomMiddleRight:
-                    position = "";
-                    HoverOverButton(Select_Picture);
+                    
                     break;
 
                 case Positions.BottomRight:

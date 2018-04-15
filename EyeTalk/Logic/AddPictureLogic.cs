@@ -2,6 +2,7 @@
 using EyeTalk.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,8 +67,7 @@ namespace EyeTalk.Logic
 
         public bool CheckCustomPictureIsNotDuplicateInCustomCategory(Picture customPicture, List<List<Picture>> customCategory)
         {
-         
-                foreach (var page in customCategory)
+           foreach (var page in customCategory)
                 {
                     foreach (var picture in page)
                     {
@@ -108,7 +108,7 @@ namespace EyeTalk.Logic
 
         public string GetFirstImageFromPicturesFolder()
         {
-            imageList = imageFinder.RetrieveAllImagesInFolder();
+            imageList = imageFinder.RetrieveAllImagesInPictureDirectory();
             if (imageList.Count > 0)
             {
                 return imageList.ElementAt(0);
@@ -154,6 +154,32 @@ namespace EyeTalk.Logic
             else
             {
                 return "No pictures found in Pictures Folder";
+            }
+        }
+
+        public string GeneratePictureName(string filepath)
+        {
+            var nameOfPicture = Path.GetFileNameWithoutExtension(filepath);
+            if (nameOfPicture.Length > 20)
+            {
+                nameOfPicture = nameOfPicture.Substring(0, 20);
+            }
+
+            return nameOfPicture;
+        }
+
+        public BitmapImage GeneratePicture(string filepath)
+        {
+            if (filepath != null && filepath != "")
+            {
+                var uri = new Uri(filepath);
+                BitmapImage bitmap = new BitmapImage(uri);
+
+                return bitmap;
+            }
+            else
+            {
+                return null;
             }
         }
 

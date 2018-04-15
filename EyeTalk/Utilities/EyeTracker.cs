@@ -1,16 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Speech.Synthesis;
-using System.Collections.Specialized;
-using System.Collections;
+﻿using System.Threading.Tasks;
 using Tobii.EyeX.Framework;
 using EyeXFramework;
 using EyeTalk.Objects;
@@ -125,6 +113,9 @@ namespace EyeTalk
                 return "";
             }
         }
+
+
+        //Check Pages methods
 
         public string CheckXHomePage()
         {
@@ -475,6 +466,10 @@ namespace EyeTalk
            
             else return "";
         }
+
+
+
+        //Get methods
 
         public string GetCurrentPosition()
         {

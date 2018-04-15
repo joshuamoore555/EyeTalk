@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace EyeTalk.Utilities
 {
     class Keyboard
@@ -15,7 +10,14 @@ namespace EyeTalk.Utilities
 
         public string AddLetter(string sentence, char letter)
         {
-            return sentence = sentence + letter;           
+            if(sentence.Length < 20)
+            {
+                return sentence = sentence + letter;
+            }
+            else
+            {
+                return sentence;
+            }
         }
 
         public string DeleteLastLetter(string sentence)
@@ -26,7 +28,7 @@ namespace EyeTalk.Utilities
             }
             else
             {
-                return "";
+                return sentence;
             }
             
         }

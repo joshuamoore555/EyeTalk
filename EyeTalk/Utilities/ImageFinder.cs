@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EyeTalk.Utilities
 {
@@ -14,59 +11,36 @@ namespace EyeTalk.Utilities
 
         }
 
-        public List<string> RetrieveAllImagesInFolder()
+        public List<string> RetrieveAllImagesInPictureDirectory()
         {
+            IEnumerable<string> files = GetFilepathsFromPictureDirectory();
+
+            return GetImageFilepaths(files);
+        }
+
+        private List<string> GetImageFilepaths(IEnumerable<string> files)
+        {
+            //checks if filepath is an image format, and adds to list of images
+
             List<string> imageFiles = new List<string>();
 
-            string picturePath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-
-            var files = Directory.EnumerateFiles(picturePath, "*.*", SearchOption.AllDirectories);
-            
-
-
-            foreach (string name in files) //C:\Users\User\Pictures
+            foreach (string filepath in files)
             {
-                if (name.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) || name.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                if (filepath.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) || filepath.EndsWith(".png", StringComparison.OrdinalIgnoreCase) || filepath.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase))
                 {
-                    imageFiles.Add(name);
+                    imageFiles.Add(filepath);
                 }
             }
 
             return imageFiles;
         }
 
-        public static IEnumerable<string> GetFiles(string root, string searchPattern = "*")
+        private IEnumerable<string> GetFilepathsFromPictureDirectory()
         {
-            var files = new List<string>();
+            //returns files from picture directory and sub directories
+            string picturePath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
-            try
-            {
-                foreach (var dir in Directory.GetDirectories(root))
-                {
-                    try
-                    {
-                        var foundFIles = Directory.GetFiles(dir, searchPattern, SearchOption.TopDirectoryOnly).ToList();
-                        files.AddRange(foundFIles);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("INFO: Cannot enumerate file in folder: {0}. Error: {1}", dir, ex.Message);
-                        continue;
-                    }
-
-                    var recursiveFiles = GetFiles(dir, searchPattern);
-
-                    if (recursiveFiles != null)
-                    {
-                        files = files.Concat(recursiveFiles).ToList();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("INFO: Cannot enumerate file in folder: {0}. Error: {1}", root, ex.Message);
-            }
-
+            var files = Directory.EnumerateFiles(picturePath, "*.*", SearchOption.AllDirectories);
             return files;
         }
     }
