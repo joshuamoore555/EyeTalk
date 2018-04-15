@@ -130,7 +130,7 @@ namespace EyeTalk
             }
             else
             {
-                return coordinates.X.ToString();
+                return "";
             }
         }
 
@@ -163,7 +163,7 @@ namespace EyeTalk
             }
             else
             {
-                return coordinates.X.ToString();
+                return "";
             }
         }
 
@@ -211,7 +211,7 @@ namespace EyeTalk
             }
             else
             {
-                return coordinates.X.ToString();
+                return "";
             }
         }
 
@@ -259,7 +259,7 @@ namespace EyeTalk
             }
             else
             {
-                return coordinates.X.ToString();
+                return "";
             }
         }
 

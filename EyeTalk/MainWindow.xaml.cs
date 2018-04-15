@@ -59,7 +59,7 @@ namespace EyeTalk
 
 
             brush = GetBrush();
-            timer.coordinateTimer.Elapsed += CheckCoordinates;
+            timer.coordinateTimer.Elapsed += GetCurrentPosition;
             LoadSaveFiles();
             UpdateOptionsPage();
             UpdateGUI();
@@ -297,10 +297,11 @@ namespace EyeTalk
             var selected = sentenceLogic.CategoryPage.ElementAt(i).Selected;
             var name = sentenceLogic.CategoryPage.ElementAt(i).Name;
 
-            if (sentenceLogic.CheckThatWordIsMatched(SentenceTextBox.Text, name) && selected == false)
+            if (sentenceLogic.CheckThatWordIsMatched(SentenceTextBox.Text, name) || selected == false)
             {
                 SentenceUpdate.Text = "This word has already been added.";
             }
+
             else
             {
                 if (sentenceLogic.AmountOfWordsInSentence < 8 && selected == false)
@@ -535,7 +536,7 @@ namespace EyeTalk
 
         //Coordinate Checking Methods
 
-        public void CheckCoordinates(object sender, EventArgs e)
+        public void GetCurrentPosition(object sender, EventArgs e)
         {
             Dispatcher.Invoke((Action)(() =>
             {
@@ -565,53 +566,53 @@ namespace EyeTalk
                     currentPosition = eyeTracker.GetCurrentPosition();
                 }
 
-                if (eyeTracker.coordinates.X == 0 && eyeTracker.coordinates.X == 0)
-                {
-                    currentPosition = "";
-                }
-
-                if (currentPosition == previousPosition)
-                {
-                    optionsLogic.IncreaseEyeFixationDuration();
-
-                    if (myTabControl.SelectedIndex == 0)
-                    {
-                        CheckHomePage(currentPosition);
-                    }
-                    else if (myTabControl.SelectedIndex == 1)
-                    {
-                        CheckSpeakingPage(currentPosition);
-                    }
-                    else if (myTabControl.SelectedIndex == 2)
-                    {
-                        CheckOptionsPage(currentPosition);
-                    }
-                    else if (myTabControl.SelectedIndex == 3)
-                    {
-                        CheckAddPicturePage(currentPosition);
-                    }
-                    else if (myTabControl.SelectedIndex == 4)
-                    {
-                        CheckSavedSentencePage(currentPosition);
-                    }
-                    else if (myTabControl.SelectedIndex == 5)
-                    {
-                        CheckChooseCategoryPage(currentPosition);
-                    }
-                    else if (myTabControl.SelectedIndex == 6)
-                    {
-                        CheckKeyboardPage(currentPosition);
-                    }
-                }
-                else
-                {
-                    optionsLogic.ResetEyeFixationDuration();
-                }
+                CheckPositionIsTheSame();
 
                 previousPosition = currentPosition;
 
             }));
 
+        }
+
+        private void CheckPositionIsTheSame()
+        {
+            if (currentPosition == previousPosition)
+            {
+                optionsLogic.IncreaseEyeFixationDuration();
+
+                if (myTabControl.SelectedIndex == 0)
+                {
+                    CheckHomePage(currentPosition);
+                }
+                else if (myTabControl.SelectedIndex == 1)
+                {
+                    CheckSpeakingPage(currentPosition);
+                }
+                else if (myTabControl.SelectedIndex == 2)
+                {
+                    CheckOptionsPage(currentPosition);
+                }
+                else if (myTabControl.SelectedIndex == 3)
+                {
+                    CheckAddPicturePage(currentPosition);
+                }
+                else if (myTabControl.SelectedIndex == 4)
+                {
+                    CheckSavedSentencePage(currentPosition);
+                }
+                else if (myTabControl.SelectedIndex == 5)
+                {
+                    CheckChooseCategoryPage(currentPosition);
+                }
+                else if (myTabControl.SelectedIndex == 6)
+                {
+                    CheckKeyboardPage(currentPosition);
+                }
+            }
+            else
+            {
+                optionsLogic.ResetEyeFixationDuration();
+            }
         }
 
         private void CheckHomePage(string position)
