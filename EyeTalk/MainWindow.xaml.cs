@@ -1197,6 +1197,8 @@ namespace EyeTalk
             BackHome.Background = brush;
             Save_Custom_Button.Background = brush;
             KeyboardPage.Background = brush;
+            NextPicture.Background = Brushes.Lavender;
+            PreviousPicture.Background = Brushes.Lavender;
         }
 
         private void ResetSaveSentencePage()

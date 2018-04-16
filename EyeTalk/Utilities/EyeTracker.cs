@@ -15,7 +15,7 @@ namespace EyeTalk
 
         public EyeTracker()
         {
-            coordinates = new XYCoordinate(0,0);
+            coordinates = new XYCoordinate(0, 0);
             eyeXHost = new EyeXHost();
             eyeXHost.Start();
 
@@ -26,16 +26,16 @@ namespace EyeTalk
         public void StartEyeTracking()
         {
             eyeTracking = true;
-            
-            
+
+
             var stream = eyeXHost.CreateGazePointDataStream(GazePointDataMode.LightlyFiltered);
-            
+
 
             Task.Run(async () =>
             {
                 while (eyeTracking)
                 {
-                    
+
                     stream.Next += (s, t) => SetXY(t.X, t.Y);
                     await Task.Delay(200);
                 }
@@ -82,7 +82,7 @@ namespace EyeTalk
             else
             {
                 return "";
-            }        
+            }
         }
 
         public string CheckY()
@@ -183,7 +183,8 @@ namespace EyeTalk
             {
                 return "";
             }
-        }
+        
+    }
 
         public string CheckXOfBeginSpeakingPage()
         {
@@ -235,11 +236,15 @@ namespace EyeTalk
                 {
                     return "";
                 }
-                else{
-                    return "";
-                }
+            }
+
+            else
+            {
+                return "";
 
             }
+
+            
         }
 
         public string CheckXOfChooseCategoryPage()
