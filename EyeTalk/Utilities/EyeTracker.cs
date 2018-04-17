@@ -382,22 +382,22 @@ namespace EyeTalk
                     return "U";
 
                 }
-                else if (coordinates.X > 1260 && coordinates.X <= 1440 && coordinates.Y <= 250)
+                else if (coordinates.X > 1260 && coordinates.X <= 1340 && coordinates.Y <= 250)
                 {
                     return "U";
 
                 }
-                else if (coordinates.X > 1440 && coordinates.X <= 1620 && coordinates.Y <= 250)
+                else if (coordinates.X > 1340 && coordinates.X <= 1520 && coordinates.Y <= 250)
                 {
                     return "I";
 
                 }
-                else if (coordinates.X > 1620 && coordinates.X <= 1800 && coordinates.Y <= 250)
+                else if (coordinates.X > 1520 && coordinates.X <= 1700 && coordinates.Y <= 250)
                 {
                     return "O";
 
                 }
-                else if (coordinates.X > 1800 && coordinates.Y <= 240)
+                else if (coordinates.X > 1700 && coordinates.Y <= 240)
                 {
                     return "P";
 
