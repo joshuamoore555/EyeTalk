@@ -388,6 +388,52 @@
     <Resource Include="Sounds\ClickOff.wav" />
     <Resource Include="Sounds\ClickOn.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\shirt.png" />
+    <Resource Include="Images\shoes.png" />
+    <Resource Include="Images\trousers.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dressed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\blownose.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\comb.png" />
+    <Resource Include="Images\cuthair.png" />
+    <Resource Include="Images\deodorant.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\bird.png" />
+    <Resource Include="Images\family.png" />
+    <Resource Include="Images\fish.png" />
+    <Resource Include="Images\horse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\dislike.png" />
+    <Resource Include="Images\feed.png" />
+    <Resource Include="Images\finished.png" />
+    <Resource Include="Images\friends.png" />
+    <Resource Include="Images\help.png" />
+    <Resource Include="Images\like.png" />
+    <Resource Include="Images\people.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\cinema.png" />
+    <Resource Include="Images\in.png" />
+    <Resource Include="Images\music.png" />
+    <Resource Include="Images\outside.png" />
+    <Resource Include="Images\shopping.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\colour.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\granda.png" />
+    <Resource Include="Images\granny.png" />
+    <Resource Include="Images\talk.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Tobii.EyeX.Client.1.8.504\build\Tobii.EyeX.Client.targets" Condition="Exists('..\packages\Tobii.EyeX.Client.1.8.504\build\Tobii.EyeX.Client.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

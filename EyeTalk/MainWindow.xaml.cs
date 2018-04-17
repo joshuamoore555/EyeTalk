@@ -1418,13 +1418,15 @@ namespace EyeTalk
 
         }
 
-        private void PersonalCare_Category_Button_Click(object sender, RoutedEventArgs e)
+
+        private void Bathroom_Category_Button_Click(object sender, RoutedEventArgs e)
         {
             sentenceLogic.ChangeCategory(12);
 
             GoToSentencePage();
-
         }
+
+
 
         private void Entertainment_Category_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -1465,6 +1467,23 @@ namespace EyeTalk
 
             GoToSentencePage();
         }
+
+        private void GettingDressed_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+            sentenceLogic.ChangeCategory(18);
+
+            GoToSentencePage();
+        }
+
+        private void PersonalCare_Category_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            sentenceLogic.ChangeCategory(19);
+
+            GoToSentencePage();
+        }
+
+
 
 
         private void GoToSentencePage()

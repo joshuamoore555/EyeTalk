@@ -25,6 +25,7 @@ namespace EyeTalk
 
         public void StartEyeTracking()
         {
+            //creates a data stream and continually updates the xy coordinates with data
             eyeTracking = true;
 
 
@@ -311,20 +312,20 @@ namespace EyeTalk
 
             if (presence == true)
             {
-                if (coordinates.Y <= 240)
+                if (coordinates.Y <= 250)
                 {
                     return CheckTopRowOfKeyboard();
                 }
-                else if (coordinates.Y >= 300 && coordinates.Y < 580)
+                else if (coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return CheckMiddleRowOfKeyboard();
                 }
-                else if (coordinates.Y >= 580 && coordinates.Y < 870)
+                else if (coordinates.Y >= 600 && coordinates.Y < 850)
                 {
                     return CheckBottomRowOfKeyboard();
                 }
 
-                else if (coordinates.Y >= 870)
+                else if (coordinates.Y >= 900)
                 {
                     return CheckFunctionRowOfKeyboard();
                 }
@@ -346,52 +347,52 @@ namespace EyeTalk
             if (presence == true)
             {
 
-                if (coordinates.X <= 180 && coordinates.Y <= 240)
+                if (coordinates.X <= 180 && coordinates.Y <= 250)
                 {
                     return "Q";
                 }
 
-                else if (coordinates.X > 180 && coordinates.X <= 360 && coordinates.Y <= 240)
+                else if (coordinates.X > 180 && coordinates.X <= 360 && coordinates.Y <= 250)
                 {
                     return "W";
 
                 }
-                else if (coordinates.X > 360 && coordinates.X <= 540 && coordinates.Y <= 240)
+                else if (coordinates.X > 360 && coordinates.X <= 540 && coordinates.Y <= 250)
                 {
                     return "E";
 
                 }
-                else if (coordinates.X > 540 && coordinates.X <= 720 && coordinates.Y <= 240)
+                else if (coordinates.X > 540 && coordinates.X <= 720 && coordinates.Y <= 250)
                 {
                     return "R";
 
                 }
-                else if (coordinates.X > 720 && coordinates.X <= 900 && coordinates.Y <= 240)
+                else if (coordinates.X > 720 && coordinates.X <= 900 && coordinates.Y <= 250)
                 {
                     return "T";
 
                 }
-                else if (coordinates.X > 900 && coordinates.X <= 1080 && coordinates.Y <= 240)
+                else if (coordinates.X > 900 && coordinates.X <= 1080 && coordinates.Y <= 250)
                 {
                     return "Y";
 
                 }
-                else if (coordinates.X > 1080 && coordinates.X <= 1260 && coordinates.Y <= 240)
+                else if (coordinates.X > 1080 && coordinates.X <= 1260 && coordinates.Y <= 250)
                 {
                     return "U";
 
                 }
-                else if (coordinates.X > 1260 && coordinates.X <= 1440 && coordinates.Y <= 240)
+                else if (coordinates.X > 1260 && coordinates.X <= 1440 && coordinates.Y <= 250)
                 {
                     return "U";
 
                 }
-                else if (coordinates.X > 1440 && coordinates.X <= 1620 && coordinates.Y <= 240)
+                else if (coordinates.X > 1440 && coordinates.X <= 1620 && coordinates.Y <= 250)
                 {
                     return "I";
 
                 }
-                else if (coordinates.X > 1620 && coordinates.X <= 1800 && coordinates.Y <= 240)
+                else if (coordinates.X > 1620 && coordinates.X <= 1800 && coordinates.Y <= 250)
                 {
                     return "O";
 
@@ -415,47 +416,47 @@ namespace EyeTalk
 
             if (presence == true)
             {
-                if (coordinates.X <= 180 && coordinates.Y >= 300 && coordinates.Y < 580)
+                if (coordinates.X <= 180 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "A";
                 }
 
-                else if (coordinates.X > 180 && coordinates.X <= 360 && coordinates.Y >= 300 && coordinates.Y < 580)
+                else if (coordinates.X > 180 && coordinates.X <= 360 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "S";
 
                 }
-                else if (coordinates.X > 360 && coordinates.X <= 540 && coordinates.Y >= 300 && coordinates.Y < 580)
+                else if (coordinates.X > 360 && coordinates.X <= 540 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "D";
 
                 }
-                else if (coordinates.X > 540 && coordinates.X <= 720 && coordinates.Y >= 300 && coordinates.Y < 580)
+                else if (coordinates.X > 540 && coordinates.X <= 720 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "F";
 
                 }
-                else if (coordinates.X > 720 && coordinates.X <= 900 && coordinates.Y >= 300 && coordinates.Y < 580)
+                else if (coordinates.X > 720 && coordinates.X <= 900 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "G";
 
                 }
-                else if (coordinates.X > 900 && coordinates.X <= 1080 && coordinates.Y >= 300 && coordinates.Y < 580)
+                else if (coordinates.X > 900 && coordinates.X <= 1080 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "H";
 
                 }
-                else if (coordinates.X > 1080 && coordinates.X <= 1260 && coordinates.Y >= 300 && coordinates.Y < 580)
+                else if (coordinates.X > 1080 && coordinates.X <= 1260 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "J";
 
                 }
-                else if (coordinates.X > 1260 && coordinates.X <= 1440 && coordinates.Y >= 300 && coordinates.Y < 580)
+                else if (coordinates.X > 1260 && coordinates.X <= 1440 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "K";
 
                 }
-                else if (coordinates.X > 1440 && coordinates.X <= 1620 && coordinates.Y >= 300 && coordinates.Y < 580)
+                else if (coordinates.X > 1440 && coordinates.X <= 1620 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "L";
 
@@ -475,37 +476,37 @@ namespace EyeTalk
 
             if (presence == true)
             {
-                if (coordinates.X <= 180 && coordinates.Y >= 580 && coordinates.Y < 870)
+                if (coordinates.X <= 180 && coordinates.Y >= 600 && coordinates.Y < 850)
                 {
                     return "Z";
                 }
 
-                else if (coordinates.X > 180 && coordinates.X <= 360 && coordinates.Y >= 580 && coordinates.Y < 870)
+                else if (coordinates.X > 180 && coordinates.X <= 360 && coordinates.Y >= 600 && coordinates.Y < 850)
                 {
                     return "X";
 
                 }
-                else if (coordinates.X > 360 && coordinates.X <= 540 && coordinates.Y >= 580 && coordinates.Y < 870)
+                else if (coordinates.X > 360 && coordinates.X <= 540 && coordinates.Y >= 600 && coordinates.Y < 850)
                 {
                     return "C";
 
                 }
-                else if (coordinates.X > 540 && coordinates.X <= 720 && coordinates.Y >= 580 && coordinates.Y < 870)
+                else if (coordinates.X > 540 && coordinates.X <= 720 && coordinates.Y >= 600 && coordinates.Y < 850)
                 {
                     return "V";
 
                 }
-                else if (coordinates.X > 720 && coordinates.X <= 900 && coordinates.Y >= 580 && coordinates.Y < 870)
+                else if (coordinates.X > 720 && coordinates.X <= 900 && coordinates.Y >= 600 && coordinates.Y < 850)
                 {
                     return "B";
 
                 }
-                else if (coordinates.X > 900 && coordinates.X <= 1080 && coordinates.Y >= 580 && coordinates.Y < 870)
+                else if (coordinates.X > 900 && coordinates.X <= 1080 && coordinates.Y >= 600 && coordinates.Y < 850)
                 {
                     return "N";
 
                 }
-                else if (coordinates.X > 1080 && coordinates.X <= 1260 && coordinates.Y >= 580 && coordinates.Y < 870)
+                else if (coordinates.X > 1080 && coordinates.X <= 1260 && coordinates.Y >= 600 && coordinates.Y < 850)
                 {
                     return "M";
 
@@ -525,22 +526,22 @@ namespace EyeTalk
 
             if (presence == true)
             {
-                if (coordinates.X <= 360 && coordinates.Y >= 870)
+                if (coordinates.X <= 360 && coordinates.Y >= 900)
                 {
                     return "Back";
                 }
 
-                else if (coordinates.X > 435 && coordinates.X <= 795 && coordinates.Y >= 870)
+                else if (coordinates.X > 435 && coordinates.X <= 795 && coordinates.Y >= 900)
                 {
                     return "Space";
 
                 }
-                else if (coordinates.X > 870 && coordinates.X <= 1230 && coordinates.Y >= 870)
+                else if (coordinates.X > 870 && coordinates.X <= 1230 && coordinates.Y >= 900)
                 {
                     return "Delete";
 
                 }
-                else if (coordinates.X > 1305 && coordinates.X <= 1665 && coordinates.Y >= 870)
+                else if (coordinates.X > 1305 && coordinates.X <= 1665 && coordinates.Y >= 900)
                 {
                     return "Enter";
 

@@ -54,19 +54,20 @@ namespace EyeTalk
                 {"Drinks"},
                 {"Greetings"},
                 {"Feelings"},
-                {"Emotions"},
+                {"Personal Feeling"},
                 {"Colours"},
                 {"Animals"},
                 {"Times"},
                 {"Carers"},
                 {"Kitchen"},
-                {"Personal Care"},
+                {"Bathroom"},
                 {"Entertainment"},
                 {"Family"},
                 {"Custom"},
                 {"Most Used"},
                 {"Connecting Words"},
-                {"Punctuation"},
+                {"Getting Dressed"},
+                {"Personal Care"},
             };
         }
 

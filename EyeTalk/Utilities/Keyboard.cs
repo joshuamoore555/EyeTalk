@@ -10,7 +10,7 @@ namespace EyeTalk.Utilities
 
         public string AddLetter(string sentence, char letter)
         {
-            if(sentence.Length < 20)
+            if(sentence.Length < 30)
             {
                 return sentence = sentence + letter;
             }
