@@ -379,13 +379,15 @@ namespace EyeTalk
             ResetCustomText.Text = sentenceLogic.ResetCustomPictureCategoryIfNotEmpty();
         }
 
+
         private void VoiceType_Click(object sender, RoutedEventArgs e)
         {
             var type = optionsLogic.ChangeVoiceType();
-            VoiceType.Content = "Voice Type: " + type;
+            VoiceType.Content = speech.ChooseVoice(type);
 
-            speech.ChooseVoice(type);
+
         }
+
 
         private void Right_Delay_Click(object sender, RoutedEventArgs e)
         {

@@ -102,7 +102,8 @@ namespace EyeTalk.Tests
         public void GetCurrentCategoryPageTest()
         {
             logic = new SentenceLogic();
-            Assert.IsTrue(3 == logic.GetCurrentCategoryPage().Count);
+            
+            Assert.IsTrue(logic.categories.ElementAt(0).ElementAt(0) == logic.GetCurrentCategoryPage());
 
         }
 
@@ -110,7 +111,7 @@ namespace EyeTalk.Tests
         public void GetNumberOfPicturesInCurrentCategoryPageTest()
         {
             logic = new SentenceLogic();
-            Assert.IsTrue(3 == logic.GetNumberOfPicturesInCurrentCategory());
+            Assert.IsTrue(4 == logic.GetNumberOfPicturesInCurrentCategory());
 
         }
 
@@ -118,7 +119,7 @@ namespace EyeTalk.Tests
         public void GetPreviousCategoryNameTest()
         {
             logic = new SentenceLogic();
-            Assert.AreEqual("Connecting Words", logic.GetPreviousCategoryName());
+            Assert.AreEqual("Personal Care", logic.GetPreviousCategoryName());
 
         }
 
@@ -153,7 +154,13 @@ namespace EyeTalk.Tests
         public void ResetCategoryChoiceTest()
         {
             logic = new SentenceLogic();
-            Assert.IsTrue(3 == logic.GetNumberOfPicturesInCurrentCategory());
+            logic.CategoryIndex = 1;
+            logic.PageIndex = 1;
+            logic.ResetCategoryChoice();
+
+            Assert.IsTrue(0 == logic.CategoryIndex);
+            Assert.IsTrue(0 == logic.PageIndex);
+
 
         }
 
