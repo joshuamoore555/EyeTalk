@@ -25,11 +25,12 @@ namespace EyeTalk.Utilities
             foreach (InstalledVoice voice in synthesizer.GetInstalledVoices())
             {
                 voices.Add(voice);
-                voiceGendersAvailable.Add(voice.VoiceInfo.Gender.ToString());
+                var voiceGender = voice.VoiceInfo.Gender.ToString();
+                voiceGendersAvailable.Add(voiceGender);
 
-                if (!voiceElement.ContainsKey(voice.VoiceInfo.Gender.ToString()))
+                if (!voiceElement.ContainsKey(voiceGender))
                 {
-                    voiceElement.Add(voice.VoiceInfo.Gender.ToString(), numberOfVoices);
+                    voiceElement.Add(voiceGender, numberOfVoices);
                 }
 
                 numberOfVoices++;
