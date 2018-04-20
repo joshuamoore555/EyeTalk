@@ -33,8 +33,6 @@ namespace EyeTalk.Utilities
         public List<List<Picture>> personalCarePages;
 
 
-
-
         //Pages
         public List<Picture> family1;
         public List<Picture> family2;
@@ -45,7 +43,6 @@ namespace EyeTalk.Utilities
         public List<Picture> carers2;
 
         public List<Picture> kitchen1;
-        public List<Picture> kitchen2;
 
         public List<Picture> entertainment1;
         public List<Picture> entertainment2;
@@ -53,7 +50,6 @@ namespace EyeTalk.Utilities
         public List<Picture> connectingWords1;
 
         public List<Picture> dressing1;
-        public List<Picture> dressingWords2;
 
         public List<Picture> food1;
         public List<Picture> food2;
@@ -62,16 +58,12 @@ namespace EyeTalk.Utilities
         public List<Picture> drink2;
 
         public List<Picture> emotions1;
-        public List<Picture> emotions2;
 
         public List<Picture> personalCare1;
-        public List<Picture> personalCare2;
 
         public List<Picture> feelings1;
-        public List<Picture> feelings2;
 
         public List<Picture> replies1;
-        public List<Picture> replies2;
 
         public List<Picture> actionwords1;
         public List<Picture> actionwords2;
@@ -82,8 +74,6 @@ namespace EyeTalk.Utilities
         public List<Picture> animals2;
 
         public List<Picture> colours1;
-        public List<Picture> colours2;
-
 
         public List<Picture> time1;
         public List<Picture> time2;
@@ -103,7 +93,6 @@ namespace EyeTalk.Utilities
         public Picture chips = new Picture("chips", false, "pack://application:,,,/Images/chips.png", 0);
 
         //drinks
-
         public Picture water = new Picture("water", false, "pack://application:,,,/Images/water.png", 0);
         public Picture tea = new Picture("tea", false, "pack://application:,,,/Images/tea.png", 0);
         public Picture coffee = new Picture("coffee", false, "pack://application:,,,/Images/coffee.png", 0);
@@ -245,9 +234,6 @@ namespace EyeTalk.Utilities
         public Picture cutHair = new Picture("to cut my hair", false, "pack://application:,,,/Images/cuthair.png", 0);
         public Picture blowNose = new Picture("to blow my nose", false, "pack://application:,,,/Images/blownose.png", 0);
 
-
-
-
         public PictureInitialiser()
         {
             GenerateCategoryPage();
@@ -257,6 +243,7 @@ namespace EyeTalk.Utilities
 
         public void GenerateCategoryPage()
         {
+            //Adds the pictures to the pages
             food1 = new List<Picture>() { burger, chips, pizza, eggs };
             food2 = new List<Picture>() {chicken , hotdog, apple, banana };
 
@@ -309,6 +296,7 @@ namespace EyeTalk.Utilities
 
         public void GenerateCategoryPages()
         {
+            //adds the category pages to the categories
             foodPages = new List<List<Picture>>() { food1, food2 };
             drinkPages = new List<List<Picture>>() { drink1, drink2 };
             emotionPages = new List<List<Picture>>() { emotions1 };
@@ -336,6 +324,7 @@ namespace EyeTalk.Utilities
 
         public void GenerateCategories()
         {
+            //adds the categories to the category list
             categories = new List<List<List<Picture>>>(){
             
             {actionPages }, //0

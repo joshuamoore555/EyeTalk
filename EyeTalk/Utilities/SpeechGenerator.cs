@@ -9,7 +9,7 @@ namespace EyeTalk.Utilities
     {
         SpeechSynthesizer synthesizer;
         List<InstalledVoice> voices;
-        public List<string> voiceGendersAvailable = new List<string>();
+        public List<string> voiceGendersAvailable = new List<string>(); //stores what voices are installed
         public Dictionary<string, int> voiceElement;
 
         public SpeechGenerator()
@@ -19,8 +19,18 @@ namespace EyeTalk.Utilities
             synthesizer.Rate = 0;
 
             voices = new List<InstalledVoice>();
-            int numberOfVoices = 0;
-            voiceElement = new Dictionary<string, int>();
+
+            GetInstalledVoices();
+
+        }
+
+        private void GetInstalledVoices()
+        {        
+            //This method finds what voices are installed on the user's computer, and in what order
+
+            int numberOfVoices = 0; //stores the number of installed voices
+
+            voiceElement = new Dictionary<string, int>(); //stores the element that the voice type is stored at
 
             foreach (InstalledVoice voice in synthesizer.GetInstalledVoices())
             {
@@ -30,13 +40,11 @@ namespace EyeTalk.Utilities
 
                 if (!voiceElement.ContainsKey(voiceGender))
                 {
-                    voiceElement.Add(voiceGender, numberOfVoices);
+                    voiceElement.Add(voiceGender, numberOfVoices); //adds what element the gender's voice is installed - this is required as they can be installed in different orders
                 }
 
                 numberOfVoices++;
             }
-
-
         }
 
         public void ChooseSpeedOfVoice(string speed)
@@ -70,7 +78,7 @@ namespace EyeTalk.Utilities
 
         public string SelectFemaleVoice()
         {
-
+            //If female gender voice is installed, retrieve it and use it
             foreach (var gender in voiceGendersAvailable)
             {
                 if (gender == "Female")
@@ -86,6 +94,7 @@ namespace EyeTalk.Utilities
 
         public string SelectMaleVoice()
         {
+            //If male gender voice is installed, retrieve it and use it
             foreach (var gender in voiceGendersAvailable)
             {
                 if (gender == "Male")
@@ -100,7 +109,6 @@ namespace EyeTalk.Utilities
 
 
         }
-
 
         public void SelectFastVoice()
         {

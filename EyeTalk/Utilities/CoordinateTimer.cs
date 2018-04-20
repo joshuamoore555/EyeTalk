@@ -13,6 +13,7 @@ namespace EyeTalk.Utilities
 
         public void BeginTimer()
         {
+            //Starts a timer which loops every 200 milliseconds. Used to call the check position method
             coordinateTimer = new System.Timers.Timer();
             coordinateTimer.Interval = 200;
             coordinateTimer.AutoReset = true;

@@ -22,7 +22,6 @@ namespace EyeTalk
             StartEyeTracking();
         }
 
-
         public void StartEyeTracking()
         {
             //creates a data stream and continually updates the xy coordinates with this data
@@ -49,6 +48,7 @@ namespace EyeTalk
             coordinates.X = X;
             coordinates.Y = Y;
         }
+
 
         //Check methods - these create a position where the user is looking on screen, based on the page that is currently open
 
@@ -554,6 +554,7 @@ namespace EyeTalk
             }
         }
 
+
         //Get methods - these return the position of where the user is looking at on screen, based on the page that is currently open
 
         public string GetCurrentPosition()
@@ -586,7 +587,8 @@ namespace EyeTalk
             return CheckCurrentPositionKeyboard();
         }
 
-        //Misc methods
+
+        //User methods
 
         public bool CheckPresenceOfUser()
         {

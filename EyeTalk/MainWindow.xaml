@@ -6,9 +6,15 @@
         xmlns:local="clr-namespace:EyeTalk"
         mc:Ignorable="d"
         Title="MainWindow" Height="1080" Width="1920" WindowState="Maximized" WindowStyle="None">
+    
     <Grid Width="1920" Margin="0,0,0,0">
+        
         <TabControl x:Name="myTabControl" HorizontalAlignment="Left" Margin="0,-38,0,-28" Width="1920" Background="White">
+            
             <TabControl.Items>
+                
+                      
+                
                 <TabItem Header="Home" Visibility="Visible" Background="White" >
                     <Grid Margin="10,-6,-76,5" Background="White" RenderTransformOrigin="0.5,0.5" Width="1980" Height="1080">
 
@@ -29,14 +35,21 @@
                         </Button>
 
                         <TextBlock x:Name="BeginSpeakingText" HorizontalAlignment="Left" Margin="735,319,0,0" TextWrapping="Wrap" Text="Begin Speaking!" VerticalAlignment="Top" FontSize="24" Width="180" Height="41"/>
+                        
                         <TextBlock x:Name="addCustomPictureText" HorizontalAlignment="Left" Margin="1668,319,0,0" TextWrapping="Wrap" Text="Add Custom Picture" VerticalAlignment="Top" FontSize="24" Width="232" Height="41"/>
+                        
                         <TextBlock x:Name="OptionsText" HorizontalAlignment="Left" Margin="825,1039,0,0" TextWrapping="Wrap" Text="Options" VerticalAlignment="Top" FontSize="24" Width="115" Height="41"/>
+                        
                         <TextBlock x:Name="ExitText" HorizontalAlignment="Left" Margin="1836,1039,0,0" TextWrapping="Wrap" Text="Exit" VerticalAlignment="Top" FontSize="24" Width="64" Height="41"/>
 
                     </Grid>
+                    
                 </TabItem>
 
+                
+                
                 <TabItem Header="Speaking" Visibility="Visible">
+                    
                     <Grid Margin="0,14,0,20" Width="1920" Height="1080" Background="White">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="83*"/>
@@ -97,8 +110,11 @@
                         </Button>
 
                         <TextBlock x:Name="Text1" HorizontalAlignment="Left" Margin="508,141,0,0" TextWrapping="Wrap" Text="Text1" VerticalAlignment="Top" FontSize="24" Width="432" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        
                         <TextBlock x:Name="Text2" HorizontalAlignment="Left" Margin="982,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="428" Height="38" Grid.Row="1" Grid.RowSpan="2"><Run Text="Text2"/><LineBreak/><Run/></TextBlock>
+                        
                         <TextBlock x:Name="Text3" HorizontalAlignment="Left" Margin="508,872,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="452" Height="32" Grid.Row="1" Grid.RowSpan="2"><Run Text="Text3"/><LineBreak/><Run/></TextBlock>
+                        
                         <TextBlock x:Name="Text4" HorizontalAlignment="Left" Margin="982,872,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.667,2.953" FontSize="24" Width="452" Height="32" Grid.Row="1" Grid.RowSpan="2"><Run Text="Text4"/><LineBreak/><Run/></TextBlock>
 
                         <Button x:Name="Page" HorizontalAlignment="Left" VerticalAlignment="Top" Width="240" FontSize="36"  Height="360" Background="Transparent" Click="Page_Click" Margin="1439,555,0,-1" Grid.Row="2">
@@ -114,21 +130,35 @@
                         </Button>
 
                         <TextBox x:Name="CategoryName" BorderThickness="0" TextAlignment="Center" TextWrapping="WrapWithOverflow" IsReadOnly="true" Text ="Category Name" HorizontalAlignment="Stretch" Margin="660,184,659,0"  Padding="1" VerticalAlignment="Top" FontSize="48" Height="110" Grid.Row="1" Grid.RowSpan="2" VerticalContentAlignment="Center"/>
+                        
                         <TextBlock x:Name="PageNumber" HorizontalAlignment="Left" Margin="1500,825,0,0" TextWrapping="Wrap" Text="Page 1/1" VerticalAlignment="Top" FontSize="24" Width="152" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        
                         <TextBlock x:Name="NextCategoryText" HorizontalAlignment="Left" Margin="1457,495,0,0" TextWrapping="Wrap" Text="Next Category: " VerticalAlignment="Top" FontSize="24" Width="348" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        
                         <TextBlock x:Name="PreviousCategoryText" HorizontalAlignment="Left" Margin="10,495,0,0" TextWrapping="Wrap" Text="Previous Category: " VerticalAlignment="Top" FontSize="24" Width="348" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        
                         <TextBlock x:Name="RemoveText" HorizontalAlignment="Left" Margin="1617,96,0,0" TextWrapping="Wrap" Text="Remove All" VerticalAlignment="Top" FontSize="24" Width="150" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        
                         <TextBlock x:Name="SpeakText" HorizontalAlignment="Left" Margin="1754,825,0,0" TextWrapping="Wrap" Text="Speak" VerticalAlignment="Top" FontSize="24" Width="90" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        
                         <TextBlock x:Name="SaveText" HorizontalAlignment="Left" Margin="32,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="176" Height="44" Grid.Row="1" Grid.RowSpan="2"><Run Text="  "/><Run Text="Save Sentence"/></TextBlock>
+                        
                         <TextBlock x:Name="SavedListText" HorizontalAlignment="Left" Margin="263,114,0,0" TextWrapping="Wrap" Text="Saved Sentences" VerticalAlignment="Top" FontSize="24" Width="197" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        
                         <TextBlock x:Name="HomeText" HorizontalAlignment="Left" Margin="90,825,0,0" TextWrapping="Wrap" Text="Home" VerticalAlignment="Top" FontSize="24" Width="90" Height="44" Grid.Row="1" Grid.RowSpan="2"/>
+                        
                         <TextBlock x:Name="ChooseCategoryText" HorizontalAlignment="Left" Margin="263,825,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="217" Height="44" Grid.Row="1" Grid.RowSpan="2"><Run Text="  "/><Run Text="Choose Category"/></TextBlock>
 
                     </Grid>
+                    
                 </TabItem>
 
+                
+                
                 <TabItem Header="Options" Visibility="Visible" >
+                    
                     <Grid Background="White">
+                        
                         <Button x:Name= "ColourType" BorderBrush ="Transparent"  HorizontalAlignment="Left" Margin="960,730,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Height="360" Background="Lavender" Click="ColourType_Click">
                             <Image Source="Images\colour.png" Height="120"/>
                         </Button>
@@ -172,24 +202,35 @@
                         </Button>
 
                         <TextBlock x:Name="ResetCustomText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="368" Height="59" Margin="72,647,0,0"><Run Text="Reset "/><Run Text="Custom Pictures"/><Run Text=" "/><Run Text="Category"/></TextBlock>
+                        
                         <TextBlock x:Name="ResetMostUsedText" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Reset Most Used Category" VerticalAlignment="Top" FontSize="24" Width="303" Height="59" Margin="1536,647,0,0"/>
+                        
                         <TextBlock x:Name="TestVoiceText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="232" Height="59" Margin="1578,1006,0,0" Text="Test Current Voice"/>
+                        
                         <TextBlock x:Name="HomeText2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="74" Height="59" Margin="206,1006,0,0" Text="Home"/>
+                        
                         <TextBlock x:Name="ChangeColourText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="197" Height="59" Margin="1124,1006,0,0" Text="Change Colour"/>
+                        
                         <TextBlock x:Name="DecreaseText" HorizontalAlignment="Left" Margin="1064,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Width="280" Height="41" TextAlignment="Center"><Run Text="Decrease "/><Run Text="Eye Fixation"/><Run Text=" Time"/></TextBlock>
+                        
                         <TextBlock x:Name="IncreaseText" HorizontalAlignment="Left" Margin="331,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Width="280" Height="41" TextAlignment="Center"><Run Text="Change"/><Run Text=" Voice Speed"/></TextBlock>
+
                         <TextBlock x:Name="IncreaseText_Copy" HorizontalAlignment="Left" Margin="1536,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Width="280" Height="41" TextAlignment="Center"><Run Text="Inc"/><Run Text="rease "/><Run Text="Eye Fixation Time"/></TextBlock>
 
-
-
                     </Grid>
+                    
                 </TabItem>
 
+                
+                
                 <TabItem Header="Add" Visibility="Visible">
+                    
                     <Grid Background="White">
+                        
                         <Button x:Name="BackHome" HorizontalAlignment="Left" Margin="0,740,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Back_Button_Click" Height="360" Background="Transparent"  >
                             <Image Height ="120" Source="Images\home.png"></Image>
                         </Button>
+                        
                         <TextBlock x:Name="HomeText3" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="74" Height="59" Margin="206,1006,0,0" Text="Home"/>
 
                         <Image x:Name="CustomPicture" HorizontalAlignment="Left" Height="360" Margin="776,363,0,0" VerticalAlignment="Top" Width="480" OpacityMask="#FFBDBBBB"/>
@@ -197,8 +238,8 @@
                         <Button x:Name="Select_Picture" HorizontalAlignment="Left" Margin="1441,0,-7,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Load_Custom_Picture_Button_Click" Height="360" Background="Transparent"  >
                             <Image Height ="120" Source="Images\plus.png"></Image>
                         </Button>
+                        
                         <TextBlock x:Name="AddPictureText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="450" Height="90" Margin="1464,268,0,0"><Run Text="Search using Windows"/><Run Text=" "/><Run Text="(M"/><Run Text="ouse"/><Run Text=" "/><Run Text="only"/><Run Text=")"/></TextBlock>
-
 
                         <Button x:Name="Save_Custom_Button"  HorizontalAlignment="Left" Margin="1441,728,-7,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Save_Custom_Picture_Button_Click" Height="360" Background="Transparent" >
                             <Image Height ="120" Source="Images\save.png"></Image>
@@ -219,19 +260,27 @@
                         <Button x:Name="NextPicture" HorizontalAlignment="Left" Margin="1441,363,-7,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="NextPicture_Button_Click" Height="360" Background="Lavender" >
                             <Image Source="Images\arrowright.png" Height="120"></Image>
                         </Button>
+                        
                         <Button x:Name="PreviousPicture" HorizontalAlignment="Left" Margin="0,375,0,0" VerticalAlignment="Top" Width="480" FontSize="20" Click="PreviousPicture_Button_Click" Height="360" Background="Lavender" >
                             <Image Source="Images/arrowleft.png" Height="120"/>
                         </Button>
+                        
                         <TextBlock x:Name="keyboardtext" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="193" Height="59" Margin="162,268,0,0" Text="Change Name"/>
+                        
                         <TextBlock x:Name="keyboardtext_Copy" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="193" Height="60" Margin="162,608,0,0" Text="Previous Picture "/>
+                        
                         <TextBlock x:Name="keyboardtext_Copy1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="193" Height="60" Margin="1617,608,0,0" Text="Next Picture"/>
 
-
                     </Grid>
+                    
                 </TabItem>
 
+                
+                
                 <TabItem Header="SavedSentences" Visibility="Visible">
+                    
                     <Grid Background="White">
+                        
                         <Button x:Name="NextSentence" HorizontalAlignment="Left" Margin="1434,381,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Next_Sentence_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images\arrowright.png"></Image>
                         </Button>
@@ -249,72 +298,95 @@
                         <Button x:Name="SpeakSentence" HorizontalAlignment="Left" Margin="474,741,0,0" VerticalAlignment="Top" Width="960" FontSize="48" Click="Play_Saved_Sentence_Button_Click" Height="360" Background="Transparent" >
                             <Image Height ="120" Source="Images\sound.png"></Image>
                         </Button>
+                        
                         <Button x:Name="DeleteSentence" HorizontalAlignment="Left" Margin="1434,741,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Delete_Saved_Sentence_Button_Click" Height="360" Background="Transparent" >
                             <Image Height ="120" Source="Images\delete.png"></Image>
                         </Button>
+                        
                         <TextBlock x:Name="BackSpeakingText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="304" Height="59" Margin="108,996,0,0"><Run Text="Back to "/><Run Text="Sentence Creation"/></TextBlock>
+                        
                         <TextBlock x:Name="SavedSentenceText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="304" Height="59" Margin="838,996,0,0" Text="Speak Saved Sentence"/>
+                        
                         <TextBlock x:Name="DeleteSentenceText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="304" Height="59" Margin="1554,996,0,0" Text="Delete Saved Sentence"/>
 
                     </Grid>
+                    
                 </TabItem>
 
+                
+                
                 <TabItem Header="ChooseCategory" Visibility="Visible" >
+                    
                     <Grid Background="White">
+
                         <Button x:Name="Actions" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Actions_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images\iwant.png"></Image>
-
                         </Button>
-
 
                         <Button x:Name="BackToSpeak" HorizontalAlignment="Left" Margin="0,730,0,0" VerticalAlignment="Top" Width="480" FontSize="48" Click="Back_Click" Height="360" Background="Transparent" >
                             <Image Height ="120" Source="Images\back.png"></Image>
                         </Button>
+                        
                         <Button x:Name="Food" HorizontalAlignment="Left" Margin="240,10,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Food_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/knifeAndFork.png"/>
                         </Button>
+                        
                         <Button x:Name="Drink" HorizontalAlignment="Left" Margin="480,10,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Drinks_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/tea.png"/>
                         </Button>
+                        
                         <Button x:Name="Greetings" HorizontalAlignment="Left" Margin="720,10,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Greetings_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/hello.png"/>
                         </Button>
+                        
                         <Button x:Name="Feelings" HorizontalAlignment="Left" Margin="960,10,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Feelings_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/sick.png"/>
                         </Button>
+                        
                         <Button x:Name="Emotions" HorizontalAlignment="Left" Margin="1200,10,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Emotions_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/happy.png"/>
                         </Button>
+                        
                         <Button x:Name="Colours" HorizontalAlignment="Left" Margin="1440,10,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Colours_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/colour.png"/>
                         </Button>
+                        
                         <Button x:Name="Animals" HorizontalAlignment="Left" Margin="1674,10,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Animals_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/dog.png"/>
                         </Button>
+                        
                         <Button x:Name="Times" HorizontalAlignment="Left" Margin="0,370,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Times_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/hour.png"/>
                         </Button>
+                        
                         <Button x:Name="Carers" HorizontalAlignment="Left" Margin="240,370,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Carers_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/doctor.png"/>
                         </Button>
+                        
                         <Button x:Name="Kitchen" HorizontalAlignment="Left" Margin="480,370,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Kitchen_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/spoon.png"/>
                         </Button>
+                        
                         <Button x:Name="Bathroom" HorizontalAlignment="Left" Margin="1200,370,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Bathroom_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/shower.png"/>
                         </Button>
+                        
                         <Button x:Name="Entertainment" HorizontalAlignment="Left" Margin="1440,370,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Entertainment_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/television.png"/>
                         </Button>
+                        
                         <Button x:Name="Family" HorizontalAlignment="Left" Margin="1674,370,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Family_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/family.png"/>
                         </Button>
+                        
                         <Button x:Name="Custom" HorizontalAlignment="Left" Margin="960,730,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="Custom_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/add.png"/>
                         </Button>
+                        
                         <Button x:Name="MostUsed" HorizontalAlignment="Left" Margin="720,730,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="MostUsed_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/list.png"/>
                         </Button>
+                        
                         <Button x:Name="ConnectingWords" HorizontalAlignment="Left" Margin="1200,730,0,0" VerticalAlignment="Top" Width="240" FontSize="48" Click="ConnectingWords_Category_Button_Click" Height="360" Background="Lavender" >
                             <Image Height ="120" Source="Images/plus.png"/>
                         </Button>
@@ -332,33 +404,53 @@
                         </Button>
 
                         <TextBlock x:Name="ActionsText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="82,268,0,0" Text="Actions"/>
+                        
                         <TextBlock x:Name="FoodText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="336,268,0,0" Text="Food" RenderTransformOrigin="1.859,0.661"/>
+                        
                         <TextBlock x:Name="TimesText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="82,642,0,0" Text="Times"/>
+                        
                         <TextBlock x:Name="DrinksText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="138" Height="59" Margin="556,268,0,0" Text=" Drinks"/>
+                        
                         <TextBlock x:Name="GreetingsText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="112" Height="59" Margin="802,268,0,0" Text="Greetings"/>
+                        
                         <TextBlock x:Name="FeelingsText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="102" Margin="1038,268,0,0" Text="Personal Feelings"/>
+                        
                         <TextBlock x:Name="CarersText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="318,642,0,0" Text="Carers"/>
+                        
                         <TextBlock x:Name="EmotionsText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="106" Height="59" Margin="1264,268,0,0" Text="Emotions"/>
+                        
                         <TextBlock x:Name="ColoursText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="1516,268,0,0" Text="Colours"/>
+                        
                         <TextBlock x:Name="AnimalsText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="1752,268,0,0" Text="Animals"/>
+                        
                         <TextBlock x:Name="KitchenText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="556,642,0,0" Text="Kitchen" RenderTransformOrigin="1.38,0.864"/>
+                        
                         <TextBlock x:Name="BathroomText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="146" Height="59" Margin="1264,642,0,0" Text="Bathroom"/>
+                        
                         <TextBlock x:Name="EntertainmentText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="192" Height="59" Margin="1488,642,0,0" Text="Entertainment"/>
+                        
                         <TextBlock x:Name="FamilyText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="1752,642,0,0" Text="Family"/>
+                        
                         <TextBlock x:Name="CustomText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="92" Height="59" Margin="1038,996,0,0" Text="Custom"/>
+                        
                         <TextBlock x:Name="MostUsedText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="134" Height="59" Margin="780,996,0,0" Text="Most Used"/>
+                        
                         <TextBlock x:Name="ChooseACategoryText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="48" Width="449" Height="69" Margin="751,518,0,0" Text="Choose a Category"/>
 
                         <TextBlock x:Name="RepliesText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="94" Height="59" Margin="554,996,0,0" Text="Replies"/>
+
                         <TextBlock x:Name="ConnectingText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="224" Height="59" Margin="1216,996,0,0" Text="Connecting Words"/>
 
                         <TextBlock x:Name="DressedText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="267" Height="59" Margin="1445,996,0,0"><Run Text="    "/><Run Text="Getting Dressed"/></TextBlock>
+                        
                         <TextBlock x:Name="PersonalCareText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="224" Height="59" Margin="1712,996,-22,0"><Run Text=" "/><Run Text="Personal Care"/></TextBlock>
 
                     </Grid>
 
                 </TabItem>
 
+                
+                
                 <TabItem Header="Keyboard" Visibility="Visible" >
                     <Grid Background="White">
                         <Button x:Name="Q" Content="Q" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="Q_Button_Click" Height="240" Background="Lavender" />
@@ -384,24 +476,24 @@
                         <Button x:Name="B" Content="B" HorizontalAlignment="Left" Margin="740,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="B_Button_Click" Height="240" Background="Lavender" />
                         <Button x:Name="N" Content="N" HorizontalAlignment="Left" Margin="925,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="N_Button_Click" Height="240" Background="Lavender" />
                         <Button x:Name="M" Content="M" HorizontalAlignment="Left" Margin="1110,620,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="M_Button_Click" Height="240" Background="Lavender" />
-
-                        <Button x:Name="BackSave" Content="Back" HorizontalAlignment="Left" Margin="0,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="BackToSave_Button_Click" Height="180" Background="Lavender" />
-                        <Button x:Name="Delete" Content="Delete" HorizontalAlignment="Left" Margin="925,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="Delete_Button_Click" Height="180" Background="Lavender" />
-                        <Button x:Name="Enter" Content="Choose Word" HorizontalAlignment="Left" Margin="1412,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="Enter_Button_Click" Height="180" Background="Lavender" />
                         <Button x:Name="O" Content="O" HorizontalAlignment="Left" Margin="1480,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="O_Button_Click" Height="240" Background="Lavender" />
                         <Button x:Name="P" Content="P" HorizontalAlignment="Left" Margin="1665,10,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="P_Button_Click" Height="240" Background="Lavender" />
                         <Button x:Name="L" Content="L" HorizontalAlignment="Left" Margin="1480,314,0,0" VerticalAlignment="Top" Width="180" FontSize="48" Click="L_Button_Click" Height="240" Background="Lavender" />
+                        
+                        <Button x:Name="BackSave" Content="Back" HorizontalAlignment="Left" Margin="0,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="BackToSave_Button_Click" Height="180" Background="Lavender" />
+                        <Button x:Name="Delete" Content="Delete" HorizontalAlignment="Left" Margin="925,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="Delete_Button_Click" Height="180" Background="Lavender" />
+                        <Button x:Name="Enter" Content="Choose Word" HorizontalAlignment="Left" Margin="1412,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="Enter_Button_Click" Height="180" Background="Lavender" />
                         <TextBox x:Name="Word" HorizontalAlignment="Left" Margin="1332,688,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="114" Width="550" FontSize="28" FontWeight="Bold" MaxLength="20"/>
                         <Button x:Name="Space" Content="Space" HorizontalAlignment="Left" Margin="462,886,0,0" VerticalAlignment="Top" Width="360" FontSize="48" Click="Space_Button_Click" Height="180" Background="Lavender" />
-
-
-
 
                     </Grid>
 
                 </TabItem>
+                
             </TabControl.Items>
+            
         </TabControl>
 
     </Grid>
+    
 </Window>

@@ -11,18 +11,11 @@ namespace EyeTalk.Utilities
 
         }
 
-        public List<string> RetrieveAllImagesInPictureDirectory()
-        {
-            IEnumerable<string> files = GetFilepathsFromPictureDirectory();
-
-            return GetImageFilepaths(files);
-        }
-
         private List<string> GetImageFilepaths(IEnumerable<string> files)
         {
-            //checks if filepath is an image format, and adds to list of images
-
             List<string> imageFiles = new List<string>();
+
+            //checks if files in the picture folder are a picture format, then adds them to the list if they are
 
             foreach (string filepath in files)
             {
@@ -33,6 +26,14 @@ namespace EyeTalk.Utilities
             }
 
             return imageFiles;
+        }
+
+        public List<string> RetrieveAllImagesInPictureDirectory()
+        {
+            //gets all files from the picture folder
+            IEnumerable<string> files = GetFilepathsFromPictureDirectory();
+
+            return GetImageFilepaths(files);
         }
 
         private IEnumerable<string> GetFilepathsFromPictureDirectory()

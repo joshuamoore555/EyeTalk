@@ -11,7 +11,7 @@ namespace EyeTalk.Logic
        public SaveFileSerialiser save;
        public List<String> VoiceSpeeds = new List<String> { "Slow", "Normal", "Fast" };
        public List<String> VoiceTypes = new List<String> {  "Female","Male" };
-        public List<String> Colours = new List<String> {"#FF1493", "#ff6a6a", "#8470ff", "#00fa9a","#ff4500", "#fff8dc", "#cae1ff", "#d8bfd8" };
+       public List<String> Colours = new List<String> {"#FF1493", "#ff6a6a", "#8470ff", "#00fa9a","#ff4500", "#fff8dc", "#cae1ff", "#d8bfd8" };
 
         public OptionsLogic()
         {
@@ -23,11 +23,13 @@ namespace EyeTalk.Logic
 
         public string GetCurrentColour()
         {
+            //gets the colour based on the application colour index
             return Colours.ElementAt(Options.ApplicationColour);
         }
 
         public void ChangeColour()
         {
+            //Increases the application's colour index
             Options.ApplicationColour++;
 
             if (Options.ApplicationColour > Colours.Count - 1)
@@ -50,6 +52,7 @@ namespace EyeTalk.Logic
 
         public bool HasDurationBeenReached()
         {
+            //checks if the duration has been reached or not
             if (Options.EyeFixationDuration >= Options.EyeFixationValue)
             {
                 return true;
@@ -113,7 +116,7 @@ namespace EyeTalk.Logic
             {
                 Options.EyeFixationValue++;
             }
-            return Options.EyeFixationValue / 4 + " Seconds";
+            return Options.EyeFixationValue / 5 + " Seconds";
         }
 
         public string DecreaseSelectionDelay()
@@ -122,7 +125,7 @@ namespace EyeTalk.Logic
             {
                 Options.EyeFixationValue--;
             }
-            return Options.EyeFixationValue / 4 + " Seconds";
+            return Options.EyeFixationValue / 5 + " Seconds";
         }
     }
 }

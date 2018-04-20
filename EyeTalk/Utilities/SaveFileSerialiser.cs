@@ -29,9 +29,10 @@ namespace EyeTalk.Objects
 
         public SaveFileSerialiser()
         {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            saveFolder = Path.Combine(path, "Saves");
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData); //folder used to store all the saves
 
+            //creates the paths for the different files and folders
+            saveFolder = Path.Combine(path, "Saves");
             categoryPath = Path.Combine(saveFolder, "Categories.bin");
             savedSentencesPath = Path.Combine(saveFolder,"SavedSentences.bin");
             customPicturesPath = Path.Combine(saveFolder, "CustomPictures.bin");
@@ -44,16 +45,15 @@ namespace EyeTalk.Objects
             
         }
 
-        //load category from a file
-
         public void CreateInitialFoldersAndFiles()
         {
+            //this creates folders and files if they don't exist
             if (!Directory.Exists(saveFolder))
             {
                 Directory.CreateDirectory(saveFolder);
             }
            
-            if (File.Exists(categoryPath))
+            if (!File.Exists(categoryPath))
             {
                 CreateCategoryFile();
             }
@@ -83,6 +83,8 @@ namespace EyeTalk.Objects
                 CreateMostUsedList();
             }
         }
+
+        //All the below methods create, load, or save different types of .bin files
 
         public void CreateCategoryFile()
         {
@@ -157,7 +159,6 @@ namespace EyeTalk.Objects
             }
         }
 
-
         public Options LoadOptions()
         {
             using (Stream stream = File.Open(optionsPath, FileMode.Open))
@@ -182,7 +183,6 @@ namespace EyeTalk.Objects
             }
         }
 
-
         public List<List<Picture>> LoadMostUsed()
         {
             using (Stream stream = File.Open(mostUsedPath, FileMode.Open))
@@ -206,7 +206,6 @@ namespace EyeTalk.Objects
                 bformatter.Serialize(stream, mostUsedList);
             }
         }
-
 
         public List<Picture> LoadMostUsedList()
         {

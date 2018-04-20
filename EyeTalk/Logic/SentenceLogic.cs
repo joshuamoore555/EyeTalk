@@ -75,6 +75,7 @@ namespace EyeTalk
 
         public void GenerateSentencePage()
         {
+            //updates the values used within the sentence page
             UpdateCustomCategory();
             UpdateMostUsedCategory();
 
@@ -84,6 +85,7 @@ namespace EyeTalk
 
         public void GenerateSentencePageAndGoToFirstPage()
         {
+            //brings the user to the first page of the current category
             PageIndex = 0;
             GenerateSentencePage();
         }
@@ -353,8 +355,6 @@ namespace EyeTalk
                 var pictures5To8 = orderedMostUsed.Skip(4).Take(4);
                 var pictures9To12= orderedMostUsed.Skip(8).Take(4);
 
-
-
                 //page 1
                 for (int i = 0; i < pictures1To4.Count(); i++)
                 {
@@ -381,6 +381,7 @@ namespace EyeTalk
                 mostUsedCategory.Add(mostUsedPage2);
                 mostUsedCategory.Add(mostUsedPage3);
 
+                //adds the updated most used category to the categories list
                 categories[16] = mostUsedCategory;
 
 
@@ -401,7 +402,7 @@ namespace EyeTalk
             //takes the word and adds spaces
             var name = CategoryPage.ElementAt(i).Name;
 
-            string sentence = getSentence();
+            string sentence = GetSentence();
 
             //if sentence does not contain the word
             if (!CheckThatWordIsMatched(sentence, word))
@@ -410,7 +411,7 @@ namespace EyeTalk
                 Sentence.Add(word, word);
 
                 //string builder then recreates the entire sentence with the new word added, and returns the string.
-                string newSentence = getSentence();
+                string newSentence = GetSentence();
 
                 //increments amount of words in sentence value and makes the selected variable of the word true.
                 AmountOfWordsInSentence++;
@@ -425,7 +426,7 @@ namespace EyeTalk
             }
         }
 
-        private string getSentence()
+        private string GetSentence()
         {
             StringBuilder sentence = new StringBuilder();
             foreach (DictionaryEntry s in Sentence)
@@ -454,7 +455,7 @@ namespace EyeTalk
         {
             //removes the word from the sentence, recreates the sentence without it, and returns the string. 
             Sentence.Remove(word);
-            string newSentence = getSentence();
+            string newSentence = GetSentence();
 
             //decrements amount of words in sentence value and makes the selected variable of the word false.
             AmountOfWordsInSentence--;
