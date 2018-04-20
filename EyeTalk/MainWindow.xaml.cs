@@ -48,7 +48,6 @@ namespace EyeTalk
 
             eyeTracker = new EyeTracker();
             speech = new SpeechGenerator();
-
             timer = new CoordinateTimer();
             sentenceLogic = new SentenceLogic();
             optionsLogic = new OptionsLogic();
@@ -56,10 +55,11 @@ namespace EyeTalk
             addPictureLogic = new AddPictureLogic();
             saveInitialiser = new SaveFileSerialiser();
             keyboard = new Keyboard();
-
-
             brush = GetBrush();
+
+            //returns the user's eye position every 200 milliseconds
             timer.coordinateTimer.Elapsed += GetCurrentPosition;
+
             LoadSaveFiles();
             UpdateOptionsPage();
             UpdateGUI();
@@ -77,10 +77,12 @@ namespace EyeTalk
             ResetKeyboardPage();
         }
 
-        //Home Page Buttons
+
+        //Home Page Button Clicks
 
         private void Begin_Click(object sender, RoutedEventArgs e)
         {
+            //Opens the sentence page and loads the first category and page
             LoadSaveFiles();
             sentenceLogic.ResetCategoryChoice();
             sentenceLogic.ResetSentence();
@@ -90,12 +92,14 @@ namespace EyeTalk
 
         private void Options_Click(object sender, RoutedEventArgs e)
         {
+            //Opens the options page
             UpdateOptionsPage();           
             myTabControl.SelectedIndex = 2;
         }
 
         private void Add_PictureCategory_Click(object sender, RoutedEventArgs e)
         {
+            //opens the custom picture page with the first picture available from the user's picture folder
             CustomFilePath.Text = addPictureLogic.GetFirstImageFromPicturesFolder();
             ConvertFilepathIntoImage(CustomFilePath.Text);
             myTabControl.SelectedIndex = 3;
@@ -103,6 +107,7 @@ namespace EyeTalk
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
+            //saves all files, stops eye tracker and timer, and begins shutting down all threads.
             SaveAllFiles();
             eyeTracker.eyeTracking = false;
             timer.coordinateTimer.Stop();
@@ -110,11 +115,11 @@ namespace EyeTalk
         }
 
 
-
         //Begin Speaking Button Clicks
 
         private void Sentences_Button_Click(object sender, RoutedEventArgs e)
         {
+            //Opens the sentence page with the first sentence available
             SaveAllFiles();
             currentSentence.Text = savedSentencesLogic.RetrieveFirstSavedSentenceIfExists();
             myTabControl.SelectedIndex = 4;
@@ -122,6 +127,7 @@ namespace EyeTalk
 
         private void Back_Button_Click(object sender, RoutedEventArgs e)
         {
+            //returns the user to the home page
             SaveAllFiles();
             brush = GetBrush();
             myTabControl.SelectedIndex = 0;
@@ -129,12 +135,13 @@ namespace EyeTalk
 
         private void Save_Button_Click(object sender, RoutedEventArgs e)
         {
+            //saves the custom sentence
             SentenceUpdate.Text = savedSentencesLogic.SaveSentenceIfNotPreviouslySaved(SentenceTextBox.Text);
         }
 
         private async void PlaySound_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            //if currently not speaking, speaks the current sentence
             var sentence = SentenceTextBox.Text;
             if (isSpeaking == false)
             {
@@ -147,6 +154,7 @@ namespace EyeTalk
 
         private void Image1_Button_Click(object sender, RoutedEventArgs e)
         {
+            //if the picture exists, selects it
             int index = 0;
             if (sentenceLogic.GetNumberOfPicturesInCurrentCategory() >= 1)
             {
@@ -156,6 +164,7 @@ namespace EyeTalk
 
         private void Image2_Button_Click(object sender, RoutedEventArgs e)
         {
+            //if the picture exists, selects it
             int index = 1;
             if (sentenceLogic.GetNumberOfPicturesInCurrentCategory() >= 2)
             {
@@ -165,6 +174,7 @@ namespace EyeTalk
 
         private void Image3_Button_Click(object sender, RoutedEventArgs e)
         {
+            //if the picture exists, selects it
             int index = 2;
             if (sentenceLogic.GetNumberOfPicturesInCurrentCategory() >= 3)
             {
@@ -174,6 +184,7 @@ namespace EyeTalk
 
         private void Image4_Button_Click(object sender, RoutedEventArgs e)
         {
+            //if the picture exists, selects it
             int index = 3;
             if(sentenceLogic.GetNumberOfPicturesInCurrentCategory() >= 4)
             {
@@ -183,6 +194,7 @@ namespace EyeTalk
 
         private void Page_Click(object sender, RoutedEventArgs e)
         {
+            //opens the next page and creates it
             sentenceLogic.GoToNextPage();
             CreatePage();
             
@@ -190,6 +202,7 @@ namespace EyeTalk
 
         private void Next_Button_Click(object sender, RoutedEventArgs e)
         {
+            //brings the user to the next category and the first page of it
             sentenceLogic.CheckIfBackToFirstCategory();
             sentenceLogic.GenerateSentencePageAndGoToFirstPage();
             CreatePage();
@@ -199,6 +212,7 @@ namespace EyeTalk
 
         private void Previous_Button_Click(object sender, RoutedEventArgs e)
         {
+            //brings the user to the previous category and the first page of it
             sentenceLogic.CheckIfBackToLastCategory();
             sentenceLogic.GenerateSentencePageAndGoToFirstPage();
             CreatePage();
@@ -207,6 +221,7 @@ namespace EyeTalk
 
         private void Remove_All_Click(object sender, RoutedEventArgs e)
         {
+            //removes all the words from the current sentence, and un-highlights all pictures
             SentenceTextBox.Clear();
             sentenceLogic.RemoveAllWordsFromSentence();
             ClickOff();
@@ -214,10 +229,12 @@ namespace EyeTalk
 
         }
 
-        //Begin Speaking Methods
+
+        //Begin Speaking GUI Updating Methods
 
         private void CreatePage()
         {
+            //updates the sentence page with the current category and page's pictures
             var numberOfPictures = sentenceLogic.CategoryPage.Count;
             SentenceUpdate.Text = " ";
             PageNumber.Text = sentenceLogic.GetPageNumber();
@@ -250,6 +267,7 @@ namespace EyeTalk
 
         private void CreatePicture(int i)
         {
+            //creates a picture based on the index given. 
             textBlocks.ElementAt(i).Text = sentenceLogic.CategoryPage.ElementAt(i).Name;
             buttons.ElementAt(i).Visibility = Visibility.Visible;
             var filepath = sentenceLogic.CategoryPage.ElementAt(i).Filepath;
@@ -258,6 +276,7 @@ namespace EyeTalk
 
         private void UpdatePicture(int i)
         {
+            //determines if the picture is highlighted or not
             var name = sentenceLogic.CategoryPage.ElementAt(i).Name;
             
             if (!sentenceLogic.CheckThatWordIsMatched(SentenceTextBox.Text, name))
@@ -273,6 +292,7 @@ namespace EyeTalk
 
         private void HidePicture(int i)
         {
+            //hides picture if it does not exist
             buttons.ElementAt(i).Visibility = Visibility.Hidden;
             textBlocks.ElementAt(i).Text = "";
             UnhighlightPicture(buttons, i);
@@ -280,12 +300,14 @@ namespace EyeTalk
 
         private void HighlightPicture(List<Button> buttons, int i)
         {
+            //highlights border of picture
             buttons.ElementAt(i).BorderBrush = new SolidColorBrush(Colors.Yellow);
             buttons.ElementAt(i).BorderThickness = new Thickness(12, 12, 12, 12);
         }
 
         private void UnhighlightPicture(List<Button> buttons, int i)
         {
+            //un-highlights border of picture
             buttons.ElementAt(i).BorderBrush = new SolidColorBrush(Colors.Black);
             buttons.ElementAt(i).BorderThickness = new Thickness(1, 1, 1, 1);
 
@@ -293,6 +315,7 @@ namespace EyeTalk
 
         private void SelectPicture(int i)
         {
+            //the process behind selecting a picture - when selected, checks if word has been added before, then either highlights or unhighlights it
             var word = textBlocks.ElementAt(i).Text;
             var selected = sentenceLogic.CategoryPage.ElementAt(i).Selected;
             var name = sentenceLogic.CategoryPage.ElementAt(i).Name;
@@ -322,22 +345,27 @@ namespace EyeTalk
         
          }
 
+
+        //Sentence Page Sound Methods
+
         private void ClickOn()
         {
+            //plays the click on wav file
             new SoundPlayer(Properties.Resources.ClickOn).Play();
         }
 
         private void ClickOff()
         {
+            //plays the clickoff wav file
             new SoundPlayer(Properties.Resources.ClickOff).Play();
         }
-
 
 
         //Saved Sentences Page Button Clicks
 
         private async void Play_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
+            //speaks the saved sentence if it is currently not already speaking
             var sentence = currentSentence.Text;
             if (isSpeaking == false)
             {
@@ -349,61 +377,62 @@ namespace EyeTalk
 
         private void Next_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            //brings the user to the next sentence
             currentSentence.Text = savedSentencesLogic.NextSentence();
-            
+           
         }
 
         private void Previous_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
+            //brings the user to the previous sentence
             currentSentence.Text = savedSentencesLogic.PreviousSentence();
-
         }
 
         private void Delete_Saved_Sentence_Button_Click(object sender, RoutedEventArgs e)
         {
+            //deletes the current sentence, if it exists, and updates the current sentence chosen
             currentSentence.Text = savedSentencesLogic.DeleteSavedSentence();  
         }
-
 
 
         //Options Page Button Clicks
 
         private void ResetMostUsed_Click(object sender, RoutedEventArgs e)
         {
+            //resets the most used category, if not empty, and updates the button text to inform the user of the change
            ResetMostUsedText.Text = sentenceLogic.ResetMostUsedIfNotEmpty();
         }
 
         private void ResetCustomPicture_Click(object sender, RoutedEventArgs e)
         {
+            //resets the custom picture category, if not empty, and updates the button text to inform the user of the change
             ResetCustomText.Text = sentenceLogic.ResetCustomPictureCategoryIfNotEmpty();
         }
 
-
         private void VoiceType_Click(object sender, RoutedEventArgs e)
         {
+            //changes the voice type from male to female, or vice versa
             var type = optionsLogic.ChangeVoiceType();
             VoiceType.Content = speech.ChooseVoice(type);
-
-
         }
-
 
         private void Right_Delay_Click(object sender, RoutedEventArgs e)
         {
+            //Increases the eye fixation value
             var currentSelectionDelay = optionsLogic.IncreaseSelectionDelay();
             EyeSelectionSpeedStatus.Text = "Eye Fixation Value: " + currentSelectionDelay;
         }
 
         private void Left_Delay_Click(object sender, RoutedEventArgs e)
         {
+            //decreases the eye fixation value
             var currentSelectionDelay = optionsLogic.DecreaseSelectionDelay();
             EyeSelectionSpeedStatus.Text = "Eye Fixation Value: " + currentSelectionDelay;
-
         }
 
         private void Right_Speed_Click(object sender, RoutedEventArgs e)
         {
+            //changes the voice speed
             var currentSpeed = optionsLogic.IncreaseVoiceSpeed();
             SpeedStatus.Text = "Voice Speed: " + currentSpeed;
             speech.ChooseSpeedOfVoice(currentSpeed);
@@ -411,6 +440,7 @@ namespace EyeTalk
 
         private void Left_Speed_Click(object sender, RoutedEventArgs e)
         {
+            //decreases the voice speed
             var currentSpeed = optionsLogic.DecreaseVoiceSpeed();
             SpeedStatus.Text = "Voice Speed: " + currentSpeed;
             speech.ChooseSpeedOfVoice(currentSpeed);
@@ -419,6 +449,7 @@ namespace EyeTalk
 
         private async void TestVoice_Click(object sender, RoutedEventArgs e)
         {
+            //tests the current voice, if it is not already speaking 
             if (isSpeaking == false)
             {
                 isSpeaking = true;
@@ -429,6 +460,7 @@ namespace EyeTalk
 
         private void ColourType_Click(object sender, RoutedEventArgs e)
         {
+            //changes the colour of the GUI's buttons
             optionsLogic.ChangeColour();
             brush = GetBrush();
             UpdateGUI();
@@ -436,10 +468,11 @@ namespace EyeTalk
         }
 
 
-        //Options Methods
+        //Options Page Methods
 
         private void UpdateOptionsPage()
         {
+            //updates the values within the option page
             speech.ChooseVoice(optionsLogic.VoiceTypes.ElementAt(optionsLogic.Options.VoiceTypeSelection));
             speech.ChooseSpeedOfVoice(optionsLogic.VoiceSpeeds.ElementAt(optionsLogic.Options.VoiceSpeedSelection));
 
@@ -450,6 +483,7 @@ namespace EyeTalk
 
         private Brush GetBrush()
         {
+            //gets the currently saved colour and creates a brush
             var converter = new BrushConverter();
             string currentColour = optionsLogic.GetCurrentColour();
             var brush = (Brush)converter.ConvertFromString(currentColour);
@@ -457,28 +491,59 @@ namespace EyeTalk
         }
 
 
-        //Add Custom Picture Buttons
+        //Add Custom Picture Page Buttons
 
         private void Load_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
         {
+            //loads the selected picture and displays it on the page
             var picturePath = addPictureLogic.LoadCustomPicture();
             CustomFilePath.Text = picturePath;
             ConvertFilepathIntoImage(picturePath);
         }
 
-        private void ConvertFilepathIntoImage(string filepath)
+        private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //validates picture before saving
+            CheckPictureIsNotEmpty();
+        }
 
-        {       
+        private void NextPicture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //opens the next picture in the pictures folder
+            CustomFilePath.Text = addPictureLogic.GetNextPictureFromPicturesFolder();
+            ConvertFilepathIntoImage(CustomFilePath.Text);
+        }
+
+        private void PreviousPicture_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //opens the previous picture in the pictures folder
+            CustomFilePath.Text = addPictureLogic.GetPreviousPictureFromPicturesFolder();
+            ConvertFilepathIntoImage(CustomFilePath.Text);
+        }
+
+        private void Keyboard_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //brings the user to the Keyboard Page
+            myTabControl.SelectedIndex = 6;
+
+        }
+
+
+        //Add Custom Picture Page Methods
+
+        private void ConvertFilepathIntoImage(string filepath)
+        {
+            //displays the image and its name on-screen
             CustomName.Text = addPictureLogic.GeneratePictureName(filepath);
             BitmapImage bitmap = addPictureLogic.GeneratePicture(filepath);
 
-            if(bitmap != null)
+            if (bitmap != null)
             {
                 CustomPicture.Source = bitmap;
             }
         }
 
-        private void Save_Custom_Picture_Button_Click(object sender, RoutedEventArgs e)
+        private void CheckPictureIsNotEmpty()
         {
             if (String.IsNullOrEmpty(CustomFilePath.Text) || String.IsNullOrEmpty(CustomName.Text))
             {
@@ -487,52 +552,54 @@ namespace EyeTalk
             }
             else
             {
-                Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
-                var currentPage = sentenceLogic.customCategory.ElementAt(sentenceLogic.customCategory.Count - 1);
-                var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, sentenceLogic.categories);
-                var pictureAlreadyAddedInCustom = addPictureLogic.CheckCustomPictureIsNotDuplicateInCustomCategory(customPicture, sentenceLogic.customCategory);
-
-
-
-                if (pictureAlreadyAdded || pictureAlreadyAddedInCustom)
-                {
-                    Status.Text = "This image has already been added.";
-                }
-                else
-                {
-                    var spaceInCustomCategory = addPictureLogic.CheckNumberOfCustomImagesInPage(currentPage);
-
-                    if (spaceInCustomCategory == true)
-                    {
-                        addPictureLogic.AddCustomPicture(customPicture, currentPage);
-                        Status.Text = "Added picture. " + "Number of pictures in category: " + currentPage.Count;
-                        saveInitialiser.SaveCustomCategory(sentenceLogic.customCategory);
-
-                    }
-
-                    else if (spaceInCustomCategory == false)
-                    {
-                        sentenceLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
-                        Status.Text = "Created new category. \nNumber of categories is now: " + sentenceLogic.customCategory.Count;
-                        saveInitialiser.SaveCustomCategory(sentenceLogic.customCategory);
-
-                    }
-
-                }
+                CheckPictureIsNotADuplicate();
             }
         }
 
-        private void NextPicture_Button_Click(object sender, RoutedEventArgs e)
+        private void CheckPictureIsNotADuplicate()
         {
-            CustomFilePath.Text = addPictureLogic.GetNextPictureFromPicturesFolder();
-            ConvertFilepathIntoImage(CustomFilePath.Text);
+            Picture customPicture = new Picture(CustomName.Text, false, CustomFilePath.Text, 0);
+
+            //Check if picture is a duplicate
+            var pictureAlreadyAdded = addPictureLogic.CheckCustomPictureIsNotDuplicate(customPicture, sentenceLogic.categories);
+            var pictureAlreadyAddedInCustom = addPictureLogic.CheckCustomPictureIsNotDuplicateInCustomCategory(customPicture, sentenceLogic.customCategory);
+
+            if (pictureAlreadyAdded || pictureAlreadyAddedInCustom)
+            {
+                Status.Text = "This image has already been added.";
+            }
+            else
+            {
+                SavePictureToCustomCategory(customPicture);
+
+            }
         }
 
-        private void PreviousPicture_Button_Click(object sender, RoutedEventArgs e)
+        private void SavePictureToCustomCategory(Picture customPicture)
         {
-            CustomFilePath.Text = addPictureLogic.GetPreviousPictureFromPicturesFolder();
-            ConvertFilepathIntoImage(CustomFilePath.Text);
+            //get the last used custom page
+            var currentPage = sentenceLogic.customCategory.ElementAt(sentenceLogic.customCategory.Count - 1);
 
+            //check if there is space in last used custom page
+            var spaceInCustomCategory = addPictureLogic.CheckNumberOfCustomImagesInPage(currentPage);
+
+            if (spaceInCustomCategory == true)
+            {
+                //add picture to last used custom page
+                addPictureLogic.AddCustomPicture(customPicture, currentPage);
+                Status.Text = "Added picture. " + "Number of pictures in category: " + currentPage.Count;
+                saveInitialiser.SaveCustomCategory(sentenceLogic.customCategory);
+
+            }
+
+            else if (spaceInCustomCategory == false)
+            {
+                //create a new page in custom category, and add the picture to that
+                sentenceLogic.customCategory.Add(addPictureLogic.CreateNewPageAndAddCustomPicture(customPicture));
+                Status.Text = "Created new category. \nNumber of categories is now: " + sentenceLogic.customCategory.Count;
+                saveInitialiser.SaveCustomCategory(sentenceLogic.customCategory);
+
+            }
         }
 
 
@@ -540,6 +607,7 @@ namespace EyeTalk
 
         public void GetCurrentPosition(object sender, EventArgs e)
         {
+            //this retrieves the current position of the user's eyes
             Dispatcher.Invoke((Action)(() =>
             {
                 if (myTabControl.SelectedIndex == 1)
@@ -568,8 +636,10 @@ namespace EyeTalk
                     currentPosition = eyeTracker.GetCurrentPosition();
                 }
 
+                //the position is then checked with the previous position, to determine if the eye position is the same as before
                 CheckPositionIsTheSame();
 
+                //once the check is complete, the current position overwrites the previous position
                 previousPosition = currentPosition;
 
             }));
@@ -578,6 +648,7 @@ namespace EyeTalk
 
         private void CheckPositionIsTheSame()
         {
+            //if the eye position is the same as before, then the eye fixation duration increases and a check depending on the page the user is looking at
             if (currentPosition == previousPosition)
             {
                 optionsLogic.IncreaseEyeFixationDuration();
@@ -611,11 +682,16 @@ namespace EyeTalk
                     CheckKeyboardPage(currentPosition);
                 }
             }
+            //if the eye position has changed, then the fixation duration becomes 0 again
             else
             {
                 optionsLogic.ResetEyeFixationDuration();
             }
         }
+
+
+        //Check Methods - these use the position to decide what button is to be highlighted. 
+        //If the eye fixation duration has been reached, these also determine what button event is raised
 
         private void CheckHomePage(string position)
         {
@@ -1144,8 +1220,10 @@ namespace EyeTalk
 
         private void HoverOverButton(Button button)
         {
+            //this highlights the button being looked at
             button.Background = Brushes.Yellow;
 
+            //if the eye fixation duration is reached, the eye position is reset to prevent double clicking, and the event is raised
             if (optionsLogic.HasDurationBeenReached())
             {
                 ResetPosition();
@@ -1154,13 +1232,24 @@ namespace EyeTalk
         }
 
 
-        //Reset Methods
+        //Text Reset Methods
 
         private void ResetPosition()
         {
+            //resets the eye position
             currentPosition = " ";
             previousPosition = "";
         }
+
+        private void ResetSentencePageText()
+        {
+            //resets the sentence textboxes
+            SentenceTextBox.Text = "";
+            SentenceUpdate.Text = "";
+        }
+
+
+        //GUI Reset Methods - These update the GUI colours to their default states with no highlight. Brush colour depends on the option selected by user.
 
         private void ResetHomePage()
         {
@@ -1294,17 +1383,12 @@ namespace EyeTalk
 
         }
 
-        private void ResetSentencePageText()
-        {
-            SentenceTextBox.Text = "";
-            SentenceUpdate.Text = "";
-        }
-
 
         //Save Methods
 
         private void LoadSaveFiles()
         {
+            //loads all available save files
             sentenceLogic.categories = saveInitialiser.LoadCategories();
             savedSentencesLogic.SavedSentences = saveInitialiser.LoadSentences();
             optionsLogic.Options = saveInitialiser.LoadOptions();
@@ -1316,6 +1400,7 @@ namespace EyeTalk
 
         private void SaveAllFiles()
         {
+            //saves all available save files.
             saveInitialiser.SaveSentencesToFile(savedSentencesLogic.SavedSentences);
             saveInitialiser.SaveCustomCategory(sentenceLogic.customCategory);
             saveInitialiser.SaveOptions(optionsLogic.Options);
@@ -1324,10 +1409,11 @@ namespace EyeTalk
         }
 
 
-        //Choose Category Page Methods
+        //Choose Category Page Methods - These bring the user to the selected category on the sentence page.
 
         private void Choose_Category_Button_Click(object sender, RoutedEventArgs e)
         {            
+            //Goes to the choose category page
             SaveAllFiles();
             myTabControl.SelectedIndex = 5;
         }
@@ -1420,15 +1506,12 @@ namespace EyeTalk
 
         }
 
-
         private void Bathroom_Category_Button_Click(object sender, RoutedEventArgs e)
         {
             sentenceLogic.ChangeCategory(12);
 
             GoToSentencePage();
         }
-
-
 
         private void Entertainment_Category_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -1445,7 +1528,6 @@ namespace EyeTalk
             GoToSentencePage();
 
         }
-
 
         private void Custom_Category_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -1479,24 +1561,28 @@ namespace EyeTalk
 
         private void PersonalCare_Category_Button_Click(object sender, RoutedEventArgs e)
         {
-
             sentenceLogic.ChangeCategory(19);
-
             GoToSentencePage();
         }
 
 
+        //Choose Category Page Methods
 
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            //brings the user back to the sentence page
+            GoToSentencePage();
+        }
 
         private void GoToSentencePage()
         {
-            
+            //Brings the user to the sentence page and loads the category and page that has been selected
             images = new List<Image> { Image1, Image2, Image3, Image4 };
             buttons = new List<Button> { Image1_Button, Image2_Button, Image3_Button, Image4_Button };
             textBlocks = new List<TextBlock> { Text1, Text2, Text3, Text4 };
             sentenceLogic.UpdateCustomCategory();
             sentenceLogic.UpdateMostUsedCategory();
-            
+
             sentenceLogic.GenerateSentencePageAndGoToFirstPage();
             CreatePage();
             PageNumber.Text = sentenceLogic.GetPageNumber();
@@ -1504,12 +1590,8 @@ namespace EyeTalk
             myTabControl.SelectedIndex = 1;
         }
 
-        private void Back_Click(object sender, RoutedEventArgs e)
-        {
-            GoToSentencePage();
-        }
 
-        //Keyboard clicks
+        //Keyboard Page Button Clicks - These add letters to the word depending on which is clicked
 
         private void Q_Button_Click(object sender, RoutedEventArgs e)
         {   
@@ -1643,32 +1725,28 @@ namespace EyeTalk
 
         private void Enter_Button_Click(object sender, RoutedEventArgs e)
         {
+            //brings the user back to the Custom Picture Page with the word as the new name
             CustomName.Text = Word.Text;
             myTabControl.SelectedIndex = 3;
         }
 
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
         {
+            //deletes the last letter from the word
             Word.Text = keyboard.DeleteLastLetter(Word.Text);
         }
 
         private void BackToSave_Button_Click(object sender, RoutedEventArgs e)
         {
+            //brings the user back to the Custom Picture Page without saving the created word
             myTabControl.SelectedIndex = 3;
-        }
-
-        private void Keyboard_Button_Click(object sender, RoutedEventArgs e)
-        {
-            myTabControl.SelectedIndex = 6;
-
         }
 
         private void Space_Button_Click(object sender, RoutedEventArgs e)
         {
+            //Adds a space to the word.
             Word.Text = keyboard.AddLetter(Word.Text, ' ');
 
         }
-
-
     }
 }

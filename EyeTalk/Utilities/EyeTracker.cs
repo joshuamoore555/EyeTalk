@@ -25,7 +25,7 @@ namespace EyeTalk
 
         public void StartEyeTracking()
         {
-            //creates a data stream and continually updates the xy coordinates with data
+            //creates a data stream and continually updates the xy coordinates with this data
             eyeTracking = true;
 
 
@@ -36,7 +36,7 @@ namespace EyeTalk
             {
                 while (eyeTracking)
                 {
-
+                    //every 200 millseconds, update coordinates
                     stream.Next += (s, t) => SetXY(t.X, t.Y);
                     await Task.Delay(200);
                 }
@@ -49,6 +49,8 @@ namespace EyeTalk
             coordinates.X = X;
             coordinates.Y = Y;
         }
+
+        //Check methods - these create a position where the user is looking on screen, based on the page that is currently open
 
         public string CheckX()
         {
@@ -114,9 +116,6 @@ namespace EyeTalk
                 return "";
             }
         }
-
-
-        //Check Pages methods
 
         public string CheckXHomePage()
         {
@@ -456,7 +455,7 @@ namespace EyeTalk
                     return "K";
 
                 }
-                else if (coordinates.X > 1440 && coordinates.X <= 1620 && coordinates.Y >= 300 && coordinates.Y < 550)
+                else if (coordinates.X > 1440 && coordinates.X <= 1720 && coordinates.Y >= 300 && coordinates.Y < 550)
                 {
                     return "L";
 
@@ -541,7 +540,7 @@ namespace EyeTalk
                     return "Delete";
 
                 }
-                else if (coordinates.X > 1305 && coordinates.X <= 1665 && coordinates.Y >= 900)
+                else if (coordinates.X > 1305 && coordinates.X <= 1800 && coordinates.Y >= 900)
                 {
                     return "Enter";
 
@@ -555,9 +554,7 @@ namespace EyeTalk
             }
         }
 
-
-
-        //Get methods
+        //Get methods - these return the position of where the user is looking at on screen, based on the page that is currently open
 
         public string GetCurrentPosition()
         {
@@ -589,8 +586,12 @@ namespace EyeTalk
             return CheckCurrentPositionKeyboard();
         }
 
+        //Misc methods
+
         public bool CheckPresenceOfUser()
         {
+            //checks if the user is looking at the screen or not
+
             if (eyeXHost.UserPresence.ToString() == "Present")
             {
                 return true;

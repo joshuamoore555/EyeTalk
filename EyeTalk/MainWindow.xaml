@@ -176,9 +176,9 @@
                         <TextBlock x:Name="TestVoiceText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="232" Height="59" Margin="1578,1006,0,0" Text="Test Current Voice"/>
                         <TextBlock x:Name="HomeText2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="74" Height="59" Margin="206,1006,0,0" Text="Home"/>
                         <TextBlock x:Name="ChangeColourText" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="24" Width="197" Height="59" Margin="1124,1006,0,0" Text="Change Colour"/>
-                        <TextBlock x:Name="DecreaseText" HorizontalAlignment="Left" Margin="1064,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Width="280" Height="41" TextAlignment="Center" Text="Decrease Voice Speed"/>
+                        <TextBlock x:Name="DecreaseText" HorizontalAlignment="Left" Margin="1064,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Width="280" Height="41" TextAlignment="Center"><Run Text="Decrease "/><Run Text="Eye Fixation"/><Run Text=" Time"/></TextBlock>
                         <TextBlock x:Name="IncreaseText" HorizontalAlignment="Left" Margin="331,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Width="280" Height="41" TextAlignment="Center"><Run Text="Change"/><Run Text=" Voice Speed"/></TextBlock>
-                        <TextBlock x:Name="IncreaseText_Copy" HorizontalAlignment="Left" Margin="1536,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Width="280" Height="41" TextAlignment="Center"><Run Text="Inc"/><Run Text="rease Voice Speed"/></TextBlock>
+                        <TextBlock x:Name="IncreaseText_Copy" HorizontalAlignment="Left" Margin="1536,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16" Width="280" Height="41" TextAlignment="Center"><Run Text="Inc"/><Run Text="rease "/><Run Text="Eye Fixation Time"/></TextBlock>
 
 
 
