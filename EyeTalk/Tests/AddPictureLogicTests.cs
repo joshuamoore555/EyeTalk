@@ -93,8 +93,11 @@ namespace EyeTalk.Tests
             string test = "hello worl";
             
             Assert.AreEqual(keyboard.AddLetter(test, 'd'), "hello world");
-            
+            Assert.AreEqual(keyboard.AddLetter("123456789123456789123456789123", 'd'), "123456789123456789123456789123");
+
             Assert.AreEqual(keyboard.DeleteLastLetter(test), "hello wor");
+            Assert.AreEqual(keyboard.DeleteLastLetter(""), "");
+
 
         }
 

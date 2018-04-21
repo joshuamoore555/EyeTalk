@@ -13,7 +13,6 @@ namespace EyeTalk.Tests
     class SentenceLogicTests
     {
         SentenceLogic logic;
-        EyeTracker eyeTracker;
 
         public SentenceLogicTests()
         {
@@ -425,31 +424,6 @@ namespace EyeTalk.Tests
 
         }
 
-        [Test]
-        public void CoordinatesTesting()
-        {
-            //should all return "" as the eye tracker will not be connected
-            eyeTracker = new EyeTracker();
 
-            var test1 = eyeTracker.GetCurrentPosition();
-            Assert.AreEqual(test1, " ");
-
-            var test2 = eyeTracker.GetCurrentPositionBeginSpeaking();
-            Assert.AreEqual(test2, " ");
-
-            var test3 = eyeTracker.GetCurrentPositionChooseCategory();
-            Assert.AreEqual(test3, " ");
-
-            var test4 = eyeTracker.GetCurrentPositionHomePage();
-            Assert.AreEqual(test4, " ");
-
-            var test5 = eyeTracker.GetCurrentPositionKeyboard();
-            Assert.AreEqual(test5, "");
-
-            var test6 = eyeTracker.GetCurrentPositionSavedSentence();
-            Assert.AreEqual(test6, " ");
-
-
-        }
     }
  }

@@ -24,6 +24,9 @@ namespace EyeTalk.Tests
             var same = logic.SaveSentenceIfNotPreviouslySaved("");
             Assert.AreEqual("Please create a sentence before saving", same);
 
+            var s = logic.SaveSentenceIfNotPreviouslySaved(" ");
+            Assert.AreEqual("Please create a sentence before saving", s);
+
         }
 
         [Test]

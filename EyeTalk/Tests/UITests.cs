@@ -118,12 +118,19 @@ namespace EyeTalk.Tests
 
             var picture1 = window.Get<Button>("Image1_Button");
             var picture2 = window.Get<Button>("Image2_Button");
+            var picture3 = window.Get<Button>("Image3_Button");
+            var picture4 = window.Get<Button>("Image4_Button");
             picture1.Click();
             picture2.Click();
+            picture3.Click();
+            picture4.Click();
             var playsound = window.Get<Button>("PlaySound");
             playsound.Click();
             var sentence = window.Get<TextBox>("SentenceTextBox");
-            Assert.IsTrue(sentence.Text == "I want I don't want ");
+            Assert.IsTrue(sentence.Text == "I want I don't want I like I don't like ");
+            var removeall = window.Get<Button>("RemoveAll");
+            removeall.Click();
+            playsound.Click();
 
             app.Close();
         }
