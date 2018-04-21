@@ -93,7 +93,7 @@ namespace EyeTalk.Tests
         {
             logic.Options.EyeFixationValue = 0;
             logic.IncreaseSelectionDelay();
-            Assert.AreEqual("0.5 Seconds", logic.IncreaseSelectionDelay());
+            Assert.AreEqual("0.4 Seconds", logic.IncreaseSelectionDelay());
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace EyeTalk.Tests
         {
             logic.Options.EyeFixationValue = 2;
 
-            Assert.AreEqual("0.5 Seconds", logic.DecreaseSelectionDelay());
+            Assert.AreEqual("0.4 Seconds", logic.DecreaseSelectionDelay());
         }
 
     }
