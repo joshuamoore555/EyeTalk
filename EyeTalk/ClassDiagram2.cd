@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EyeTalk.App" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.SentenceLogic" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgEAwBAAAACCAgAAUASAFGAQEGgGAQAAAwIDAgEABAw=</HashCode>
+      <FileName>Logic\SentenceLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIQqwSWIvqjSQgNEJd8V0UMOWycKKvMqx5iowkFHVOY=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EyeTalk.EyeTracker" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEEAAEkBIAgACAAAKIAoCAAAAAAJACIgCAAAAAAEAAA=</HashCode>
+      <FileName>Utilities\EyeTracker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Constants.Positions" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgCAEgCKgCAAIFAAQDAAAAABAAAAQAAAIAAAICABIEA=</HashCode>
+      <FileName>Constants\Positions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Logic.AddPictureLogic" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIgAAABAAAAAABAJAAQCAQAACBIAAAAIAE=</HashCode>
+      <FileName>Logic\AddPictureLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Logic.OptionsLogic" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACgAAAAAAAAAEAAAAAABDAEAAAAACBIuIA=</HashCode>
+      <FileName>Logic\OptionsLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Logic.SavedSentencesLogic" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAIACBAAAAACAAAAAIEAAAAAAAgAAAAAAAEAA=</HashCode>
+      <FileName>Logic\SavedSentencesLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Objects.Options" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAABAAACAIAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Objects\Options.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Objects.Picture" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAIAAAAAAAAAQAAAAAAAI=</HashCode>
+      <FileName>Objects\Picture.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Objects.XYCoordinate" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Objects\XYCoordinate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Objects.SaveFileSerialiser" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFUkCAAIAAEAEBEBRQggEIAAAEAAAAAICQBsAAEAAAQ=</HashCode>
+      <FileName>Utilities\SaveFileSerialiser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Properties.Resources" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAACIAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Properties.Settings" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Tests.AddPictureLogicTests" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAQAAACAAgAACBAAAAAEAQBAAACAAgAAAAAgAgAAE=</HashCode>
+      <FileName>Tests\AddPictureLogicTests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Tests.OptionLogicTests" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgBAAAAAAAAEAAAAAABBAAAAAIAAAoiAA=</HashCode>
+      <FileName>Tests\OptionLogicTests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Tests.SavedSentencesLogicTests" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAgAAAIAAAAAkAABAAAAAQAAAAAAAABAAgAAAAgAAA=</HashCode>
+      <FileName>Tests\SavedSentencesLogicTests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Tests.SentenceLogicTests" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAMAAAAAEAAKAgAAIAEABCBCIAgGYIAACAIBAgAgDAA=</HashCode>
+      <FileName>Tests\SentenceLogicTests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Tests.UITests" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgIAAAAAAAAEAEAAgAEBAAEAAAAAAAIAAAABgAAAEA=</HashCode>
+      <FileName>Tests\UITests.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Utilities.CoordinateTimer" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\CoordinateTimer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Utilities.ImageFinder" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAARAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\ImageFinder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Utilities.Keyboard" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities\Keyboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Utilities.PictureInitialiser" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FRIm9euv2OAJAlOZE5sNYw1YzKAXnXHIvyqnzPAX2o8=</HashCode>
+      <FileName>Utilities\PictureInitaliser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EyeTalk.Utilities.SpeechGenerator" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQAgCAEAAAAAAAAAACAAAAAAAAQAIQAAAAAAAAIACIA=</HashCode>
+      <FileName>Utilities\SpeechGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
