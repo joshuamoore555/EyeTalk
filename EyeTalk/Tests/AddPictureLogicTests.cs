@@ -1,17 +1,17 @@
 ﻿using EyeTalk.Logic;
 using EyeTalk.Objects;
+using EyeTalk.Utilities;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace EyeTalk.Tests
 {
     public class AddPictureLogicTests
     {
         AddPictureLogic logic;
+        Keyboard keyboard;
         List<List<List<Picture>>> categories;
         List<List<Picture>> customCategory;
         List<Picture> currentPage;
@@ -84,8 +84,29 @@ namespace EyeTalk.Tests
             currentPage.Add(customPicture5);
             Assert.AreEqual(false, logic.CheckNumberOfCustomImagesInPage(currentPage));
 
+        }
 
+        [Test]
+        public void TestKeyboardFunctions()
+        {
+            keyboard = new Keyboard();
+            string test = "hello worl";
+            
+            Assert.AreEqual(keyboard.AddLetter(test, 'd'), "hello world");
+            
+            Assert.AreEqual(keyboard.DeleteLastLetter(test), "hello wor");
 
+        }
+
+        [Test]
+        public void TestChangingPictures()
+        {
+            logic = new AddPictureLogic();
+            
+            Assert.True(logic.GetFirstImageFromPicturesFolder()!=null);
+            Assert.True(logic.GetNextPictureFromPicturesFolder() != null);
+            Assert.True(logic.GetPreviousPictureFromPicturesFolder() != null);
+      
         }
     }
 }
