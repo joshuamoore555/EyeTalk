@@ -20,11 +20,110 @@ namespace EyeTalk.Tests
             var app = Application.Launch("EyeTalk");
             var window = app.GetWindow("MainWindow", InitializeOption.NoCache);
             var exitButton = window.Get<Button>("Exit");
-            exitButton.Click();
-
-         
+            exitButton.Click();    
 
         }
+
+        [TestMethod]
+        public void OpenAppAndChooseCategoryWithCategoryPage()
+        {
+            var app = Application.Launch("EyeTalk");
+            var window = app.GetWindow("MainWindow", InitializeOption.NoCache);
+
+            //Test Home Buttons
+            var beginButton = window.Get<Button>("BeginSpeaking");
+            beginButton.Click();
+
+            var ChooseCategory = window.Get<Button>("ChooseCategory");
+            ChooseCategory.Click();
+
+            var Actions = window.Get<Button>("Actions");
+            Actions.Click();
+            ChooseCategory.Click();
+
+            var BackToSpeak = window.Get<Button>("BackToSpeak");
+            BackToSpeak.Click();
+            ChooseCategory.Click();
+
+            var Food = window.Get<Button>("Food");
+            Food.Click();
+            ChooseCategory.Click();
+
+            var Drink = window.Get<Button>("Drink");
+            Drink.Click();
+            ChooseCategory.Click();
+
+            var Greetings = window.Get<Button>("Greetings");
+            Greetings.Click();
+            ChooseCategory.Click();
+
+            var Feelings = window.Get<Button>("Feelings");
+            Feelings.Click();
+            ChooseCategory.Click();
+
+            var Emotions = window.Get<Button>("Emotions");
+            Emotions.Click();
+            ChooseCategory.Click();
+
+            var Colours = window.Get<Button>("Colours");
+            Colours.Click();
+            ChooseCategory.Click();
+
+            var Animals = window.Get<Button>("Animals");
+            Animals.Click();
+            ChooseCategory.Click();
+
+            var Times = window.Get<Button>("Times");
+            Times.Click();
+            ChooseCategory.Click();
+
+            var Carers = window.Get<Button>("Carers");
+            Carers.Click();
+            ChooseCategory.Click();
+
+            var Kitchen = window.Get<Button>("Kitchen");
+            Kitchen.Click();
+            ChooseCategory.Click();
+
+            var Bathroom = window.Get<Button>("Bathroom");
+            Bathroom.Click();
+            ChooseCategory.Click();
+
+            var Entertainment = window.Get<Button>("Entertainment");
+            Entertainment.Click();
+            ChooseCategory.Click();
+
+            var Family = window.Get<Button>("Family");
+            Family.Click();
+            ChooseCategory.Click();
+
+            var Custom = window.Get<Button>("Custom");
+            Custom.Click();
+            ChooseCategory.Click();
+
+            var MostUsed = window.Get<Button>("MostUsed");
+            MostUsed.Click();
+            ChooseCategory.Click();
+
+            var ConnectingWords = window.Get<Button>("ConnectingWords");
+            ConnectingWords.Click();
+            ChooseCategory.Click();
+
+            var Replies = window.Get<Button>("Replies");
+            Replies.Click();
+            ChooseCategory.Click();
+
+            var GettingDressed = window.Get<Button>("GettingDressed");
+            GettingDressed.Click();
+            ChooseCategory.Click();
+
+            var PersonalCare = window.Get<Button>("PersonalCare");
+            PersonalCare.Click();
+            ChooseCategory.Click();
+
+            app.Close();
+        }
+
 
         [TestMethod]
         public void OpenAppAndTestAddPicture()
@@ -40,6 +139,120 @@ namespace EyeTalk.Tests
 
             var select = window.Get<Button>("Select_Picture");
             select.Click();
+            app.Close();
+
+        }
+
+        [TestMethod]
+        public void OpenAppAndTestKeyboard()
+        {
+            var app = Application.Launch("EyeTalk");
+            var window = app.GetWindow("MainWindow", InitializeOption.NoCache);
+            
+            var add = window.Get<Button>("AddPicture");
+            add.Click();
+
+            var NextPicture = window.Get<Button>("NextPicture");
+            NextPicture.Click();
+
+            var PreviousPicture = window.Get<Button>("PreviousPicture");
+            PreviousPicture.Click();
+
+            var KeyboardPage = window.Get<Button>("KeyboardPage");
+            KeyboardPage.Click();
+
+            var A = window.Get<Button>("A");
+            A.Click();
+
+            var B = window.Get<Button>("B");
+            B.Click();
+
+            var C = window.Get<Button>("C");
+            C.Click();
+
+            var D = window.Get<Button>("D");
+            D.Click();
+
+            var E = window.Get<Button>("E");
+            E.Click();
+
+            var F = window.Get<Button>("F");
+            F.Click();
+
+            var G = window.Get<Button>("G");
+            G.Click();
+
+            var H = window.Get<Button>("H");
+            H.Click();
+
+            var I = window.Get<Button>("I");
+            I.Click();
+
+            var J = window.Get<Button>("J");
+            J.Click();
+
+            var K = window.Get<Button>("K");
+            K.Click();
+
+            var L = window.Get<Button>("L");
+            L.Click();
+
+            var M = window.Get<Button>("M");
+            M.Click();
+
+            var N = window.Get<Button>("N");
+            N.Click();
+
+            var O = window.Get<Button>("O");
+            O.Click();
+
+            var P = window.Get<Button>("P");
+            P.Click();
+
+            var Q = window.Get<Button>("Q");
+            Q.Click();
+
+            var R = window.Get<Button>("R");
+            R.Click();
+
+            var S = window.Get<Button>("S");
+            S.Click();
+
+            var T = window.Get<Button>("T");
+            T.Click();
+
+            var U = window.Get<Button>("U");
+            U.Click();
+
+            var V = window.Get<Button>("V");
+            V.Click();
+
+            var W = window.Get<Button>("W");
+            W.Click();
+
+            var X = window.Get<Button>("X");
+            X.Click();
+
+            var Y = window.Get<Button>("Y");
+            Y.Click();
+
+            var Z = window.Get<Button>("Z");
+            Z.Click();
+
+            var Delete = window.Get<Button>("Delete");
+            Delete.Click();
+
+            var Space = window.Get<Button>("Space");
+            Space.Click();
+
+            var Enter = window.Get<Button>("Enter");
+            Enter.Click();
+
+            KeyboardPage.Click();
+
+            var BackSave = window.Get<Button>("BackSave");
+            BackSave.Click();
+
             app.Close();
 
         }
@@ -324,5 +537,7 @@ namespace EyeTalk.Tests
 
             app.Close();
         }
+
+
     }
 }
